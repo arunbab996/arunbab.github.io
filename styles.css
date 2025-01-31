@@ -14,9 +14,38 @@ body {
 }
 
 .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-button {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.2s ease;
+}
+
+.social-button:hover {
+    opacity: 0.9;
+}
+
+.linkedin {
+    background-color: #0077b5;
+}
+
+.twitter {
+    background-color: #1da1f2;
 }
 
 .intro {
@@ -29,7 +58,7 @@ body {
 
 h1 {
     font-size: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
 }
 
 h2 {
@@ -44,23 +73,21 @@ h3 {
     color: #333;
 }
 
-ul {
-    list-style-type: none;
+.bullet-list {
+    list-style-type: disc;
+    margin-left: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
-li {
+.bullet-list li {
     margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
 }
 
 .beliefs {
     background-color: #f8f9fa;
     padding: 1.5rem;
     border-radius: 8px;
-}
-
-.beliefs li {
-    margin-bottom: 0.75rem;
 }
 
 .sub-point {
@@ -88,9 +115,8 @@ a:hover {
 }
 
 .writing-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    list-style-type: none;
+    margin-left: 0;
 }
 
 .writing-entry {
@@ -132,5 +158,16 @@ a:hover {
 @media (max-width: 600px) {
     body {
         padding: 1rem;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .social-links {
+        width: 100%;
+        justify-content: flex-start;
     }
 }
