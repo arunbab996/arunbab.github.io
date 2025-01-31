@@ -1,42 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    background-color: #f9f9f9;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.6;
     color: #333;
 }
 
-.content {
-    max-width: 600px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.nav {
+    text-align: right;
+}
+
+.nav a {
+    display: block;
+    color: #0066cc;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.nav a:hover {
+    text-decoration: underline;
+}
+
+.intro {
+    margin-bottom: 2rem;
+}
+
+.section {
+    margin-bottom: 2rem;
 }
 
 h1 {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-h2 {
-    font-size: 22px;
-    margin-top: 20px;
-}
-
-p {
-    font-size: 16px;
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
 ul {
-    list-style-type: disc;
-    margin-left: 20px;
+    list-style-type: none;
+    margin-bottom: 1.5rem;
 }
 
-.wave {
-    font-size: 20px;
+li {
+    margin-bottom: 0.5rem;
+}
+
+.beliefs {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.beliefs li {
+    margin-bottom: 0.75rem;
+}
+
+.sub-point {
+    margin-left: 1.5rem;
+    color: #666;
+    font-style: italic;
 }
 
 a {
-    color: #0073e6;
+    color: #0066cc;
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+.emoji {
+    font-style: normal;
+    font-size: 1.2em;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+
+    .header {
+        flex-direction: column;
+    }
+
+    .nav {
+        text-align: left;
+        margin-top: 1rem;
+    }
 }
