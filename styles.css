@@ -14,27 +14,9 @@ body {
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
-}
-
-.nav {
-    text-align: right;
-}
-
-.nav a {
-    display: block;
-    color: #0066cc;
-    text-decoration: none;
-    margin-bottom: 0.5rem;
-}
-
-.nav a:hover {
-    text-decoration: underline;
 }
 
 .intro {
@@ -48,6 +30,18 @@ body {
 h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #222;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #333;
 }
 
 ul {
@@ -89,17 +83,54 @@ a:hover {
     font-size: 1.2em;
 }
 
+.writings {
+    margin-top: 3rem;
+}
+
+.writing-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.writing-entry {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    transition: transform 0.2s ease;
+}
+
+.writing-entry:hover {
+    transform: translateX(5px);
+}
+
+.writing-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.writing-link:hover {
+    text-decoration: none;
+}
+
+.writing-link:hover h3 {
+    color: #0066cc;
+}
+
+.writing-date {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.writing-excerpt {
+    color: #444;
+    line-height: 1.6;
+}
+
 @media (max-width: 600px) {
     body {
         padding: 1rem;
-    }
-
-    .header {
-        flex-direction: column;
-    }
-
-    .nav {
-        text-align: left;
-        margin-top: 1rem;
     }
 }
