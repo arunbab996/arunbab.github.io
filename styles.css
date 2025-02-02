@@ -5,6 +5,12 @@ body {
     padding: 0;
     background-color: #fafafa;
     color: #333;
+    transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
 }
 
 .header {
@@ -18,6 +24,7 @@ body {
 
 .social-links {
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -47,6 +54,13 @@ body {
     opacity: 0.8;
 }
 
+#dark-mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
 .intro, .beliefs, .writings, .experiments {
     max-width: 700px;
     margin: 20px auto;
@@ -54,6 +68,15 @@ body {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .intro,
+.dark-mode .beliefs,
+.dark-mode .writings,
+.dark-mode .experiments {
+    background: #1e1e1e;
+    color: #fff;
+    box-shadow: none;
 }
 
 h1 {
@@ -68,29 +91,8 @@ h2 {
     padding-bottom: 5px;
 }
 
-.bullet-list, .writing-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.bullet-list li {
-    margin: 10px 0;
-}
-
-.writing-entry, .experiment-entry {
-    margin-bottom: 20px;
-    padding: 10px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.writing-link {
-    text-decoration: none;
-    color: #0073b1;
-}
-
-.writing-excerpt {
-    font-size: 14px;
-    color: #666;
+.dark-mode h2 {
+    color: #bbb;
 }
 
 @media (max-width: 768px) {
