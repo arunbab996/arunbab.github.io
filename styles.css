@@ -17,7 +17,7 @@ body {
 }
 
 .name {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: bold;
 }
 
@@ -28,7 +28,7 @@ body {
 
 .social-button {
     display: inline-block;
-    padding: 10px 15px;
+    padding: 12px 18px;
     border-radius: 20px;
     text-decoration: none;
     font-weight: bold;
