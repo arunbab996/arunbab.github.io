@@ -1,106 +1,175 @@
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+Checkpoint CSS
+
+* {
     margin: 0;
     padding: 0;
-    background-color: #fafafa;
-    color: #333;
-    transition: background 0.3s, color 0.3s;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
+body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.6;
+    color: #333;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    max-width: 700px;
-    margin: 0 auto;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
 }
 
 .social-links {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 1rem;
 }
 
 .social-button {
-    display: inline-block;
-    padding: 8px 12px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
     color: white;
-    transition: background 0.3s ease;
-}
-
-.email {
-    background-color: #ff5722;
-}
-
-.linkedin {
-    background-color: #0073b1;
-}
-
-.twitter {
-    background-color: black;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.2s ease;
 }
 
 .social-button:hover {
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
-#dark-mode-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
+.linkedin {
+    background-color: #0077b5;
 }
 
-.intro, .beliefs, .writings, .experiments {
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.twitter {
+    background-color: #000000;
 }
 
-.dark-mode .intro,
-.dark-mode .beliefs,
-.dark-mode .writings,
-.dark-mode .experiments {
-    background: #1e1e1e;
-    color: #fff;
-    box-shadow: none;
+.intro {
+    margin-bottom: 2rem;
+}
+
+.section {
+    margin-bottom: 2rem;
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 2rem;
+    margin-bottom: 0;
 }
 
 h2 {
-    font-size: 22px;
-    margin-top: 30px;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #222;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
     color: #333;
-    border-bottom: 2px solid #0073b1;
-    padding-bottom: 5px;
 }
 
-.dark-mode h2 {
-    color: #bbb;
+.bullet-list {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
-@media (max-width: 768px) {
+.bullet-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.beliefs {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.sub-point {
+    margin-left: 1.5rem;
+    color: #666;
+    font-style: italic;
+}
+
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.emoji {
+    font-style: normal;
+    font-size: 1.2em;
+}
+
+.writings {
+    margin-top: 3rem;
+}
+
+.writing-list {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.writing-entry {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    transition: transform 0.2s ease;
+}
+
+.writing-entry:hover {
+    transform: translateX(5px);
+}
+
+.writing-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.writing-link:hover {
+    text-decoration: none;
+}
+
+.writing-link:hover h3 {
+    color: #0066cc;
+}
+
+.writing-date {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.writing-excerpt {
+    color: #444;
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+    
     .header {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        gap: 1rem;
     }
+    
     .social-links {
-        margin-top: 10px;
+        width: 100%;
+        justify-content: flex-start;
     }
 }
