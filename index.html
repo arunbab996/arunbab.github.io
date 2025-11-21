@@ -2,33 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj – Index</title>
+  <title>Arun Baburaj<br><br> – Index</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Personal website of Arun Baburaj – index, portfolio, bookshelf, and principles." />
 
   <style>
-    /* ---------- Base Styles ---------- */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
     :root {
-      --bg: #fafafa;
-      --bg-alt: #ffffff;
-      --text: #111111;
-      --muted: #777777;
-      --accent: #111111;
-      --border: #e3e3e3;
-      --max-width: 780px;
+      --text: #111;
+      --muted: #666;
+      --border: rgba(0,0,0,0.08);
+      --max-width: 760px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       scroll-behavior: smooth;
-      background: var(--bg);
+      font-family: Helvetica, Arial, sans-serif;
       color: var(--text);
-      font-family: "Times New Roman", Georgia, serif;
+      /* Uniform light gradient across the entire page */
+      background: linear-gradient(180deg, #e8f3ff 0%, #f0f7ff 50%, #ffffff 100%);
+      min-height: 100vh;
     }
 
     body {
@@ -39,402 +34,89 @@
     main {
       width: 100%;
       max-width: var(--max-width);
-      padding: 32px 20px 60px 20px;
+      padding: 80px 24px 60px;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    p {
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
-    h1, h2, h3 {
-      font-weight: normal;
-    }
-
-    /* ---------- Top Nav ---------- */
+    /* --- NAVIGATION --- */
     .top-nav {
       position: sticky;
       top: 0;
       z-index: 10;
-      background: linear-gradient(to bottom, var(--bg-alt), rgba(250, 250, 250, 0.9));
-      padding: 14px 0 10px;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
+      padding: 18px 0 14px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
-    }
-
-    .top-nav-inner {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 12px;
-      font-size: 14px;
-    }
-
-    .site-name {
-      font-size: 16px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      background: rgba(255,255,255,0.6);
+      margin-bottom: 32px;
     }
 
     .nav-links {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      gap: 24px;
       font-size: 14px;
+      justify-content: flex-start;
+      /* font from reference */
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: none;
     }
 
     .nav-links a {
+      text-decoration: none;
+      color: var(--text);
       padding-bottom: 2px;
       border-bottom: 1px solid transparent;
     }
 
     .nav-links a:hover {
-      border-bottom-color: var(--accent);
+      border-bottom-color: var(--text);
     }
 
-    /* ---------- Sections ---------- */
+    /* --- SECTIONS --- */
     section {
-      padding: 26px 0 18px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    section:last-of-type {
+      padding: 24px 0 28px;
       border-bottom: none;
     }
 
-    .section-label {
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
+    .intro-text {
+      font-size: 20px;
+      line-height: 1.6;
+      white-space: pre-line;
+      max-width: 680px;
     }
 
-    .section-title {
-      font-size: 26px;
-      margin-bottom: 12px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    /* ---------- Index Intro ---------- */
-    .intro-heading {
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
-
-    .intro-subtitle {
-      font-size: 15px;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .tagline {
-      margin-bottom: 18px;
-    }
-
-    .meta-list {
-      font-size: 13px;
-      color: var(--muted);
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .meta-list li::before {
-      content: "• ";
-    }
-
-    .inline-link {
+    a.inline-link {
       text-decoration: underline;
       text-decoration-thickness: 0.5px;
-      text-underline-offset: 3px;
-    }
-
-    /* ---------- Portfolio ---------- */
-    .portfolio-list {
-      list-style: none;
-    }
-
-    .portfolio-item {
-      margin-bottom: 16px;
-    }
-
-    .portfolio-item-title {
-      font-size: 16px;
-      margin-bottom: 3px;
-    }
-
-    .portfolio-meta {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    /* ---------- Bookshelf ---------- */
-    .bookshelf-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 18px;
-      font-size: 14px;
-    }
-
-    .book-title {
-      font-style: italic;
-    }
-
-    /* ---------- Principles ---------- */
-    .principles-list {
-      list-style: none;
-      counter-reset: principle-counter;
-    }
-
-    .principles-list li {
-      counter-increment: principle-counter;
-      margin-bottom: 14px;
-    }
-
-    .principles-list li::before {
-      content: counter(principle-counter) ". ";
-      font-weight: bold;
-    }
-
-    /* ---------- Footer ---------- */
-    footer {
-      margin-top: 40px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* ---------- Responsive ---------- */
-    @media (max-width: 640px) {
-      main {
-        padding: 20px 14px 40px 14px;
-      }
-
-      .intro-heading {
-        font-size: 26px;
-      }
-
-      .section-title {
-        font-size: 22px;
-      }
-
-      .bookshelf-grid {
-        grid-template-columns: 1fr;
-      }
+      color: var(--text);
     }
   </style>
 </head>
 <body>
   <main>
-    <!-- Top Navigation -->
+
+    <!-- NAVIGATION -->
     <header class="top-nav">
-      <div class="top-nav-inner">
-        <div class="site-name">ARUN BABURAJ</div>
-        <nav class="nav-links">
-          <a href="#index">Index</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#bookshelf">Bookshelf</a>
-          <a href="#principles">Principles</a>
-        </nav>
-      </div>
+      <nav class="nav-links">
+        <a href="#index">Index</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#bookshelf">Bookshelf</a>
+        <a href="#principles">Principles</a>
+      </nav>
     </header>
 
-    <!-- Index Section -->
+    <!-- INDEX SECTION -->
     <section id="index">
-      <div class="section-label">Index</div>
+      <p class="intro-text">
+Arun Baburaj
+Product Manager and researcher. Thinking about and designing tools for building software. Interested in consumer psychology, AI and Venture Capital.
 
-      <h1 class="intro-heading">Hi, I’m Arun.</h1>
-      <p class="intro-subtitle">
-        Product-minded analyst. VC-obsessed. Building, writing, and thinking about startups, data, and careers.
-      </p>
-
-      <p class="tagline">
-        I currently work at <span class="inline-link">SPECTER</span>, a data startup building a “Bloomberg for private markets”,
-        and I’m exploring opportunities in venture capital and product.
-      </p>
-
-      <ul class="meta-list">
-        <li>Bangalore, India</li>
-        <li>Remote-first</li>
-        <li>Open to VC / Product roles</li>
-      </ul>
-
-      <p class="muted">
-        This website is my personal index: what I’m working on, what I’ve shipped, what I’m reading, and a few principles
-        I try to live and work by.
+I'm currently leading a product at <a href="https://tryspecter.com" class="inline-link" target="_blank">Specter</a>.
       </p>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio">
-      <div class="section-label">Portfolio</div>
-      <h2 class="section-title">Things I’ve built and worked on</h2>
-      <p class="muted" style="margin-bottom: 16px;">
-        A mix of product experiments, startup projects, and data work. Selected highlights below — more to be added soon.
-      </p>
+    
 
-      <ul class="portfolio-list">
-        <li class="portfolio-item">
-          <div class="portfolio-item-title">
-            <a href="#" class="inline-link">Specter Talent – Product Lead</a>
-          </div>
-          <div class="portfolio-meta">2023 – Present · Data / Product / GTM</div>
-          <p>
-            Leading a product that tracks new companies and founders for VC and startup teams. I own feature discovery,
-            prioritisation, basic UX, and the feedback loop between data, users, and product.
-          </p>
-        </li>
-
-        <li class="portfolio-item">
-          <div class="portfolio-item-title">
-            <a href="#" class="inline-link">Daily Funding Newsletter (India)</a>
-          </div>
-          <div class="portfolio-meta">2024 – Present · Solo project</div>
-          <p>
-            A daily digest of the top 5 fundraises in India. I pull data, clean it, and write short explainers for busy
-            operators and investors.
-          </p>
-        </li>
-
-        <li class="portfolio-item">
-          <div class="portfolio-item-title">
-            <a href="#" class="inline-link">HomeHunter – Rental search for millennials</a>
-          </div>
-          <div class="portfolio-meta">2022 · Side project</div>
-          <p>
-            A concept for a better renting experience than traditional portals. Focused on discovery, filters that
-            actually match how people search, and trust-building with photos, maps, and context.
-          </p>
-        </li>
-
-        <li class="portfolio-item">
-          <div class="portfolio-item-title">
-            <a href="#" class="inline-link">Acclr8 – Startup job board</a>
-          </div>
-          <div class="portfolio-meta">2021 · Side project</div>
-          <p>
-            A job portal focused on early-stage startups. Experimented with curated roles, company profiles, and
-            transparent compensation bands.
-          </p>
-        </li>
-      </ul>
-    </section>
-
-    <!-- Bookshelf Section -->
-    <section id="bookshelf">
-      <div class="section-label">Bookshelf</div>
-      <h2 class="section-title">Books that shaped how I think</h2>
-      <p class="muted" style="margin-bottom: 16px;">
-        A small, opinionated list. I care less about “how many books I read” and more about the ones I keep returning to.
-      </p>
-
-      <div class="bookshelf-grid">
-        <div>
-          <div class="book-title">The Lean Startup</div>
-          <div class="muted">Eric Ries – on testing, feedback loops, and building what matters.</div>
-        </div>
-
-        <div>
-          <div class="book-title">Zero to One</div>
-          <div class="muted">Peter Thiel – thinking from first principles and contrarian views.</div>
-        </div>
-
-        <div>
-          <div class="book-title">The Almanack of Naval Ravikant</div>
-          <div class="muted">On leverage, specific knowledge, and designing a life strategy.</div>
-        </div>
-
-        <div>
-          <div class="book-title">Thinking, Fast and Slow</div>
-          <div class="muted">Daniel Kahneman – cognitive biases that affect decisions & investing.</div>
-        </div>
-
-        <div>
-          <div class="book-title">So Good They Can't Ignore You</div>
-          <div class="muted">Cal Newport – deliberate practice and career capital.</div>
-        </div>
-
-        <div>
-          <div class="book-title">The Psychology of Money</div>
-          <div class="muted">Morgan Housel – behaviour with money > spreadsheets.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Principles Section -->
-    <section id="principles">
-      <div class="section-label">Principles</div>
-      <h2 class="section-title">Working & living principles</h2>
-      <p class="muted" style="margin-bottom: 16px;">
-        Not rules, but defaults. I expect them to evolve as I learn more.
-      </p>
-
-      <ul class="principles-list">
-        <li>
-          <strong>Bias toward shipping.</strong>
-          If something can be shared in a week, I don’t let it sit for a month. Small shipped projects beat big
-          unfinished ideas.
-        </li>
-
-        <li>
-          <strong>Start from the user, not the feature.</strong>
-          Whether in product or investing, I try to first understand the person — their pain, workflow, and constraints.
-        </li>
-
-        <li>
-          <strong>Write to think.</strong>
-          When I’m confused, I write. Clear writing forces clear thinking and better decisions.
-        </li>
-
-        <li>
-          <strong>Long-term games, long-term people.</strong>
-          Careers compound. I prefer to work with people I can imagine collaborating with for a decade.
-        </li>
-
-        <li>
-          <strong>Data-informed, not data-paralysed.</strong>
-          Numbers should sharpen judgment, not replace it. When the sample size is small, I listen harder to
-          qualitative feedback.
-        </li>
-
-        <li>
-          <strong>Default to kindness and clarity.</strong>
-          Direct, honest feedback delivered with respect beats vague politeness.
-        </li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <p>© <span id="year"></span> Arun Baburaj. Built with plain HTML &amp; CSS.</p>
-      <p>
-        Contact: <a href="mailto:youremail@domain.com" class="inline-link">youremail@domain.com</a> ·
-        <a href="#" class="inline-link">Twitter</a> ·
-        <a href="#" class="inline-link">LinkedIn</a>
-      </p>
-    </footer>
   </main>
-
-  <script>
-    // Auto-update year in footer
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
