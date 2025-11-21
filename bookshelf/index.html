@@ -100,5 +100,71 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
     </a>
   </div>
+  <script>
+async function loadBooks() {
+  const container = document.getElementById('book-list');
+
+  try {
+    const res = await fetch('/books.json', { cache: 'no-store' });
+    const data = await res.json();
+
+    // grid container
+    const grid = document.createElement('div');
+    grid.className = 'book-grid';
+
+    data.forEach(book => {
+      const title = book.title || "Untitled";
+      const author = (book.author && book.author !== "NaN") ? book.author : "Unknown author";
+      const status = book.status || "";
+      
+      // clean ISBN (some values are "nan" like in your JSON)
+      let isbn = String(book.isbn || "").replace(/[^0-9Xx]/g, "");
+      if (isbn.toLowerCase() === "nan" || isbn.trim() === "") isbn = "";
+
+      // Cover: OpenLibrary only if ISBN exists
+      const cover = isbn
+        ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`
+        : "";
+
+      const item = document.createElement('div');
+      item.className = 'book-item';
+
+      const img = document.createElement('img');
+      img.className = 'book-cover';
+      img.alt = title;
+      if (cover) {
+        img.src = cover;
+        img.onerror = () => { 
+          img.src = ""; 
+          img.style.background = "#d0d6df"; 
+        };
+      }
+
+      const meta = document.createElement('div');
+      meta.className = 'book-meta';
+
+      meta.innerHTML = `
+        <div class="book-title">${title}</div>
+        <div class="book-author">${author}</div>
+        <div class="book-status">${status}</div>
+      `;
+
+      item.appendChild(img);
+      item.appendChild(meta);
+      grid.appendChild(item);
+    });
+
+    container.innerHTML = "";
+    container.appendChild(grid);
+
+  } catch (e) {
+    container.innerHTML = "Failed to load books.json";
+    console.error(e);
+  }
+}
+
+loadBooks();
+</script>
+
 </body>
 </html>
