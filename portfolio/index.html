@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portfolio — Arun Baburaj</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--max-width:640px;--nav-gap:28px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
+    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
+    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent}
+    .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
+    .nav a.active{color:var(--text);border-bottom-color:var(--text);}
+    main{max-width:var(--max-width);margin:48px auto;padding:0 16px}
+    .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
+    .projects-grid{display:flex;flex-direction:column;gap:18px}
+    .project-card{display:flex;flex-direction:row;gap:18px;align-items:center;border-radius:8px;overflow:hidden;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.03);padding:8px}
+    .project-card img{width:220px;height:140px;object-fit:cover;flex-shrink:0;border-radius:6px}
+    .project-meta{padding:6px}
+    .project-title{font-weight:700;margin-bottom:6px}
+    .project-tagline{color:var(--muted);font-size:14px}
+    .project-card{transition:transform 180ms ease, box-shadow 180ms ease}
+    .project-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(16,24,40,0.12)}
+    .project-card img{transition:transform 180ms ease,opacity 180ms ease}
+    .project-card:hover img{transform:scale(1.03);opacity:0.95}
+    @media (max-width:720px){.project-card{flex-direction:column}.project-card img{width:100%;height:180px}}
+    .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
+    .social-fixed a{color:var(--text);text-decoration:none}
+    .social-fixed a:hover{opacity:0.7}
+  </style>
+</head>
+<body>
+  <div class="page-top-border"></div>
+  <header>
+    <nav class="nav">
+      <a href="/">Index</a>
+      <a href="/portfolio" class="active">Portfolio</a>
+      <a href="/bookshelf">Bookshelf</a>
+      <a href="/principles">Principles</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-title">Portfolio</div>
+
+    <div class="projects-grid">
+      <a href="https://heyabc.notion.site/Dunzo-Increasing-AOV-edc4632e76b74acfae93aeccb882da55" class="project-card" target="_blank" rel="noopener">
+        <img src="/images/1.webp" alt="Dunzo : Increasing AOV" onerror="this.onerror=null;this.src='/images/1.webp'"/>
+        <div class="project-meta">
+          <div class="project-title">Dunzo : Increasing AOV</div>
+          <div class="project-tagline">The Tale of Maximising AOV</div>
+        </div>
+      </a>
+
+      <a href="https://heyabc.notion.site/Jupiter-App-Gamification-239af69028b84c5692c9a57003cb3ae4" class="project-card" target="_blank" rel="noopener">
+        <img src="/images/2.webp" alt="Jupiter - App Gamification" onerror="this.onerror=null;this.src='/images/2.webp'"/>
+        <div class="project-meta">
+          <div class="project-title">Jupiter - App Gamification</div>
+          <div class="project-tagline">An attempt to incorporate game elements to Jupiter - a Neobank.</div>
+        </div>
+      </a>
+
+      <a href="https://heyabc.notion.site/Swiggy-How-to-Tackle-Multiple-Orders-1d57b0782e77486f98604d56343dd3c1" class="project-card" target="_blank" rel="noopener">
+        <img src="/images/3.jpeg" alt="Swiggy - How to Tackle Multiple Orders" onerror="this.onerror=null;this.src='/images/3.jpeg'"/>
+        <div class="project-meta">
+          <div class="project-title">Swiggy - How to Tackle Multiple Orders?</div>
+          <div class="project-tagline">Solving Bulk Delivery - i.e Food orders from multiple restaurants at once.</div>
+        </div>
+      </a>
+
+      <a href="https://heyabc.notion.site/The-Curious-case-of-Audible-4121356e9a574f47882f335e832a4f74" class="project-card" target="_blank" rel="noopener">
+        <img src="/images/4.webp" alt="The Curious case of Audible" onerror="this.onerror=null;this.src='/images/4.webp'"/>
+        <div class="project-meta">
+          <div class="project-title">The Curious case of Audible.</div>
+          <div class="project-tagline">A quest to improve the Audiobook experience.</div>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <div class="social-fixed">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
+    </a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
+    </a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj – Index</title>
+  <title>Principles — Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -17,9 +17,12 @@
     .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
     .nav a.active{color:var(--text);border-bottom-color:var(--text);}
     main{max-width:var(--max-width);margin:48px auto;padding:0 16px}
-    .name{font-weight:700;font-size:18px;margin-bottom:12px}
-    .desc{font-family: Inter, Georgia, serif;font-style: normal;font-size:18px;line-height:1.7;color:var(--text);max-width:560px;}
-    .current{display:block;margin-top:18px;font-size:18px;line-height:1.6;max-width:560px;background:none;padding:0;border-radius:0;}
+    .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
+    .principles-list{list-style:none;counter-reset:principle-counter}
+    .principles-list li{counter-increment:principle-counter;margin-bottom:14px}
+    .principles-list li::before{content:counter(principle-counter) ". ";font-weight:700;margin-right:6px}
+    .principles-list strong{display:block;margin-bottom:6px}
+    .principles-list p{margin:0;color:var(--muted)}
     .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
     .social-fixed a{color:var(--text);text-decoration:none}
     .social-fixed a:hover{opacity:0.7}
@@ -29,23 +32,42 @@
   <div class="page-top-border"></div>
   <header>
     <nav class="nav">
-      <a href="/" class="active">Index</a>
+      <a href="/">Index</a>
       <a href="/portfolio">Portfolio</a>
       <a href="/bookshelf">Bookshelf</a>
-      <a href="/principles">Principles</a>
+      <a href="/principles" class="active">Principles</a>
     </nav>
   </header>
 
   <main>
-    <section id="index">
-      <div class="name">Arun Baburaj</div>
+    <div class="page-title">Principles</div>
 
-      <div class="desc">
-Product Manager and researcher. Thinking about and designing tools for building software. Interested in consumer psychology, AI and Venture Capital.
-      </div>
+    <ul class="principles-list">
+      <li>
+        <strong>Bias toward shipping.</strong>
+        <p>If something can be shared in a week, don’t let it sit for a month. Small shipped projects beat big unfinished ideas.</p>
+      </li>
 
-      <div class="current">I'm currently leading a product at <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.</div>
-    </section>
+      <li>
+        <strong>Start from the user, not the feature.</strong>
+        <p>Understand the person — their pain, workflow, and constraints — before designing product or recommending investments.</p>
+      </li>
+
+      <li>
+        <strong>Write to think.</strong>
+        <p>When confused, write. Clear writing forces clearer thinking and better decisions.</p>
+      </li>
+
+      <li>
+        <strong>Long-term games, long-term people.</strong>
+        <p>Careers compound. Prefer collaborators you can imagine working with for a decade.</p>
+      </li>
+
+      <li>
+        <strong>Data-informed, not data-paralysed.</strong>
+        <p>Numbers should sharpen judgement, not replace it; use qualitative feedback when sample sizes are small.</p>
+      </li>
+    </ul>
   </main>
 
   <div class="social-fixed">
