@@ -1,215 +1,440 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Arun Baburaj — About</title>
-  <meta name="description" content="Arun Baburaj — Product, Data, VC. Personal site." />
-
-  <!-- FAVICON -->
-  <link rel="icon" href="/favicon.png?v=2" type="image/png">
+  <meta charset="UTF-8" />
+  <title>Arun Baburaj – Index</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Personal website of Arun Baburaj – index, portfolio, bookshelf, and principles." />
 
   <style>
-    /* Avenir 85 Heavy loaded from the uploaded path in this session.
-       Replace the src URL with your repo path when publishing (e.g. /Avenir 85 Heavy.otf). */
-    @font-face {
-      font-family: 'Avenir85Heavy';
-      src: url('/mnt/data/Avenir 85 Heavy.otf') format('opentype');
-      font-weight: 800;
-      font-style: normal;
-      font-display: swap;
-    }
-
+    /* ---------- Base Styles ---------- */
     :root {
-      --heading-color: #0f0f0f;
-      --body-color: #333333;    /* softened body color for lighter visual weight */
-      --muted-color: #515151;   /* for intro/secondary text */
-      --link-color: #000000;
-
-      --max-width: 820px;    /* wide column to avoid wrapping */
-      --pad-top: 120px;      /* name pushed down ~3 rows */
-      --pad-sides: 40px;     /* reduced side padding per earlier choice */
-
-      --h1-size: 32px;      /* name size */
-      --body-size: 15px;    /* body text size */
-      --body-lh: 1.85;
-      --body-letter-spacing: 0.18px;
+      --bg: #fafafa;
+      --bg-alt: #ffffff;
+      --text: #111111;
+      --muted: #777777;
+      --accent: #111111;
+      --border: #e3e3e3;
+      --max-width: 780px;
     }
 
-    /* Desktop: fixed layout (no scroll). Mobile allows scrolling via media query. */
-    html, body {
-      height: 100%;
+    * {
+      box-sizing: border-box;
       margin: 0;
-      overflow: hidden;
-      background: #fff;
+      padding: 0;
+    }
+
+    html, body {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Times New Roman", Georgia, serif;
     }
 
     body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      padding: var(--pad-top) var(--pad-sides) 48px var(--pad-sides);
       display: flex;
-      align-items: flex-start;
-      color: var(--body-color);
-
-      /* Avenir everywhere (heavy file), body visually softened via size/letter-spacing/color */
-      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-size: var(--body-size);
-      line-height: var(--body-lh);
-      letter-spacing: var(--body-letter-spacing);
+      justify-content: center;
     }
 
-    .page {
+    main {
       width: 100%;
       max-width: var(--max-width);
-      box-sizing: border-box;
+      padding: 32px 20px 60px 20px;
     }
 
-    .header-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 36px; /* gap between name and intro */
-      position: relative;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: var(--h1-size);
-      font-weight: 900;
-      line-height: 1;
-      color: var(--heading-color);
-      letter-spacing: -0.02em;
-    }
-
-    /* Fixed nav: extreme right with pill style */
-    .nav {
-      position: fixed;
-      top: calc(var(--pad-top) + 6px);
-      right: var(--pad-sides);
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      z-index: 60;
-      pointer-events: auto;
-    }
-
-    .nav a {
-      font-size: 13px;
-      color: var(--heading-color);
-      background: rgba(0,0,0,0.03);
-      padding: 8px 12px;
-      border-radius: 999px;
+    a {
+      color: inherit;
       text-decoration: none;
-      border: 1px solid rgba(0,0,0,0.06);
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform .12s ease, box-shadow .12s ease, background .12s;
-      box-shadow: 0 0 0 rgba(0,0,0,0);
     }
 
-    .nav a:hover,
-    .nav a:focus {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-      background: rgba(0,0,0,0.05);
-      color: var(--link-color);
-      outline: none;
+    a:hover {
+      text-decoration: underline;
     }
 
-    /* Intro: three separate lines; minimal spacing so body looks airy but not heavy */
-    .intro { margin: 0 0 18px 0; color: var(--muted-color); }
-    .intro .line { display:block; margin:0; padding:0; white-space: normal; }
-    .intro .line.final { margin-top:6px; font-weight:400; } /* small top pad to give final line separation */
-
-    p, .muted {
-      margin: 0 0 16px 0;
-      color: var(--muted-color);
+    p {
+      line-height: 1.6;
+      margin-bottom: 12px;
     }
 
-    /* Section headings: larger and bold to be distinct */
-    h3.section {
-      margin: 22px 0 10px 0;
+    h1, h2, h3 {
+      font-weight: normal;
+    }
+
+    /* ---------- Top Nav ---------- */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(to bottom, var(--bg-alt), rgba(250, 250, 250, 0.9));
+      padding: 14px 0 10px;
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .top-nav-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .site-name {
       font-size: 16px;
-      font-weight: 900;
-      color: var(--heading-color);
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    .specter-link {
-      font-weight: 900;
-      color: var(--link-color);
-      text-decoration: none;
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 14px;
     }
-    .specter-link:hover { text-decoration: underline; }
 
-    /* avoid awkward wrapping of long words/links */
-    a { word-break: break-word; }
-
-    /* Responsive: smaller screens allow scroll and hide fixed nav */
-    @media (max-width: 920px) {
-      :root { --max-width: 720px; --pad-sides: 36px; }
+    .nav-links a {
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
     }
-    @media (max-width: 720px) {
-      html, body { overflow: auto; }
-      body { padding: 46px 28px; }
-      .nav { display: none; }
-      :root {
-        --max-width: 100%;
-        --pad-top: 46px;
-        --pad-sides: 28px;
-        --h1-size: 28px;
-        --body-size: 15px;
-        --body-lh: 1.6;
-        --body-letter-spacing: 0.1px;
+
+    .nav-links a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    /* ---------- Sections ---------- */
+    section {
+      padding: 26px 0 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-label {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* ---------- Index Intro ---------- */
+    .intro-heading {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .intro-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      margin-bottom: 18px;
+    }
+
+    .meta-list {
+      font-size: 13px;
+      color: var(--muted);
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .meta-list li::before {
+      content: "• ";
+    }
+
+    .inline-link {
+      text-decoration: underline;
+      text-decoration-thickness: 0.5px;
+      text-underline-offset: 3px;
+    }
+
+    /* ---------- Portfolio ---------- */
+    .portfolio-list {
+      list-style: none;
+    }
+
+    .portfolio-item {
+      margin-bottom: 16px;
+    }
+
+    .portfolio-item-title {
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    .portfolio-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    /* ---------- Bookshelf ---------- */
+    .bookshelf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 18px;
+      font-size: 14px;
+    }
+
+    .book-title {
+      font-style: italic;
+    }
+
+    /* ---------- Principles ---------- */
+    .principles-list {
+      list-style: none;
+      counter-reset: principle-counter;
+    }
+
+    .principles-list li {
+      counter-increment: principle-counter;
+      margin-bottom: 14px;
+    }
+
+    .principles-list li::before {
+      content: counter(principle-counter) ". ";
+      font-weight: bold;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 640px) {
+      main {
+        padding: 20px 14px 40px 14px;
       }
-      h1 { font-size: 28px; }
-      .intro .line { margin-bottom: 6px; }
+
+      .intro-heading {
+        font-size: 26px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .bookshelf-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="header-row">
-      <h1>Arun Baburaj</h1>
-    </div>
+  <main>
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="top-nav-inner">
+        <div class="site-name">ARUN BABURAJ</div>
+        <nav class="nav-links">
+          <a href="#index">Index</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#bookshelf">Bookshelf</a>
+          <a href="#principles">Principles</a>
+        </nav>
+      </div>
+    </header>
 
-    <!-- Intro lines -->
-    <div class="intro" aria-label="intro">
-      <span class="line">Passionate about creating delightful experiences (in-person and digital) with great people.</span>
-      <span class="line">Fascinated by human behavior, good design and strong brands.</span>
-      <span class="line final">Ran the NYC marathon once. That hurt, but it was worth it.</span>
-    </div>
+    <!-- Index Section -->
+    <section id="index">
+      <div class="section-label">Index</div>
 
-    <section>
-      <h3 class="section">Currently</h3>
+      <h1 class="intro-heading">Hi, I’m Arun.</h1>
+      <p class="intro-subtitle">
+        Product-minded analyst. VC-obsessed. Building, writing, and thinking about startups, data, and careers.
+      </p>
+
+      <p class="tagline">
+        I currently work at <span class="inline-link">SPECTER</span>, a data startup building a “Bloomberg for private markets”,
+        and I’m exploring opportunities in venture capital and product.
+      </p>
+
+      <ul class="meta-list">
+        <li>Bangalore, India</li>
+        <li>Remote-first</li>
+        <li>Open to VC / Product roles</li>
+      </ul>
+
       <p class="muted">
-        Various experiments. Travelling. Spending lots of time on coffee, roasting, architecture and dabbling in jazz piano improvisation.
+        This website is my personal index: what I’m working on, what I’ve shipped, what I’m reading, and a few principles
+        I try to live and work by.
       </p>
     </section>
 
-    <section>
-      <h3 class="section">Previously</h3>
-
-      <p class="muted">
-        Product at
-        <a class="specter-link" href="https://www.tryspecter.com/" target="_blank" rel="noopener">Specter</a>,
-        a Bloomberg Terminal for Private Markets (employee #06).
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+      <div class="section-label">Portfolio</div>
+      <h2 class="section-title">Things I’ve built and worked on</h2>
+      <p class="muted" style="margin-bottom: 16px;">
+        A mix of product experiments, startup projects, and data work. Selected highlights below — more to be added soon.
       </p>
 
-      <p class="muted">
-        Built homehunter.club — a rental platform for Gen Zs using alternate data, and Acclr8 — a cross between Hacker News and AngelList for Indian startups.
-      </p>
+      <ul class="portfolio-list">
+        <li class="portfolio-item">
+          <div class="portfolio-item-title">
+            <a href="#" class="inline-link">Specter Talent – Product Lead</a>
+          </div>
+          <div class="portfolio-meta">2023 – Present · Data / Product / GTM</div>
+          <p>
+            Leading a product that tracks new companies and founders for VC and startup teams. I own feature discovery,
+            prioritisation, basic UX, and the feedback loop between data, users, and product.
+          </p>
+        </li>
+
+        <li class="portfolio-item">
+          <div class="portfolio-item-title">
+            <a href="#" class="inline-link">Daily Funding Newsletter (India)</a>
+          </div>
+          <div class="portfolio-meta">2024 – Present · Solo project</div>
+          <p>
+            A daily digest of the top 5 fundraises in India. I pull data, clean it, and write short explainers for busy
+            operators and investors.
+          </p>
+        </li>
+
+        <li class="portfolio-item">
+          <div class="portfolio-item-title">
+            <a href="#" class="inline-link">HomeHunter – Rental search for millennials</a>
+          </div>
+          <div class="portfolio-meta">2022 · Side project</div>
+          <p>
+            A concept for a better renting experience than traditional portals. Focused on discovery, filters that
+            actually match how people search, and trust-building with photos, maps, and context.
+          </p>
+        </li>
+
+        <li class="portfolio-item">
+          <div class="portfolio-item-title">
+            <a href="#" class="inline-link">Acclr8 – Startup job board</a>
+          </div>
+          <div class="portfolio-meta">2021 · Side project</div>
+          <p>
+            A job portal focused on early-stage startups. Experimented with curated roles, company profiles, and
+            transparent compensation bands.
+          </p>
+        </li>
+      </ul>
     </section>
-  </div>
 
-  <!-- Right-side fixed nav -->
-  <nav class="nav" aria-label="Primary">
-    <a href="#">Portfolio</a>
-    <a href="#">Bookshelf</a>
-    <a href="#">Principles</a>
-  </nav>
+    <!-- Bookshelf Section -->
+    <section id="bookshelf">
+      <div class="section-label">Bookshelf</div>
+      <h2 class="section-title">Books that shaped how I think</h2>
+      <p class="muted" style="margin-bottom: 16px;">
+        A small, opinionated list. I care less about “how many books I read” and more about the ones I keep returning to.
+      </p>
+
+      <div class="bookshelf-grid">
+        <div>
+          <div class="book-title">The Lean Startup</div>
+          <div class="muted">Eric Ries – on testing, feedback loops, and building what matters.</div>
+        </div>
+
+        <div>
+          <div class="book-title">Zero to One</div>
+          <div class="muted">Peter Thiel – thinking from first principles and contrarian views.</div>
+        </div>
+
+        <div>
+          <div class="book-title">The Almanack of Naval Ravikant</div>
+          <div class="muted">On leverage, specific knowledge, and designing a life strategy.</div>
+        </div>
+
+        <div>
+          <div class="book-title">Thinking, Fast and Slow</div>
+          <div class="muted">Daniel Kahneman – cognitive biases that affect decisions & investing.</div>
+        </div>
+
+        <div>
+          <div class="book-title">So Good They Can't Ignore You</div>
+          <div class="muted">Cal Newport – deliberate practice and career capital.</div>
+        </div>
+
+        <div>
+          <div class="book-title">The Psychology of Money</div>
+          <div class="muted">Morgan Housel – behaviour with money > spreadsheets.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Principles Section -->
+    <section id="principles">
+      <div class="section-label">Principles</div>
+      <h2 class="section-title">Working & living principles</h2>
+      <p class="muted" style="margin-bottom: 16px;">
+        Not rules, but defaults. I expect them to evolve as I learn more.
+      </p>
+
+      <ul class="principles-list">
+        <li>
+          <strong>Bias toward shipping.</strong>
+          If something can be shared in a week, I don’t let it sit for a month. Small shipped projects beat big
+          unfinished ideas.
+        </li>
+
+        <li>
+          <strong>Start from the user, not the feature.</strong>
+          Whether in product or investing, I try to first understand the person — their pain, workflow, and constraints.
+        </li>
+
+        <li>
+          <strong>Write to think.</strong>
+          When I’m confused, I write. Clear writing forces clear thinking and better decisions.
+        </li>
+
+        <li>
+          <strong>Long-term games, long-term people.</strong>
+          Careers compound. I prefer to work with people I can imagine collaborating with for a decade.
+        </li>
+
+        <li>
+          <strong>Data-informed, not data-paralysed.</strong>
+          Numbers should sharpen judgment, not replace it. When the sample size is small, I listen harder to
+          qualitative feedback.
+        </li>
+
+        <li>
+          <strong>Default to kindness and clarity.</strong>
+          Direct, honest feedback delivered with respect beats vague politeness.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© <span id="year"></span> Arun Baburaj. Built with plain HTML &amp; CSS.</p>
+      <p>
+        Contact: <a href="mailto:youremail@domain.com" class="inline-link">youremail@domain.com</a> ·
+        <a href="#" class="inline-link">Twitter</a> ·
+        <a href="#" class="inline-link">LinkedIn</a>
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    // Auto-update year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
