@@ -13,33 +13,42 @@
     :root {
       --text: #111;
       --muted: #444;
-      --max-width: 620px; 
+      --max-width: 620px;
       --page-padding-top: 64px;
       --page-padding-sides: 56px;
       font-family: Georgia, "Times New Roman", serif;
     }
 
-    html,body { height:100%; margin:0; }
-    body{
+    /* Make page non-scrollable */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; /* <-- prevents scrolling */
+    }
+
+    body {
       background: #fff;
       color: var(--text);
       -webkit-font-smoothing:antialiased;
       padding: var(--page-padding-top) var(--page-padding-sides) 48px var(--page-padding-sides);
       display: flex;
-      justify-content: flex-start;
       align-items: flex-start;
     }
 
+    /* Left column wrapper (narrow) */
     .page {
       width: 100%;
       max-width: var(--max-width);
+      box-sizing: border-box;
     }
 
+    /* Header row: name on the left */
     .header-row {
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 22px; 
+      margin-bottom: 22px;
+      position: relative;
     }
 
     h1 {
@@ -49,24 +58,30 @@
       letter-spacing: -0.01em;
     }
 
+    /* NAV: fixed to extreme right of viewport and aligned near the top padding */
     .nav {
-      margin-left: auto;
+      position: fixed;
+      top: calc(var(--page-padding-top) + 4px); /* aligns with the row containing the name */
+      right: var(--page-padding-sides);
       display: flex;
-      gap: 12px;
+      gap: 14px;
+      align-items: center;
+      z-index: 40;
     }
 
     .nav a {
       font-size: 14px;
       color: var(--muted);
       text-decoration: none;
-      border: 1px solid transparent;
       padding: 6px 10px;
       border-radius: 8px;
+      border: 1px solid transparent;
+      transition: color .12s, border-color .12s;
     }
 
     .nav a:hover {
-      border-color: #e6e6e6;
       color: var(--text);
+      border-color: #e6e6e6;
     }
 
     .intro {
@@ -95,9 +110,7 @@
       color: #000;
       text-decoration: none;
     }
-    .specter-link:hover {
-      text-decoration: underline;
-    }
+    .specter-link:hover { text-decoration: underline; }
 
     .small-link {
       font-size: 14px;
@@ -105,41 +118,32 @@
       margin-top:14px;
     }
 
-    footer {
-      margin-top: 56px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width:720px){
-      body { padding: 36px 20px; }
+    /* Responsive rules:
+       - on small screens we hide the fixed nav (so it doesn't overlap) and allow scrolling */
+    @media (max-width: 720px) {
+      body {
+        overflow: auto; /* enable scrolling on small screens so content is accessible */
+        padding: 36px 20px;
+      }
       .nav { display: none; }
       h1 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
+  <!-- left aligned narrow content -->
   <div class="page">
 
-    <!-- HEADER: name + right-aligned nav -->
     <div class="header-row">
       <h1>Arun Baburaj</h1>
-
-      <nav class="nav">
-        <a href="#">Portfolio</a>
-        <a href="#">Bookshelf</a>
-        <a href="#">Principles</a>
-      </nav>
     </div>
 
-    <!-- INTRO -->
     <p class="intro">
       Passionate about creating delightful experiences (in-person and digital) with great people.
       Fascinated by human behavior, good design and strong brands.
       Ran the NYC marathon once. That hurt, but it was worth it.
     </p>
 
-    <!-- CURRENTLY -->
     <section>
       <h3 class="section">Currently</h3>
       <p class="muted">
@@ -147,13 +151,12 @@
       </p>
     </section>
 
-    <!-- PREVIOUSLY -->
     <section>
       <h3 class="section">Previously</h3>
 
       <p class="muted">
-        Product at 
-        <a class="specter-link" href="https://www.tryspecter.com/" target="_blank" rel="noopener">Specter</a>, 
+        Product at
+        <a class="specter-link" href="https://www.tryspecter.com/" target="_blank" rel="noopener">Specter</a>,
         a Bloomberg Terminal for Private Markets (employee #06).
       </p>
 
@@ -162,24 +165,19 @@
       </p>
     </section>
 
-    <!-- SAY HI -->
     <div>
       <a class="small-link" href="#contact">Say hi. :)</a>
     </div>
 
-    <!-- CONTACT -->
-    <div id="contact" style="margin-top:36px;">
-      <h3 class="section">Contact</h3>
-      <p class="muted">
-        Email: <a href="mailto:you@example.com">you@example.com</a>
-      </p>
-    </div>
-
-    <!-- FOOTER -->
-    <footer>
-      Built with ♥ — minimal design based on your screenshot.
-    </footer>
+    <!-- CONTACT and footer removed as requested -->
 
   </div>
+
+  <!-- NAV: fixed to extreme right of the screen -->
+  <nav class="nav" aria-label="Primary">
+    <a href="#">Portfolio</a>
+    <a href="#">Bookshelf</a>
+    <a href="#">Principles</a>
+  </nav>
 </body>
 </html>
