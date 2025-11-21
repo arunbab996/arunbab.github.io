@@ -9,129 +9,151 @@
   <!-- FAVICON -->
   <link rel="icon" href="/favicon.png?v=2" type="image/png">
 
+  <!-- Avenir 85 Heavy (your uploaded font) -->
   <style>
-    :root{
-      --heading-color:#111111;
-      --body-color:#1a1a1a;
-      --muted-color:#4a4a4a;
-      --link-color:#000000;
+    /* Load your Avenir 85 Heavy font from the root of your GitHub repo */
+    @font-face {
+      font-family: 'Avenir85Heavy';
+      src: url('/Avenir 85 Heavy.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
 
-      --max-width:520px;          /* narrower column like the reference */
-      --pad-top:46px;             /* smaller top offset */
-      --pad-sides:72px;           /* left/right page padding */
-      --h1-size:24px;             /* reduced heading size */
-      --body-size:15px;           /* reduced body size */
-      --body-lh:1.78;
+    :root {
+      --heading-color: #111111;
+      --body-color: #1a1a1a;
+      --muted-color: #4a4a4a;
+      --link-color: #000000;
+
+      --max-width: 520px;
+      --pad-top: 46px;
+      --pad-sides: 72px;
+
+      --h1-size: 22px;
+      --body-size: 15px;
+      --body-lh: 1.78;
+
       font-family: Georgia, "Times New Roman", serif;
     }
 
-    /* Large-screen: prevent scrolling (per your earlier preference).
-       Small screens will allow scrolling via media query. */
-    html,body{
-      height:100%;
-      margin:0;
-      overflow:hidden;
-      background:#fff;
+    /* Prevent scroll on large screens */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #fff;
     }
 
-    body{
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       padding: var(--pad-top) var(--pad-sides) 48px var(--pad-sides);
-      display:flex;
-      align-items:flex-start;
-      color:var(--body-color);
+      display: flex;
+      align-items: flex-start;
+      color: var(--body-color);
+      font-size: var(--body-size);
+      line-height: var(--body-lh);
+      font-family: Georgia, "Times New Roman", serif;
     }
 
-    .page{
-      width:100%;
-      max-width:var(--max-width);
-      box-sizing:border-box;
+    .page {
+      width: 100%;
+      max-width: var(--max-width);
+      box-sizing: border-box;
     }
 
     /* Header row */
-    .header-row{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:16px; /* smaller gap below name */
-      position:relative;
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      position: relative;
     }
 
-    h1{
-      margin:0;
-      font-size:var(--h1-size);
-      font-weight:700;
-      line-height:1;
-      color:var(--heading-color);
+    /* Heading uses Avenir */
+    h1 {
+      margin: 0;
+      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: var(--h1-size);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--heading-color);
+      letter-spacing: -0.01em;
     }
 
-    /* Fixed nav: extreme right, less prominent */
-    .nav{
-      position:fixed;
+    /* Fixed nav — extreme right */
+    .nav {
+      position: fixed;
       top: calc(var(--pad-top) + 4px);
       right: var(--pad-sides);
-      display:flex;
-      gap:12px;
-      align-items:center;
-      z-index:40;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      z-index: 40;
     }
 
-    .nav a{
-      font-size:13px;
-      color:var(--muted-color);
-      text-decoration:none;
-      padding:6px 10px;
-      border-radius:8px;
-      border:1px solid transparent;
+    .nav a {
+      font-size: 13px;
+      color: var(--muted-color);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid transparent;
     }
 
-    .nav a:hover{
-      color:var(--link-color);
-      border-color:#e6e6e6;
+    .nav a:hover {
+      color: var(--link-color);
+      border-color: #e6e6e6;
     }
 
-    /* Body typography (tuned to match reference) */
-    p, .muted{
-      margin:0 0 16px 0;
-      color:var(--muted-color);
-      font-size:var(--body-size);
-      line-height:var(--body-lh);
+    /* Body text */
+    p, .muted {
+      margin: 0 0 16px 0;
+      color: var(--muted-color);
+      font-size: var(--body-size);
+      line-height: var(--body-lh);
     }
 
-    .intro{
-      font-style:italic;
-      margin:0 0 24px 0;
+    .intro {
+      font-style: italic;
+      margin: 0 0 24px 0;
     }
 
-    h3.section{
-      margin:22px 0 8px 0;
-      font-size:14.5px;
-      font-weight:700;
-      color:var(--heading-color);
+    /* Section headings use Avenir Heavy */
+    h3.section {
+      margin: 22px 0 8px 0;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--heading-color);
+      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    .specter-link{
-      font-weight:700;
-      color:var(--link-color);
-      text-decoration:none;
+    /* Specter link uses Avenir Heavy */
+    .specter-link {
+      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 800;
+      color: var(--link-color);
+      text-decoration: none;
     }
-    .specter-link:hover{ text-decoration:underline; }
+    .specter-link:hover { text-decoration: underline; }
 
-    .small-link{
-      font-size:14px;
-      display:inline-block;
-      margin-top:16px;
-      color:var(--link-color);
+    .small-link {
+      font-size: 14px;
+      display: inline-block;
+      margin-top: 16px;
+      color: var(--link-color);
+      text-decoration: underline;
     }
 
-    /* Small screens: allow scrolling and hide fixed nav */
-    @media (max-width:720px){
-      html,body { overflow:auto; }
-      body { padding:28px 20px; }
-      .nav{ display:none; }
-      :root { --h1-size:20px; --body-size:15px; --body-lh:1.6; --max-width:100%; }
-      h1{ font-size:20px; }
+    /* Enable scroll + hide nav on mobile */
+    @media (max-width: 720px) {
+      html, body { overflow: auto; }
+      body { padding: 28px 20px; }
+      .nav { display: none; }
+      :root { --h1-size: 20px; --body-size: 15px; --body-lh: 1.6; --max-width: 100%; }
+      h1 { font-size: 20px; }
     }
   </style>
 </head>
@@ -169,13 +191,12 @@
     </section>
 
     <div>
-      <a class="small-link" href="#contact">Say hi. :)</a>
+      <a class="small-link">Say hi. :)</a>
     </div>
 
-    <!-- contact and footer removed as requested -->
   </div>
 
-  <!-- Fixed nav to extreme right -->
+  <!-- Right-side nav -->
   <nav class="nav" aria-label="Primary">
     <a href="#">Portfolio</a>
     <a href="#">Bookshelf</a>
