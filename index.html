@@ -9,33 +9,27 @@
   <!-- FAVICON -->
   <link rel="icon" href="/favicon.png?v=2" type="image/png">
 
-  <style>
-    /* Load Avenir 85 Heavy from the repo root */
-    @font-face {
-      font-family: 'Avenir85Heavy';
-      src: url('/Avenir 85 Heavy.otf') format('opentype');
-      font-weight: 800;
-      font-style: normal;
-      font-display: swap;
-    }
+  <!-- NOTE: uploaded font (kept as reference only) -->
+  <!-- /mnt/data/Avenir 85 Heavy.otf -->
 
+  <style>
     :root {
       --heading-color: #0f0f0f;
       --body-color: #111111;
       --muted-color: #333333;
       --link-color: #000000;
 
-      --max-width: 820px;
-      --pad-top: 120px;
-      --pad-sides: 40px;
+      --max-width: 820px;    /* wide column to avoid wrapping */
+      --pad-top: 120px;      /* name pushed down ~3 rows */
+      --pad-sides: 40px;     /* side padding chosen earlier */
 
-      --h1-size: 32px;
+      --h1-size: 40px;      /* increased name size as requested */
       --body-size: 15px;
       --body-lh: 1.85;
-      --body-letter-spacing: 0.15px;
+      --body-letter-spacing: 0.05px;
     }
 
-    /* Desktop fixed layout (no scroll). Mobile allows scrolling. */
+    /* Desktop: fixed layout (no scroll). Mobile allows scrolling via media query. */
     html, body {
       height: 100%;
       margin: 0;
@@ -51,8 +45,8 @@
       align-items: flex-start;
       color: var(--body-color);
 
-      /* Avenir everywhere (heavy file), visual softness via size/spacing/color */
-      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      /* TIMES NEW ROMAN for everything */
+      font-family: "Times New Roman", Times, serif;
       font-size: var(--body-size);
       line-height: var(--body-lh);
       letter-spacing: var(--body-letter-spacing);
@@ -64,25 +58,24 @@
       box-sizing: border-box;
     }
 
-    /* Header row */
     .header-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 36px; /* two blank rows between name and intro */
+      margin-bottom: 36px; /* space between name and intro area */
       position: relative;
     }
 
     h1 {
       margin: 0;
       font-size: var(--h1-size);
-      font-weight: 900;
+      font-weight: 700;
       line-height: 1;
       color: var(--heading-color);
       letter-spacing: -0.02em;
     }
 
-    /* Fixed nav: right-hand pill buttons */
+    /* Fixed nav: right-hand pill buttons (visible on desktop) */
     .nav {
       position: fixed;
       top: calc(var(--pad-top) + 6px);
@@ -91,7 +84,6 @@
       gap: 12px;
       align-items: center;
       z-index: 60;
-      pointer-events: auto;
     }
 
     .nav a {
@@ -102,12 +94,11 @@
       border-radius: 999px;
       text-decoration: none;
       border: 1px solid rgba(0,0,0,0.06);
-      font-weight: 800;
+      font-weight: 700;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       transition: transform .12s ease, box-shadow .12s ease, background .12s;
-      box-shadow: 0 0 0 rgba(0,0,0,0);
     }
 
     .nav a:hover,
@@ -119,41 +110,41 @@
       outline: none;
     }
 
-    /* Intro: three lines — NO spacing between them (flush) */
+    /* Intro: three separate lines with minimal vertical spacing (flush) */
     .intro { margin: 0 0 24px 0; color: var(--muted-color); }
     .intro .line { display: block; margin: 0; padding: 0; white-space: normal; }
-    .intro .line.final { margin: 0; padding-top: 6px; font-weight: 400; } /* small top spacing before final line to visually separate */
+    /* small visual separation before final line only */
+    .intro .line.final { padding-top: 6px; font-weight: 400; }
 
-    /* Body copy */
+    /* Body paragraphs */
     p, .muted {
       margin: 0 0 16px 0;
       color: var(--muted-color);
     }
 
-    /* HEADINGS: distinct, larger, bolder, more legible than body */
+    /* Section headings: larger, bold, distinct and legible */
     h3.section {
-      margin: 24px 0 8px 0;
-      font-size: 16px;         /* slightly larger */
-      font-weight: 900;       /* heavy and distinct */
+      margin: 18px 0 8px 0;
+      font-size: 18px;        /* couple sizes bigger than body */
+      font-weight: 700;       /* bold */
       color: var(--heading-color);
-      letter-spacing: 0.02em; /* small tracking for readability */
-      text-transform: none;   /* keep normal case */
+      letter-spacing: 0.02em;
     }
 
-    /* Stronger company link styling */
+    /* Company link strong */
     .specter-link {
-      font-weight: 900;
+      font-weight: 700;
       color: var(--link-color);
       text-decoration: none;
     }
     .specter-link:hover { text-decoration: underline; }
 
-    /* Keep long links/words from breaking awkwardly */
+    /* avoid awkward line breaks */
     a { word-break: break-word; }
 
-    /* Responsive: enable scrolling & hide fixed nav on small screens */
+    /* Responsive: enable scrolling and hide fixed nav on small screens */
     @media (max-width: 920px) {
-      :root { --max-width: 720px; --pad-sides: 36px; }
+      :root { --max-width: 720px; --pad-sides: 32px; }
     }
     @media (max-width: 720px) {
       html, body { overflow: auto; }
@@ -163,12 +154,11 @@
         --max-width: 100%;
         --pad-top: 46px;
         --pad-sides: 28px;
-        --h1-size: 22px;
+        --h1-size: 28px;
         --body-size: 15px;
         --body-lh: 1.6;
-        --body-letter-spacing: 0.1px;
       }
-      h1 { font-size: 22px; }
+      h1 { font-size: 28px; }
       .intro .line.final { padding-top: 6px; }
     }
   </style>
@@ -179,7 +169,7 @@
       <h1>Arun Baburaj</h1>
     </div>
 
-    <!-- Intro: exact 3 lines, flush (no vertical gap) -->
+    <!-- Intro: exact 3 lines, flush (no vertical gap between first two lines) -->
     <div class="intro" aria-label="intro">
       <span class="line">Passionate about creating delightful experiences (in-person and digital) with great people.</span>
       <span class="line">Fascinated by human behavior, good design and strong brands.</span>
