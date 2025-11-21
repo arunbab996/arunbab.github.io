@@ -116,6 +116,36 @@
     .social-fixed a:hover{
       opacity:0.7;
     }
+      /* Portfolio styles */
+    .portfolio-section{padding-top:0}
+    .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .project-card{display:block;border-radius:8px;overflow:hidden;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.06);border:1px solid rgba(0,0,0,0.03)}
+    .project-card img{width:100%;height:140px;object-fit:cover;display:block}
+    .project-meta{padding:12px}
+    .project-title{font-weight:700;margin-bottom:6px}
+    .project-tagline{color:var(--muted);font-size:14px}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:999}
+    .modal{background:#fff;color:#111;border-radius:8px;max-width:760px;width:100%;overflow:hidden}
+    .modal img{width:100%;height:320px;object-fit:cover}
+    .modal-body{padding:18px}
+    .modal h3{margin:0 0 8px 0}
+    .modal p{margin:0;color:#444}
+
+      /* Make portfolio project cards full-width rows (one per row) */
+    .projects-grid{display:flex;flex-direction:column;gap:18px}
+    .project-card{display:flex;flex-direction:row;gap:18px;align-items:center;border-radius:8px;overflow:hidden;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.03);padding:8px}
+    .project-card img{width:220px;height:140px;object-fit:cover;flex-shrink:0;border-radius:6px}
+    .project-meta{padding:6px}
+    .project-title{font-weight:700;margin-bottom:6px}
+    .project-tagline{color:var(--muted);font-size:14px}
+
+    @media (max-width:720px){
+      .project-card{flex-direction:column}
+      .project-card img{width:100%;height:180px}
+    }
+
   </style>
 </head>
 <body>
@@ -138,16 +168,130 @@ Product Manager and researcher. Thinking about and designing tools for building 
       <div class="current">I'm currently leading a product at <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.</div>
     </section>
 
-    
+    <!-- PORTFOLIO SECTION (hidden by default) -->
+    <section id="portfolio" class="portfolio-section" style="display:none;">
+      <div class="name" style="margin-bottom:18px;">Portfolio</div>
+      <div class="projects-grid">
+        <a href="https://heyabc.notion.site/Dunzo-Increasing-AOV-edc4632e76b74acfae93aeccb882da55" class="project-card" target="_blank">
+          <img src="/mnt/data/1.webp" alt="Dunzo Project" />
+          <div class="project-meta">
+            <div class="project-title">Dunzo : Increasing AOV</div>
+            <div class="project-tagline">The Tale of Maximising AOV</div>
+          </div>
+        </a>
+
+        <a href="https://heyabc.notion.site/Jupiter-App-Gamification-239af69028b84c5692c9a57003cb3ae4" class="project-card" target="_blank">
+          <img src="/mnt/data/2.webp" alt="Jupiter Project" />
+          <div class="project-meta">
+            <div class="project-title">Jupiter - App Gamification</div>
+            <div class="project-tagline">An attempt to incorporate game elements to Jupiter - a Neobank.</div>
+          </div>
+        </a>
+
+        <a href="https://heyabc.notion.site/Swiggy-How-to-Tackle-Multiple-Orders-1d57b0782e77486f98604d56343dd3c1" class="project-card" target="_blank">
+          <img src="/mnt/data/3.jpeg" alt="Swiggy Project" />
+          <div class="project-meta">
+            <div class="project-title">Swiggy - How to Tackle Multiple Orders?</div>
+            <div class="project-tagline">Solving Bulk Delivery - i.e Food orders from multiple restaurants at once.</div>
+          </div>
+        </a>
+
+        <a href="https://heyabc.notion.site/The-Curious-case-of-Audible-4121356e9a574f47882f335e832a4f74" class="project-card" target="_blank">
+          <img src="/mnt/data/4.webp" alt="Audible Project" />
+          <div class="project-meta">
+            <div class="project-title">The Curious case of Audible.</div>
+            <div class="project-tagline">A quest to improve the Audiobook experience.</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Modal for project preview -->
+  <div id="modalBackdrop" class="modal-backdrop" onclick="closeModal(event)">
+    <div class="modal" role="dialog" onclick="event.stopPropagation()">
+      <img id="modalImg" src="" alt="" />
+      <div class="modal-body">
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+      </div>
+    </div>
+  </div>
+
   <div class="social-fixed">
-    <a href="https://linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
     </a>
-    <a href="https://x.com" target="_blank" aria-label="X">
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
     </a>
-    <a href="mailto:your@email.com" aria-label="Email">
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+  <script>
+    // nav handling: show/hide sections and set active link
+    document.querySelectorAll('.nav a').forEach(function(a){
+      a.addEventListener('click', function(e){
+        // allow normal hash behavior but handle UI
+        var id = this.getAttribute('href').replace('#','');
+        showSection(id);
+        setActive(this);
+        e.preventDefault();
+      });
+    });
+
+    function setActive(el){
+      document.querySelectorAll('.nav a').forEach(function(x){x.classList.remove('active')});
+      el.classList.add('active');
+    }
+
+    function showSection(id){
+      var sections = ['index','portfolio','bookshelf','principles'];
+      sections.forEach(function(s){
+        var el = document.getElementById(s);
+        if(!el) return;
+        el.style.display = (s===id) ? 'block' : 'none';
+      });
+    }
+
+    // ensure initial state: show index
+    showSection('index');
+
+    // project modal
+    var projects = {
+      1: {title: 'Project One', desc: 'A short tagline explaining the core idea.', img: '/mnt/data/Screenshot 2025-11-21 at 4.21.21 PM.png'},
+      2: {title: 'Project Two', desc: 'UX experiment for faster onboarding.', img: '/mnt/data/Screenshot 2025-11-21 at 4.21.21 PM.png'},
+      3: {title: 'Project Three', desc: 'Data-driven scouting tool for startups.', img: '/mnt/data/Screenshot 2025-11-21 at 4.21.21 PM.png'},
+      4: {title: 'Project Four', desc: 'Side project: community & jobs for startups.', img: '/mnt/data/Screenshot 2025-11-21 at 4.21.21 PM.png'}
+    };
+
+    function openProject(e, id){
+      e.preventDefault();
+      var p = projects[id];
+      if(!p) return;
+      document.getElementById('modalImg').src = p.img;
+      document.getElementById('modalTitle').textContent = p.title;
+      document.getElementById('modalDesc').textContent = p.desc;
+      document.getElementById('modalBackdrop').style.display = 'flex';
+    }
+
+    function closeModal(e){
+      document.getElementById('modalBackdrop').style.display = 'none';
+    }
+
+  </script>
+</body>
+</html>
+  <div class="social-fixed">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
+    </a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
+    </a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
     </a>
   </div>
