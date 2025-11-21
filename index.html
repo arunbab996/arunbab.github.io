@@ -3,160 +3,143 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Arun Baburaj — Product & VC</title>
-  <meta name="description" content="Arun Baburaj — VC analyst at Specter. Product · Data · VC. Writing, projects and experience." />
-  <link rel="icon" href="/favicon.ico" />
+  <title>Arun Baburaj — About</title>
+  <meta name="description" content="Arun Baburaj — Product, Data, VC. Personal site." />
   <style>
-    /* Minimal, clean styling inspired by abrahamthomas.info */
-    :root{
-      --bg:#ffffff; --muted:#6b7280; --text:#0f172a; --accent:#111827;
-      --card:#f8fafc;
-      --maxw:960px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    /* Minimal, serif-focused layout closely matching the screenshot */
+    :root {
+      --text: #111;
+      --muted: #444;
+      --max-width: 620px; /* narrow left column width */
+      --page-padding: 48px;
+      font-family: Georgia, "Times New Roman", serif;
     }
-    html,body{height:100%}
+
+    html,body { height:100%; margin:0; }
     body{
-      margin:0; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased;
-      line-height:1.5;
-      display:flex; justify-content:center;
-      padding:36px 20px;
+      background: #fff;
+      color: var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding: var(--page-padding) 48px;
+      display: flex;
+      justify-content: flex-start; /* keep content to left */
+      align-items: flex-start;
     }
-    .container{max-width:var(--maxw); width:100%;}
-    header{display:flex; justify-content:space-between; align-items:center; gap:16px;}
-    h1{margin:0; font-size:20px; letter-spacing:-0.02em;}
-    .titleSmall{color:var(--muted); font-size:13px; margin-top:6px;}
-    .btn{display:inline-block; padding:8px 12px; border-radius:8px; border:1px solid #e6e8eb; font-size:13px; text-decoration:none; color:var(--muted);}
-    main{display:grid; grid-template-columns:1fr; gap:28px; margin-top:28px;}
-    @media(min-width:840px){ main{grid-template-columns: 300px 1fr;} aside{position:sticky; top:28px;} }
-    .profile{width:100%; max-width:220px; border-radius:14px; overflow:hidden;}
-    .card{background:var(--card); padding:18px; border-radius:12px;}
-    .sectionTitle{font-weight:600; font-size:16px; margin:0 0 8px 0;}
-    p{margin:0 0 12px 0; color:var(--muted);}
-    .muted{color:var(--muted); font-size:13px;}
-    .skill{display:inline-block; border:1px solid #e6e8eb; padding:6px 8px; border-radius:8px; margin:6px 6px 0 0; font-size:13px; color:var(--muted);}
-    .exp{border-left:3px solid #f1f5f9; padding-left:14px; margin-bottom:16px;}
-    .exp h4{margin:0; font-size:15px;}
-    .exp .date{font-size:12px; color:var(--muted); margin-top:4px;}
-    .projects-grid{display:grid; gap:10px;}
-    @media(min-width:640px){ .projects-grid{grid-template-columns: repeat(2, minmax(0,1fr));} }
-    .project{background:white; border:1px solid #eef2f7; padding:12px; border-radius:10px;}
-    footer{margin-top:30px; color:var(--muted); font-size:13px;}
-    a.social{display:inline-block; margin-right:10px; font-size:13px; color:var(--muted); text-decoration:none;}
-    .contact a{color:var(--accent); text-decoration:underline;}
-    .heading-row{display:flex; align-items:center; gap:12px;}
+
+    .wrapper {
+      max-width: var(--max-width);
+      width:100%;
+      margin: 0;
+    }
+
+    h1 {
+      margin: 0 0 18px 0;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .intro {
+      font-style: italic;
+      color: var(--muted);
+      margin: 0 0 28px 0;
+      line-height: 1.6;
+    }
+
+    h3.section {
+      margin: 24px 0 8px 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    p, .muted {
+      margin: 0 0 14px 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    .small-link { 
+      font-size: 14px; 
+      display:inline-block; 
+      margin-top:14px; 
+    }
+
+    footer {
+      margin-top: 56px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width:720px){
+      body { padding: 28px; }
+      :root { --max-width: 100%; }
+      h1 { font-size: 22px; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div>
-        <div class="heading-row">
-          <h1>Arun Baburaj</h1>
-        </div>
-        <div class="titleSmall">VC analyst — Product · Data · VC</div>
-      </div>
+  <div class="wrapper">
 
-      <div style="display:flex; gap:10px; align-items:center;">
-        <a class="btn" href="/resume.pdf" target="_blank" rel="noopener">Resume</a>
-        <a class="social" href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="social" href="https://x.com" target="_blank" rel="noopener">X</a>
-      </div>
-    </header>
+    <!-- Name -->
+    <h1>Arun Baburaj</h1>
 
-    <main>
-      <!-- Left column: profile / bio / contact -->
-      <aside>
-        <div class="card">
-          <img src="/profile.jpg" alt="Arun profile" class="profile" />
-          <h3 class="sectionTitle" style="margin-top:12px;">About</h3>
-          <p>
-            Hi, I'm Arun.<br><br>
-            I’m a VC analyst navigating the early-stage startup ecosystem at Specter. I work at the intersection of venture capital, product, and data.
-          </p>
+    <!-- Intro (italic paragraph) -->
+    <p class="intro">
+      Passionate about creating delightful experiences (in-person and digital) with great people.
+      Fascinated by human behavior, good design and strong brands.
+      Ran the NYC marathon once. That hurt, but it was worth it.
+    </p>
 
-          <h4 class="sectionTitle">Beliefs</h4>
-          <p class="muted" style="white-space:pre-line;">
-ABL: Always Be Learning.
-Every skill is a muscle to be exercised.
-Changing your mind based on new data is a superpower.
-Speed is everything.
-Tremendous outcomes require tremendous amounts of hard work.
-Luck matters a lot, but you can help luck find you.
-Block off long, uninterrupted time for meaningful work.
-Combine optimism about technology with realism about humanity.
-Embrace failure — each setback is a lesson.
-          </p>
+    <!-- CURRENTLY -->
+    <section>
+      <h3 class="section">Currently</h3>
+      <p class="muted">
+        Various experiments. Travelling. Spending lots of time on coffee, roasting, architecture and dabbling in jazz piano improvisation.
+      </p>
+    </section>
 
-          <h4 class="sectionTitle" style="margin-top:10px;">Contact</h4>
-          <p class="muted contact">Bangalore, India<br>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+    <!-- PREVIOUSLY -->
+    <section>
+      <h3 class="section">Previously</h3>
 
-          <h4 class="sectionTitle" style="margin-top:10px;">Skills</h4>
-          <div>
-            <span class="skill">Product</span>
-            <span class="skill">VC</span>
-            <span class="skill">Data</span>
-            <span class="skill">Financial Modelling</span>
-          </div>
-        </div>
-      </aside>
+      <p class="muted">
+        Product at 
+        <a href="https://www.tryspecter.com/" target="_blank" rel="noopener">
+          Specter
+        </a>, 
+        a Bloomberg Terminal for Private Markets (employee #06).
+      </p>
 
-      <!-- Right column: experience / projects / writing -->
-      <section>
-        <div>
-          <h3 class="sectionTitle">Experience</h3>
-          <div style="margin-top:12px;">
-            <div class="exp">
-              <h4>Senior Investment Analyst — Specter</h4>
-              <div class="date">2023 — Present</div>
-              <ul style="margin-top:8px; color:var(--muted);">
-                <li>Lead Specter Talent product: scout companies & founders, build weekly signals and dashboards.</li>
-                <li>Work at the intersection of venture capital, product, and data to source and evaluate early-stage opportunities.</li>
-              </ul>
-            </div>
+      <p class="muted">
+        Built homehunter.club — a rental platform for Gen Zs using alternate data, and Acclr8 — a cross between Hacker News and AngelList for Indian startups.
+      </p>
+    </section>
 
-            <div class="exp">
-              <h4>Founder — Acclr8</h4>
-              <div class="date">2022 — 2023</div>
-              <ul style="margin-top:8px; color:var(--muted);">
-                <li>Built Acclr8 to challenge the broken hiring system for startups.</li>
-                <li>Focused on making startup hiring faster, smarter and more effective for candidates and companies.</li>
-              </ul>
-            </div>
+    <!-- SAY HI LINK -->
+    <div>
+      <a class="small-link" href="#contact">Say hi. :)</a>
+    </div>
 
-            <div class="exp">
-              <h4>Founder — HomeHunter (prototype)</h4>
-              <div class="date">2021 — 2022</div>
-              <ul style="margin-top:8px; color:var(--muted);">
-                <li>Built HomeHunter: a rental platform focused on Millennials & Gen Z user experience.</li>
-                <li>Simplified the rental discovery process and removed unnecessary clutter from the experience.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+    <!-- CONTACT -->
+    <div id="contact" style="margin-top:36px;">
+      <h3 class="section">Contact</h3>
+      <p class="muted">
+        Email: <a href="mailto:you@example.com">you@example.com</a>
+      </p>
+    </div>
 
-        <div style="margin-top:22px;">
-          <h3 class="sectionTitle">Projects & Writing</h3>
-          <div class="projects-grid" style="margin-top:10px;">
-            <div class="project">
-              <strong>Acclr8</strong>
-              <div class="muted" style="margin-top:6px;">Your seat in the rocketship — a hiring experiment to make startup hiring faster and smarter.</div>
-            </div>
-            <div class="project">
-              <strong>HomeHunter</strong>
-              <div class="muted" style="margin-top:6px;">Renting, simplified — a focused rental product for Millennial & Gen Z renters.</div>
-            </div>
-            <div class="project">
-              <strong>Writing</strong>
-              <div class="muted" style="margin-top:6px;">Selected posts: A Tale of Average Order Values; Gamification in Apps; Is Bulk Delivery on hyperlocal apps sustainable?; The Curious Case of Audible.</div>
-            </div>
-          </div>
-        </div>
+    <!-- FOOTER -->
+    <footer>
+      Built with ♥ — minimal design based on your provided screenshot.
+    </footer>
 
-        <footer>
-          <p>Built with ❤️ — inspired by abrahamthomas.info</p>
-        </footer>
-      </section>
-    </main>
   </div>
 </body>
 </html>
