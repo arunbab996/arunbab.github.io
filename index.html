@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Arun Baburaj — About</title>
   <meta name="description" content="Arun Baburaj — Product, Data, VC. Personal site." />
+
+  <!-- FAVICON -->
+  <link rel="icon" href="/favicon.png?v=2" type="image/png">
+
   <style>
-    /* Minimal, serif-focused layout closely matching the screenshot */
     :root {
       --text: #111;
       --muted: #444;
-      --max-width: 620px; /* narrow left column width */
-      --page-padding: 48px;
+      --max-width: 620px; 
+      --page-padding-top: 64px;
+      --page-padding-sides: 56px;
       font-family: Georgia, "Times New Roman", serif;
     }
 
@@ -20,24 +24,49 @@
       background: #fff;
       color: var(--text);
       -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding: var(--page-padding) 48px;
+      padding: var(--page-padding-top) var(--page-padding-sides) 48px var(--page-padding-sides);
       display: flex;
-      justify-content: flex-start; /* keep content to left */
+      justify-content: flex-start;
       align-items: flex-start;
     }
 
-    .wrapper {
+    .page {
+      width: 100%;
       max-width: var(--max-width);
-      width:100%;
-      margin: 0;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px; 
     }
 
     h1 {
-      margin: 0 0 18px 0;
+      margin: 0;
       font-size: 28px;
       font-weight: 700;
       letter-spacing: -0.01em;
+    }
+
+    .nav {
+      margin-left: auto;
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav a {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid transparent;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .nav a:hover {
+      border-color: #e6e6e6;
+      color: var(--text);
     }
 
     .intro {
@@ -45,6 +74,7 @@
       color: var(--muted);
       margin: 0 0 28px 0;
       line-height: 1.6;
+      font-size: 15px;
     }
 
     h3.section {
@@ -60,15 +90,19 @@
       font-size: 15px;
     }
 
-    a {
-      color: inherit;
+    .specter-link {
+      font-weight: 700;
+      color: #000;
+      text-decoration: none;
+    }
+    .specter-link:hover {
       text-decoration: underline;
     }
 
-    .small-link { 
-      font-size: 14px; 
-      display:inline-block; 
-      margin-top:14px; 
+    .small-link {
+      font-size: 14px;
+      display:inline-block;
+      margin-top:14px;
     }
 
     footer {
@@ -78,19 +112,27 @@
     }
 
     @media (max-width:720px){
-      body { padding: 28px; }
-      :root { --max-width: 100%; }
+      body { padding: 36px 20px; }
+      .nav { display: none; }
       h1 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
+  <div class="page">
 
-    <!-- Name -->
-    <h1>Arun Baburaj</h1>
+    <!-- HEADER: name + right-aligned nav -->
+    <div class="header-row">
+      <h1>Arun Baburaj</h1>
 
-    <!-- Intro (italic paragraph) -->
+      <nav class="nav">
+        <a href="#">Portfolio</a>
+        <a href="#">Bookshelf</a>
+        <a href="#">Principles</a>
+      </nav>
+    </div>
+
+    <!-- INTRO -->
     <p class="intro">
       Passionate about creating delightful experiences (in-person and digital) with great people.
       Fascinated by human behavior, good design and strong brands.
@@ -111,9 +153,7 @@
 
       <p class="muted">
         Product at 
-        <a href="https://www.tryspecter.com/" target="_blank" rel="noopener">
-          Specter
-        </a>, 
+        <a class="specter-link" href="https://www.tryspecter.com/" target="_blank" rel="noopener">Specter</a>, 
         a Bloomberg Terminal for Private Markets (employee #06).
       </p>
 
@@ -122,7 +162,7 @@
       </p>
     </section>
 
-    <!-- SAY HI LINK -->
+    <!-- SAY HI -->
     <div>
       <a class="small-link" href="#contact">Say hi. :)</a>
     </div>
@@ -137,7 +177,7 @@
 
     <!-- FOOTER -->
     <footer>
-      Built with ♥ — minimal design based on your provided screenshot.
+      Built with ♥ — minimal design based on your screenshot.
     </footer>
 
   </div>
