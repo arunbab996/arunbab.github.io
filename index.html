@@ -9,9 +9,8 @@
   <!-- FAVICON -->
   <link rel="icon" href="/favicon.png?v=2" type="image/png">
 
-  <!-- Avenir 85 Heavy (your uploaded font) -->
   <style>
-    /* Load your Avenir 85 Heavy font from the root of your GitHub repo */
+    /* Load Avenir 85 Heavy from repo root */
     @font-face {
       font-family: 'Avenir85Heavy';
       src: url('/Avenir 85 Heavy.otf') format('opentype');
@@ -22,7 +21,7 @@
 
     :root {
       --heading-color: #111111;
-      --body-color: #1a1a1a;
+      --body-color: #1a1a1a;   /* Option A darker body */
       --muted-color: #4a4a4a;
       --link-color: #000000;
 
@@ -33,11 +32,9 @@
       --h1-size: 22px;
       --body-size: 15px;
       --body-lh: 1.78;
-
-      font-family: Georgia, "Times New Roman", serif;
     }
 
-    /* Prevent scroll on large screens */
+    /* Non-scroll on large screens (per your request); mobile remains scrollable */
     html, body {
       height: 100%;
       margin: 0;
@@ -52,9 +49,11 @@
       display: flex;
       align-items: flex-start;
       color: var(--body-color);
+
+      /* Use Avenir for everything */
+      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: var(--body-size);
       line-height: var(--body-lh);
-      font-family: Georgia, "Times New Roman", serif;
     }
 
     .page {
@@ -72,10 +71,8 @@
       position: relative;
     }
 
-    /* Heading uses Avenir */
     h1 {
       margin: 0;
-      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: var(--h1-size);
       font-weight: 800;
       line-height: 1;
@@ -83,7 +80,7 @@
       letter-spacing: -0.01em;
     }
 
-    /* Fixed nav — extreme right */
+    /* Fixed nav at extreme right */
     .nav {
       position: fixed;
       top: calc(var(--pad-top) + 4px);
@@ -108,7 +105,7 @@
       border-color: #e6e6e6;
     }
 
-    /* Body text */
+    /* Body text (now Avenir as well) */
     p, .muted {
       margin: 0 0 16px 0;
       color: var(--muted-color);
@@ -119,20 +116,17 @@
     .intro {
       font-style: italic;
       margin: 0 0 24px 0;
+      color: var(--muted-color);
     }
 
-    /* Section headings use Avenir Heavy */
     h3.section {
       margin: 22px 0 8px 0;
       font-size: 14.5px;
       font-weight: 800;
       color: var(--heading-color);
-      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    /* Specter link uses Avenir Heavy */
     .specter-link {
-      font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 800;
       color: var(--link-color);
       text-decoration: none;
@@ -147,7 +141,7 @@
       text-decoration: underline;
     }
 
-    /* Enable scroll + hide nav on mobile */
+    /* Mobile: enable scrolling and hide fixed nav to avoid overlap */
     @media (max-width: 720px) {
       html, body { overflow: auto; }
       body { padding: 28px 20px; }
@@ -191,12 +185,11 @@
     </section>
 
     <div>
-      <a class="small-link">Say hi. :)</a>
+      <a class="small-link" href="#contact">Say hi. :)</a>
     </div>
-
   </div>
 
-  <!-- Right-side nav -->
+  <!-- Right-side fixed nav -->
   <nav class="nav" aria-label="Primary">
     <a href="#">Portfolio</a>
     <a href="#">Bookshelf</a>
