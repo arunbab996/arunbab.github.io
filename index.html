@@ -10,11 +10,10 @@
   <link rel="icon" href="/favicon.png?v=2" type="image/png">
 
   <style>
-    /* NOTE: This src currently points to the uploaded file path used in this session.
-       When you publish, change the URL to the path in your repo (e.g. /Avenir 85 Heavy.otf). */
+    /* Load Avenir 85 Heavy from the repo root */
     @font-face {
       font-family: 'Avenir85Heavy';
-      src: url('/mnt/data/Avenir 85 Heavy.otf') format('opentype');
+      src: url('/Avenir 85 Heavy.otf') format('opentype');
       font-weight: 800;
       font-style: normal;
       font-display: swap;
@@ -119,12 +118,14 @@
       outline: none;
     }
 
-    /* Intro: three separate lines (each block) */
+    /* Intro: three separate lines; tightened spacing between lines */
     .intro { margin: 0 0 24px 0; color: var(--muted-color); }
-    .intro .line { display: block; margin-bottom: 8px; white-space: normal; }
-    .intro .line.final { margin-top: 6px; font-weight: 400; }
+    .intro .line { display: block; margin-bottom: 4px; white-space: normal; }
+    .intro .line.final { margin-top: 4px; font-weight: 400; }
 
-    /* Text */
+    /* Ensure links and long words don't cause awkward wrapping */
+    a { word-break: break-word; }
+
     p, .muted {
       margin: 0 0 16px 0;
       color: var(--muted-color);
@@ -176,7 +177,7 @@
       <h1>Arun Baburaj</h1>
     </div>
 
-    <!-- Intro as three distinct lines -->
+    <!-- Intro as three distinct lines with tighter spacing -->
     <div class="intro" aria-label="intro">
       <span class="line">Passionate about creating delightful experiences (in-person and digital) with great people.</span>
       <span class="line">Fascinated by human behavior, good design and strong brands.</span>
