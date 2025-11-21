@@ -21,8 +21,8 @@
 
     :root {
       --heading-color: #111111;
-      --body-color: #1a1a1a;   /* Option A darker body */
-      --muted-color: #4a4a4a;
+      --body-color: #333333;    /* softened body color for lighter visual weight */
+      --muted-color: #515151;   /* for intro/secondary text */
       --link-color: #000000;
 
       --max-width: 520px;
@@ -31,10 +31,12 @@
 
       --h1-size: 22px;
       --body-size: 15px;
-      --body-lh: 1.78;
+      --body-lh: 1.85;
+      --body-letter-spacing: 0.2px;
     }
 
-    /* Non-scroll on large screens (per your request); mobile remains scrollable */
+    /* Desktop: prevent scrolling (per your earlier preference).
+       Mobile: scrolling is enabled via media query. */
     html, body {
       height: 100%;
       margin: 0;
@@ -50,10 +52,11 @@
       align-items: flex-start;
       color: var(--body-color);
 
-      /* Use Avenir for everything */
+      /* Avenir everywhere (heavy file) — we'll visually soften the body */
       font-family: 'Avenir85Heavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: var(--body-size);
       line-height: var(--body-lh);
+      letter-spacing: var(--body-letter-spacing);
     }
 
     .page {
@@ -62,7 +65,7 @@
       box-sizing: border-box;
     }
 
-    /* Header row */
+    /* Header */
     .header-row {
       display: flex;
       align-items: center;
@@ -77,7 +80,7 @@
       font-weight: 800;
       line-height: 1;
       color: var(--heading-color);
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
 
     /* Fixed nav at extreme right */
@@ -105,18 +108,18 @@
       border-color: #e6e6e6;
     }
 
-    /* Body text (now Avenir as well) */
-    p, .muted {
-      margin: 0 0 16px 0;
-      color: var(--muted-color);
-      font-size: var(--body-size);
-      line-height: var(--body-lh);
-    }
-
+    /* Intro (muted, italic) */
     .intro {
       font-style: italic;
       margin: 0 0 24px 0;
       color: var(--muted-color);
+    }
+
+    /* Body / muted */
+    p, .muted {
+      margin: 0 0 16px 0;
+      color: var(--muted-color);
+      /* body font props already set on body; we keep muted color for secondary text */
     }
 
     h3.section {
@@ -126,6 +129,7 @@
       color: var(--heading-color);
     }
 
+    /* Specter link (Avenir heavy, bold & black) */
     .specter-link {
       font-weight: 800;
       color: var(--link-color);
@@ -141,12 +145,12 @@
       text-decoration: underline;
     }
 
-    /* Mobile: enable scrolling and hide fixed nav to avoid overlap */
+    /* Mobile: enable scrolling and hide fixed nav */
     @media (max-width: 720px) {
       html, body { overflow: auto; }
       body { padding: 28px 20px; }
       .nav { display: none; }
-      :root { --h1-size: 20px; --body-size: 15px; --body-lh: 1.6; --max-width: 100%; }
+      :root { --h1-size: 20px; --body-size: 15px; --body-lh: 1.6; --max-width: 100%; --body-letter-spacing: 0.1px; }
       h1 { font-size: 20px; }
     }
   </style>
