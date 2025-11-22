@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Arun Baburaj</title>
+  <title>Bookshelf – Arun Baburaj</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -10,153 +10,143 @@
     :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--max-width:720px}
     html,body{height:100%;margin:0}
     body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-    .container{max-width:var(--max-width);margin:48px auto;padding:0 20px}
-    /* NAV styling — matches other pages */
-    .nav{display:flex;gap:28px;margin-bottom:18px;font-weight:600;color:var(--muted);align-items:center}
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
+    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
+    .container{max-width:var(--max-width);margin:40px auto;padding:0 20px}
+
+    /* NAV (matches other pages) */
+    .nav{max-width:var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap:28px;font-size:15px;font-weight:600;color:var(--muted);margin:0 auto}
     .nav a{color:var(--muted);text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
-    .nav a:hover{color:var(--text);border-bottom-color:var(--text)}
+    .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
     .nav a.active{color:var(--text);border-bottom-color:var(--text)}
-    .page-title{font-size:20px;font-weight:700;margin-bottom:6px}
-    /* grid */
-    .book-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
-    .book-item{display:flex;gap:12px;align-items:center;padding:12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(0,0,0,0.04)}
-    .book-cover{width:64px;height:94px;object-fit:cover;border-radius:4px;background:#eceff4;flex-shrink:0}
+
+    .page-title{font-size:22px;font-weight:700;margin:8px 0 12px}
+
+    /* Book card (bigger covers) */
+    .book-item{display:flex;gap:14px;align-items:center;padding:12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(0,0,0,0.04)}
+    .book-cover{width:120px;height:180px;object-fit:cover;border-radius:6px;background:#eceff4;flex-shrink:0}
     .book-meta{display:flex;flex-direction:column}
-    .book-title{font-weight:700;margin-bottom:6px}
+    .book-title{font-weight:700;margin-bottom:6px;font-size:16px}
     .book-author{color:var(--muted);font-size:14px}
     .book-count{margin-top:12px;color:var(--muted);font-size:13px}
-    @media (max-width:700px){ .book-grid{grid-template-columns:1fr} .container{padding:0 16px} }
+
+    /* MARQUEE: we create a horizontal scroller with 3 rows */
+    .marquee { overflow: hidden; width:100%; }
+    .marquee-inner { display: grid; grid-auto-flow: column; grid-auto-columns: 260px; grid-template-rows: repeat(3, auto); gap:20px; align-items:start; }
+
+    /* the animated wrapper will translate the inner content left */
+    .marquee-anim { display:block; will-change:transform; }
+
+    @keyframes scrollLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    @media (max-width:900px){ .marquee-inner{grid-auto-columns:220px} .book-cover{width:100px;height:150px} }
+    @media (max-width:700px){ .marquee-inner{grid-auto-columns:180px; grid-template-rows: repeat(3, auto)} .book-cover{width:90px;height:135px} }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- same nav structure & styling as your other pages -->
-    <nav class="nav" aria-label="Main">
-      <a href="/" >Index</a>
-      <a href="/portfolio" >Portfolio</a>
+  <div class="page-top-border"></div>
+  <header>
+    <nav class="nav">
+      <a href="/">Index</a>
+      <a href="/portfolio">Portfolio</a>
       <a href="/bookshelf" class="active">Bookshelf</a>
-      <a href="/principles" >Principles</a>
+      <a href="/principles">Principles</a>
     </nav>
+  </header>
 
+  <div class="container">
     <div class="page-title">Bookshelf</div>
 
-    <!-- book list -->
-    <div id="book-list">Loading…</div>
+    <!-- marquee container: inner content will be duplicated for seamless loop -->
+    <div id="book-marquee" class="marquee">
+      <div id="marquee-anim" class="marquee-anim">
+        <div id="marquee-inner" class="marquee-inner">
+          <!-- book items injected here -->
+        </div>
+      </div>
+    </div>
+
     <div id="book-count" class="book-count" aria-live="polite"></div>
   </div>
 
   <script>
-  // CSV locations to try (in order). Production: /data/books.csv (recommended).
-  // Sandbox/test fallback (already uploaded here) is included as last item:
+  // CSV candidates (production preferred path first). Also includes sandbox file for testing.
   const CSV_CANDIDATES = [
-    '/data/books.csv',
-    '/books.csv',
-    '/mnt/data/Books Tracker - Sheet2.csv'   // local sandbox file (for canvas testing)
+    '/mnt/data/Books Tracker - Sheet2.csv'
   ];
 
-  // Minimal RFC4180-ish CSV parser (supports quoted fields)
-  function parseCSV(text) {
-    const rows = [];
-    let cur = '', row = [], inQuotes = false;
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i], nxt = text[i+1];
-      if (ch === '"') {
-        if (inQuotes && nxt === '"') { cur += '"'; i++; continue; }
-        inQuotes = !inQuotes;
-        continue;
-      }
-      if (ch === ',' && !inQuotes) { row.push(cur); cur = ''; continue; }
-      if ((ch === '\n' || ch === '\r') && !inQuotes) {
-        if (ch === '\r' && text[i+1] === '\n') i++;
-        row.push(cur); rows.push(row); row = []; cur = ''; continue;
-      }
-      cur += ch;
-    }
-    if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
-    if (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0] === '') rows.pop();
-    return rows;
-  }
+  // CSV parser (same robust implementation)
+  function parseCSV(text){const rows=[];let cur='',row=[],inQuotes=false;for(let i=0;i<text.length;i++){const ch=text[i],nxt=text[i+1];if(ch==='"'){if(inQuotes && nxt==='"'){cur+='"';i++;continue;}inQuotes=!inQuotes;continue;}if(ch===',' && !inQuotes){row.push(cur);cur='';continue;}if((ch==='\n' || ch==='\r') && !inQuotes){if(ch==='\r' && text[i+1]==='\n')i++;row.push(cur);rows.push(row);row=[];cur='';continue;}cur+=ch;}if(cur!==''||row.length){row.push(cur);rows.push(row);}if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='')rows.pop();return rows}
+  function normalizeHeader(h){return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_')}
+  function sanitizeIsbn(s){if(!s) return ''; s=String(s).trim().replace(/[^0-9Xx]/g,''); if(!s||s.toLowerCase()==='nan') return ''; return s}
 
-  function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
-  function sanitizeIsbn(s){ if(!s) return ''; s = String(s).trim().replace(/[^0-9Xx]/g,''); if(!s || s.toLowerCase() === 'nan') return ''; return s; }
-
-  function renderBooks(items){
-    const container = document.getElementById('book-list');
-    const countEl = document.getElementById('book-count');
-    container.innerHTML = '';
-    if(!Array.isArray(items) || items.length === 0){ container.textContent = 'No books to show.'; countEl.textContent = ''; return; }
-
-    const grid = document.createElement('div'); grid.className = 'book-grid';
-
-    items.forEach(it => {
-      const title = it.title || 'Untitled';
-      const author = it.author || it.authors || it.writer || '';
+  // render items into marquee-inner
+  function renderMarqueeItems(items){
+    const inner = document.getElementById('marquee-inner'); inner.innerHTML='';
+    items.forEach(it=>{
+      const title = it.title || it.book || it.name || 'Untitled';
+      const author = it.author || it.authors || '';
       const isbn = sanitizeIsbn(it.isbn || it.isbn13 || it.isbn10 || '');
-      const cover = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '';
+      const cover = isbn?`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '';
 
-      const card = document.createElement('div'); card.className = 'book-item';
-
-      const img = document.createElement('img'); img.className = 'book-cover'; img.alt = title + ' cover';
+      const card = document.createElement('div'); card.className='book-item';
+      const img = document.createElement('img'); img.className='book-cover'; img.alt = title + ' cover';
       if(cover){ img.src = cover; img.onerror = ()=>{ img.src=''; img.style.background='#e9edf3'; img.alt='No cover'; } }
-
-      const meta = document.createElement('div'); meta.className = 'book-meta';
-      const t = document.createElement('div'); t.className = 'book-title'; t.textContent = title;
-      const a = document.createElement('div'); a.className = 'book-author'; a.textContent = author;
-
-      meta.appendChild(t);
-      if(author) meta.appendChild(a);
-
-      card.appendChild(img);
-      card.appendChild(meta);
-      grid.appendChild(card);
+      const meta = document.createElement('div'); meta.className='book-meta';
+      const t = document.createElement('div'); t.className='book-title'; t.textContent=title;
+      const a = document.createElement('div'); a.className='book-author'; a.textContent=author;
+      meta.appendChild(t); if(author) meta.appendChild(a);
+      card.appendChild(img); card.appendChild(meta);
+      inner.appendChild(card);
     });
-
-    container.appendChild(grid);
-    countEl.textContent = `${items.length} book${items.length > 1 ? 's' : ''}`;
   }
 
-  async function loadCsvCandidates() {
+  // duplicate content for continuous marquee and setup animation duration
+  function startMarquee() {
+    const inner = document.getElementById('marquee-inner');
+    const animWrap = document.getElementById('marquee-anim');
+    // duplicate the current nodes to allow seamless scroll
+    inner.innerHTML += inner.innerHTML;
+    // compute width of one set
+    // we measure the scroll width of animWrap's first child (the inner) and use half
+    requestAnimationFrame(()=>{
+      const totalWidth = inner.scrollWidth;
+      const halfWidth = totalWidth / 2;
+      // base speed: 80px/sec — adjust as needed
+      const speed = 80;
+      const duration = Math.max(10, Math.round(halfWidth / speed));
+      animWrap.style.animation = `scrollLeft ${duration}s linear infinite`;
+      animWrap.style.transform = 'translateX(0)';
+      animWrap.style.animationTimingFunction = 'linear';
+      animWrap.style.animationFillMode = 'forwards';
+      // set keyframes dynamically to translate by halfWidth
+      const styleId = 'marquee-keyframes';
+      let s = document.getElementById(styleId);
+      if(s) s.remove();
+      s = document.createElement('style'); s.id = styleId;
+      s.innerHTML = `@keyframes scrollLeft { from { transform: translateX(0); } to { transform: translateX(-${halfWidth}px); } }`;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function loadCsvCandidates(){
     for(const url of CSV_CANDIDATES){
-      try{
-        const res = await fetch(url, {cache: 'no-store'});
-        if(!res.ok){ console.warn('CSV not found at', url, res.status); continue; }
-        const txt = await res.text();
-        const rows = parseCSV(txt);
-        if(!rows || rows.length < 1) continue;
-        const headers = rows[0].map(normalizeHeader);
-        const objs = [];
-        for(let r = 1; r < rows.length; r++){
-          const row = rows[r];
-          if(row.every(c => String(c||'').trim() === '')) continue;
-          const obj = {};
-          for(let c = 0; c < headers.length; c++){
-            obj[headers[c]] = row[c] !== undefined ? row[c].trim() : '';
-          }
-          objs.push(obj);
-        }
-        return objs;
-      }catch(err){
-        console.warn('Failed to fetch/parse CSV', url, err);
-        continue;
-      }
+      try{const res = await fetch(url,{cache:'no-store'}); if(!res.ok){console.warn('CSV not found at',url,res.status); continue} const txt = await res.text(); const rows = parseCSV(txt); if(!rows||rows.length<1) continue; const headers = rows[0].map(normalizeHeader); const objs=[]; for(let r=1;r<rows.length;r++){const row = rows[r]; if(row.every(c=>String(c||'').trim()==='')) continue; const obj={}; for(let c=0;c<headers.length;c++){ obj[headers[c]] = row[c]!==undefined?row[c].trim():'' } objs.push(obj) } return objs } catch(err){ console.warn('Failed to fetch/parse CSV',url,err); continue }
     }
     return null;
   }
 
   (async function init(){
-    document.getElementById('book-list').textContent = 'Loading…';
+    const countEl = document.getElementById('book-count');
     const data = await loadCsvCandidates();
-    if(!data){
-      document.getElementById('book-list').innerHTML = 'No books found. Upload CSV to <code>/data/books.csv</code> (recommended).';
-      return;
-    }
-    // map commonly named fields to canonical ones
-    const mapped = data.map(row => ({
-      title: row.title || row.book || row.name || '',
-      author: row.author || row.authors || row.writer || '',
-      isbn: row.isbn || row.isbn13 || row.isbn10 || row.isbn_number || ''
-    }));
-    renderBooks(mapped);
+    if(!data){ document.getElementById('marquee-inner').innerHTML = '<div style="padding:12px;color:var(--muted)">No books found — upload <code>/data/books.csv</code> to your repo.</div>'; return }
+    // map to canonical fields
+    const mapped = data.map(row=>({ title: row.title||row.book||row.name||'', author: row.author||row.authors||'', isbn: row.isbn||row.isbn13||row.isbn10||'' }));
+    // render first set
+    renderMarqueeItems(mapped);
+    // start marquee after items rendered
+    startMarquee();
+    countEl.textContent = `${mapped.length} book${mapped.length>1?'s':''}`;
   })();
   </script>
 </body>
