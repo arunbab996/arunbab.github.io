@@ -13,7 +13,6 @@
       --muted:#5b6066;
       --card-bg: rgba(255,255,255,0.03);
       --header-max-width:640px; /* header stays the same width as other pages */
-      --grid-max-width:1200px;  /* how wide the books grid can grow before centering */
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
@@ -53,7 +52,7 @@
     main{
       width:100%;
       margin:48px auto;
-      padding:0 16px;
+      padding:0 24px; /* a bit more horizontal breathing room */
     }
     .page-title{
       font-weight:700;
@@ -63,20 +62,16 @@
       padding:0 16px;
     }
 
-    /* grid container: centered and can expand up to --grid-max-width */
-    .books-grid-wrap{
-      width:100%;
-      display:flex;
-      justify-content:center;
-    }
+    /* GRID: fill entire available width (this makes books appear in the red boxes) */
     .books-grid{
       width:100%;
-      max-width:var(--grid-max-width);
+      /* allow the grid to expand edge-to-edge; items will wrap to fill space */
+      max-width:none;
       display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap:18px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* many columns to fill full width */
+      gap:20px;
       align-items:start;
-      padding: 0 8px 28px;
+      padding: 0 8px 48px;
     }
 
     .book-card{
@@ -87,15 +82,15 @@
       display:flex;
       gap:12px;
       align-items:flex-start;
-      transition: transform .16s ease, box-shadow .16s ease;
+      transition: transform .12s ease, box-shadow .12s ease;
       min-height: 140px;
     }
     .book-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 28px rgba(16,24,40,0.10); }
 
     .cover-wrap{
-      width:96px;
-      min-width:96px;
-      height:144px;
+      width:86px;
+      min-width:86px;
+      height:130px;
       border-radius:6px;
       overflow:hidden;
       background:#e9edf6;
@@ -104,19 +99,23 @@
       justify-content:center;
       color: #fff;
       font-weight:700;
-      font-size:20px;
+      font-size:18px;
       flex-shrink:0;
       text-transform:uppercase;
     }
     .book-cover{width:100%;height:100%;object-fit:cover;display:block}
     .book-meta{display:flex;flex-direction:column;justify-content:center}
-    .book-title{font-weight:700;font-size:15px;line-height:1.2;margin-bottom:6px}
+    .book-title{font-weight:700;font-size:14px;line-height:1.2;margin-bottom:6px}
     .book-author{font-size:13px;color:var(--muted)}
     .book-count{margin-top:12px;color:var(--muted);font-size:13px}
 
     /* responsive adjustments */
+    @media (max-width:1200px){
+      .cover-wrap{width:90px;height:135px}
+      .book-title{font-size:14px}
+    }
     @media (max-width:920px){
-      .cover-wrap{width:88px;height:132px}
+      .cover-wrap{width:84px;height:126px}
       .book-card{padding:10px}
     }
     @media (max-width:560px){
@@ -146,10 +145,8 @@
   <main>
     <div class="page-title">Bookshelf</div>
 
-    <div class="books-grid-wrap">
-      <div id="books-grid" class="books-grid" aria-live="polite">
-        <!-- book cards injected here -->
-      </div>
+    <div id="books-grid" class="books-grid" aria-live="polite">
+      <!-- book cards injected here -->
     </div>
 
     <div id="book-count" class="book-count" aria-live="polite"></div>
@@ -170,10 +167,11 @@
   <script>
   /**
    * CSV candidates (sandbox + production)
-   * Update the first path if your sandbox CSV path differs.
+   * Make sure the sandbox path matches your uploaded file if you preview in canvas.
    */
   const CSV_CANDIDATES = [
     '/mnt/data/Books Tracker - Sheet3.csv',
+    '/mnt/data/books.csv',
     '/data/books.csv',
     '/books.csv'
   ];
@@ -249,7 +247,7 @@
   async function loadCsvCandidates(){
     for(const url of CSV_CANDIDATES){
       try{
-        const res = await fetch(url, {cache:'no-store'});
+        const res = await fetch(url, {cache: 'no-store'});
         if(!res.ok){ console.warn('CSV not found at', url, res.status); continue; }
         const txt = await res.text();
         const rows = parseCSV(txt);
