@@ -214,7 +214,7 @@
     const isbn10 = sanitizeIsbn(item.isbn10 || '');
     const isbn13 = sanitizeIsbn(item.isbn13 || '');
     const isbn = isbn13 || isbn10 || '';
-    const coverUrl = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '';
+    const coverUrl = item.cover_url || (isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '');
 
     const card = document.createElement('div'); card.className = 'book-card';
     const coverWrap = document.createElement('div'); coverWrap.className = 'cover-wrap';
