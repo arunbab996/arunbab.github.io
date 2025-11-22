@@ -9,15 +9,15 @@
   <style>
     :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--max-width:640px;--nav-gap:28px}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);} 
-    .page-top-border{height:3px;background:rgba(0,0,0,0.08);} 
-    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;} 
-    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;} 
-    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent} 
-    .nav a:hover{border-bottom-color:var(--text);color:var(--text)} 
-    .nav a.active{color:var(--text);border-bottom-color:var(--text);} 
-    main{max-width:var(--max-width);margin:48px auto;padding:0 16px} 
-    .page-title{font-weight:700;font-size:18px;margin-bottom:18px} 
+    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
+    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
+    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent}
+    .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
+    .nav a.active{color:var(--text);border-bottom-color:var(--text);}
+    main{max-width:var(--max-width);margin:48px auto;padding:0 16px}
+    .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
 
     /* 3-row bookshelf grid */
     .books-wrapper { width:100%; margin-top:8px; }
@@ -71,8 +71,7 @@
 
     /* social icons */
     .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
-    .social-fixed a{color:var(--text);text-decoration:none} 
-    .social-fixed a:hover{opacity:0.7}
+    .social-fixed a{color:var(--text);text-decoration:none} .social-fixed a:hover{opacity:0.7}
   </style>
 </head>
 <body>
@@ -111,23 +110,135 @@
   </div>
 
   <script>
+  /************************************************************************
+   * EMBEDDED CSV OPTION (preferred for immediate preview)
+   *
+   * Paste your CSV content between the backticks in EMBED_CSV below.
+   * Example header rows in your CSV: "title,author,isbn,status"
+   *
+   * If EMBED_CSV is empty, the script will try fetch() on these paths:
+   *   1) /mnt/data/books.csv (sandbox preview if available)
+   *   2) /data/books.csv (production; upload there on GitHub)
+   *   3) /books.csv (alternate)
+   ************************************************************************/
+
+  // --- Paste your CSV contents here (between the backticks) ---
+  const EMBED_CSV = `
+`; // <-- put CSV content here, between the backticks
+
+  // production/sandbox fallback paths (kept just in case)
   const CSV_CANDIDATES = [
-    '/mnt/data/books.csv',
-    '/data/books.csv',
-    '/books.csv'
+    '/mnt/data/books.csv', // sandbox path (if you uploaded here)
+    '/data/books.csv',     // recommended production path on your repo
+    '/books.csv'           // alternate
   ];
 
+  // CSV parser (robust, supports quoted fields)
   function parseCSV(text){
-    const rows=[];let cur='',row=[],inQuotes=false;
+    const rows = [];
+    let cur = '', row = [], inQuotes = false;
     for(let i=0;i<text.length;i++){
-      const ch=text[i], nxt=text[i+1];
-      if(ch==='"'){
-        if(inQuotes && nxt==='"'){cur+='"'; i++; continue;}
-        inQuotes=!inQuotes; continue;
+      const ch = text[i], nxt = text[i+1];
+      if(ch === '"'){
+        if(inQuotes && nxt === '"'){ cur += '"'; i++; continue; }
+        inQuotes = !inQuotes; continue;
       }
-      if(ch===',' && !inQuotes){ row.push(cur); cur='';continue; }
-      if((ch==='\n'||ch==='\r') && !inQuotes){ if(ch==='\r'&&text[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; continue; }
+      if(ch === ',' && !inQuotes){ row.push(cur); cur = ''; continue; }
+      if((ch === '\n' || ch === '\r') && !inQuotes){
+        if(ch === '\r' && text[i+1] === '\n') i++;
+        row.push(cur); rows.push(row); row = []; cur = ''; continue;
+      }
       cur += ch;
     }
-    if(cur !=='' || row.length){ row.push(cur); rows.push(row); }
-    if(rows.length && rows[rows.length-
+    if(cur !== '' || row.length) { row.push(cur); rows.push(row); }
+    if(rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0] === '') rows.pop();
+    return rows;
+  }
+
+  function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
+  function sanitizeIsbn(s){ if(!s) return ''; s = String(s).trim().replace(/[^0-9Xx]/g,''); if(!s || s.toLowerCase() === 'nan') return ''; return s; }
+
+  // convert rows->objects
+  function rowsToObjects(rows){
+    if(!rows || rows.length < 1) return [];
+    const headers = rows[0].map(normalizeHeader);
+    const objs = [];
+    for(let r=1;r<rows.length;r++){
+      const row = rows[r];
+      if(row.every(c => String(c||'').trim() === '')) continue;
+      const obj = {};
+      for(let c=0;c<headers.length;c++){
+        obj[headers[c]] = row[c] !== undefined ? row[c].trim() : '';
+      }
+      objs.push(obj);
+    }
+    return objs;
+  }
+
+  // loader: prefer EMBED_CSV, else try fetch candidates
+  async function loadBooks(){
+    if(EMBED_CSV && EMBED_CSV.trim().length > 0){
+      try{
+        const rows = parseCSV(EMBED_CSV);
+        return rowsToObjects(rows);
+      }catch(e){
+        console.error('Failed to parse EMBED_CSV', e);
+      }
+    }
+
+    for(const url of CSV_CANDIDATES){
+      try{
+        const res = await fetch(url, {cache:'no-store'});
+        if(!res.ok) { console.warn('CSV not found at', url, res.status); continue; }
+        const txt = await res.text();
+        const rows = parseCSV(txt);
+        return rowsToObjects(rows);
+      }catch(err){
+        console.warn('Failed to fetch/parse CSV', url, err);
+        continue;
+      }
+    }
+    return null;
+  }
+
+  // create DOM card
+  function createBookCard(item){
+    const title = item.title || item.book || item.name || 'Untitled';
+    const author = item.author || item.authors || item.writer || '';
+    const isbn = sanitizeIsbn(item.isbn || item.isbn13 || item.isbn10 || '');
+    const cover = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '';
+
+    const card = document.createElement('div'); card.className = 'book-card';
+    const img = document.createElement('img'); img.className = 'book-cover'; img.alt = title + ' cover';
+    if(cover){ img.src = cover; img.onerror = ()=>{ img.src=''; img.style.background='#e9edf3'; img.alt='No cover'; } }
+    const meta = document.createElement('div'); meta.className = 'book-meta';
+    const t = document.createElement('div'); t.className = 'book-title'; t.textContent = title;
+    const a = document.createElement('div'); a.className = 'book-author'; a.textContent = author;
+    meta.appendChild(t); if(author) meta.appendChild(a);
+    card.appendChild(img); card.appendChild(meta);
+    return card;
+  }
+
+  // init
+  (async function init(){
+    const grid = document.getElementById('books-grid');
+    const countEl = document.getElementById('book-count');
+    grid.innerHTML = 'Loading…';
+    const data = await loadBooks();
+    if(!data || data.length === 0){
+      grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found. To preview, paste your CSV into the EMBED_CSV variable inside the HTML, or upload <code>/data/books.csv</code> to your repo.</div>';
+      countEl.textContent = '';
+      return;
+    }
+    grid.innerHTML = '';
+    const mapped = data.map(row => ({
+      title: row.title || row.book || row.name || '',
+      author: row.author || row.authors || row.writer || '',
+      isbn: row.isbn || row.isbn13 || row.isbn10 || ''
+    }));
+    mapped.forEach(item => grid.appendChild(createBookCard(item)));
+    countEl.textContent = `${mapped.length} book${mapped.length>1?'s':''}`;
+  })();
+  </script>
+</body>
+</html>
