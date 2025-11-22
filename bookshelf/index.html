@@ -12,28 +12,71 @@
       --text:#111219;
       --muted:#5b6066;
       --card-bg: rgba(255,255,255,0.03);
-      --max-width:640px;
+      --header-max-width:640px; /* header stays the same width as other pages */
+      --grid-max-width:1200px;  /* how wide the books grid can grow before centering */
     }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);-webkit-font-smoothing:antialiased}
+    body{
+      background:var(--bg);
+      font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
 
-    /* header/nav (same as Portfolio) */
-    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
-    .nav{max-width:var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap:28px;font-size:15px;font-weight:600;color:var(--muted);margin:0 auto}
+    /* header/nav (same visual as Portfolio) */
+    header{
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      background:transparent;
+      width:100%;
+    }
+    .nav{
+      max-width:var(--header-max-width);
+      width:100%;
+      display:flex;
+      justify-content:flex-start;
+      padding:20px 16px;
+      gap:28px;
+      font-size:15px;
+      font-weight:600;
+      color:var(--muted);
+      margin:0 auto;
+    }
     .nav a{color:var(--muted);text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
     .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
     .nav a.active{color:var(--text);border-bottom-color:var(--text)}
 
-    main{max-width:var(--max-width);margin:48px auto;padding:0 16px}
-    .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
+    /* main: FULL WIDTH so the grid can expand into the red boxes */
+    main{
+      width:100%;
+      margin:48px auto;
+      padding:0 16px;
+    }
+    .page-title{
+      font-weight:700;
+      font-size:18px;
+      margin:0 auto 18px;
+      max-width:var(--header-max-width);
+      padding:0 16px;
+    }
 
-    /* grid layout (wrapping vertical grid) */
+    /* grid container: centered and can expand up to --grid-max-width */
+    .books-grid-wrap{
+      width:100%;
+      display:flex;
+      justify-content:center;
+    }
     .books-grid{
+      width:100%;
+      max-width:var(--grid-max-width);
       display:grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap:18px;
       align-items:start;
+      padding: 0 8px 28px;
     }
 
     .book-card{
@@ -45,6 +88,7 @@
       gap:12px;
       align-items:flex-start;
       transition: transform .16s ease, box-shadow .16s ease;
+      min-height: 140px;
     }
     .book-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 28px rgba(16,24,40,0.10); }
 
@@ -64,24 +108,23 @@
       flex-shrink:0;
       text-transform:uppercase;
     }
-
     .book-cover{width:100%;height:100%;object-fit:cover;display:block}
     .book-meta{display:flex;flex-direction:column;justify-content:center}
     .book-title{font-weight:700;font-size:15px;line-height:1.2;margin-bottom:6px}
     .book-author{font-size:13px;color:var(--muted)}
-
     .book-count{margin-top:12px;color:var(--muted);font-size:13px}
 
+    /* responsive adjustments */
     @media (max-width:920px){
       .cover-wrap{width:88px;height:132px}
       .book-card{padding:10px}
     }
     @media (max-width:560px){
-      .books-grid{grid-template-columns: repeat(auto-fill, minmax(140px, 1fr))}
+      .books-grid{grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:12px}
       .cover-wrap{width:84px;height:126px}
     }
 
-    /* small helper for cover initials background colors */
+    /* placeholder color classes */
     .placeholder-1 { background: #6B8DF6; }
     .placeholder-2 { background: #7ED7A6; }
     .placeholder-3 { background: #FFA86B; }
@@ -103,8 +146,10 @@
   <main>
     <div class="page-title">Bookshelf</div>
 
-    <div id="books-grid" class="books-grid" aria-live="polite">
-      <!-- book-cards injected here -->
+    <div class="books-grid-wrap">
+      <div id="books-grid" class="books-grid" aria-live="polite">
+        <!-- book cards injected here -->
+      </div>
     </div>
 
     <div id="book-count" class="book-count" aria-live="polite"></div>
@@ -124,10 +169,8 @@
 
   <script>
   /**
-   * CSV paths tried (in order):
-   * 1) sandbox file you uploaded in this session
-   * 2) /data/books.csv (production recommended)
-   * 3) /books.csv (alternate)
+   * CSV candidates (sandbox + production)
+   * Update the first path if your sandbox CSV path differs.
    */
   const CSV_CANDIDATES = [
     '/mnt/data/Books Tracker - Sheet3.csv',
@@ -135,7 +178,7 @@
     '/books.csv'
   ];
 
-  // Simple RFC4180-ish CSV parser (supports quoted fields)
+  // Basic CSV parser (supports quoted fields)
   function parseCSV(text){
     const rows = [];
     let cur = '', row = [], inQuotes = false;
@@ -143,13 +186,12 @@
       const ch = text[i], nxt = text[i+1];
       if(ch === '"'){
         if(inQuotes && nxt === '"'){ cur += '"'; i++; continue; }
-        inQuotes = !inQuotes;
-        continue;
+        inQuotes = !inQuotes; continue;
       }
       if(ch === ',' && !inQuotes){ row.push(cur); cur=''; continue; }
       if((ch === '\n' || ch === '\r') && !inQuotes){
         if(ch === '\r' && text[i+1] === '\n') i++;
-        row.push(cur); rows.push(row); row = []; cur = ''; continue;
+        row.push(cur); rows.push(row); row=[]; cur=''; continue;
       }
       cur += ch;
     }
@@ -161,7 +203,7 @@
   function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
   function sanitizeIsbn(s){ if(!s) return ''; s = String(s||'').trim().replace(/[^0-9Xx]/g,''); if(!s || s.toLowerCase() === 'nan') return ''; return s; }
 
-  // create initials placeholder SVG data URL
+  // fallback initials SVG placeholder
   function makeInitialsPlaceholder(text, w=240, h=360, bg='#6B8DF6'){
     const initials = (text||' ').split(/\s+/).slice(0,2).map(s=>s.charAt(0)).join('').toUpperCase() || '?';
     const fontSize = Math.round(Math.min(w,h) / 3.2);
@@ -169,7 +211,6 @@
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   }
 
-  // create DOM card
   function createBookCard(item, idx){
     const title = (item.title || '').trim() || 'Unknown title';
     const isbn10 = sanitizeIsbn(item.isbn10 || '');
@@ -177,25 +218,17 @@
     const isbn = isbn13 || isbn10 || '';
     const coverUrl = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '';
 
-    const card = document.createElement('div');
-    card.className = 'book-card';
+    const card = document.createElement('div'); card.className = 'book-card';
+    const coverWrap = document.createElement('div'); coverWrap.className = 'cover-wrap';
+    const img = document.createElement('img'); img.className = 'book-cover'; img.alt = title + ' cover';
 
-    const coverWrap = document.createElement('div');
-    coverWrap.className = 'cover-wrap';
-
-    const img = document.createElement('img');
-    img.className = 'book-cover';
-    img.alt = title + ' cover';
-
-    // placeholder background color rotation
     const placeholderClass = 'placeholder-' + ((idx % 4) + 1);
 
     if(coverUrl){
       img.src = coverUrl;
-      img.onload = () => { /* OK */ };
+      img.onload = () => { /* ok */ };
       img.onerror = () => {
-        // fallback to initials svg
-        img.src = makeInitialsPlaceholder(title, 240, 360, getComputedStyle(document.documentElement).getPropertyValue('--placeholder-bg') || '#6B8DF6');
+        img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6');
         coverWrap.classList.add(placeholderClass);
       };
     } else {
@@ -204,11 +237,8 @@
     }
 
     coverWrap.appendChild(img);
-
-    const meta = document.createElement('div');
-    meta.className = 'book-meta';
+    const meta = document.createElement('div'); meta.className = 'book-meta';
     const t = document.createElement('div'); t.className = 'book-title'; t.textContent = title;
-    // no author column per your instruction
     meta.appendChild(t);
 
     card.appendChild(coverWrap);
@@ -219,7 +249,7 @@
   async function loadCsvCandidates(){
     for(const url of CSV_CANDIDATES){
       try{
-        const res = await fetch(url, {cache: 'no-store'});
+        const res = await fetch(url, {cache:'no-store'});
         if(!res.ok){ console.warn('CSV not found at', url, res.status); continue; }
         const txt = await res.text();
         const rows = parseCSV(txt);
@@ -248,16 +278,14 @@
     const grid = document.getElementById('books-grid');
     const countEl = document.getElementById('book-count');
     grid.innerHTML = 'Loading…';
-
     const data = await loadCsvCandidates();
     if(!data || data.length === 0){
-      grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found. Upload your CSV to <code>/data/books.csv</code> or embed it in the HTML for preview.</div>';
+      grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found. Upload your CSV to <code>/data/books.csv</code> or ensure the sandbox path is correct for preview.</div>';
       countEl.textContent = '';
       return;
     }
 
     grid.innerHTML = '';
-    // ensure we only use title/isbn10/isbn13 fields
     const mapped = data.map((row) => ({
       title: row.title || row.book || row.name || '',
       isbn10: row.isbn10 || row.isbn_10 || row.isbn_10_clean || '',
