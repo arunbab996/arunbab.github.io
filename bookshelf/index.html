@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Bookshelf — Arun Baburaj</title>
+  <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -11,137 +11,100 @@
     html,body{height:100%;margin:0}
     body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
     .container{max-width:var(--max-width);margin:48px auto;padding:0 20px}
-    .nav{display:flex;gap:20px;margin-bottom:18px;font-weight:600;color:var(--muted)}
-    .nav a{color:var(--muted);text-decoration:none}
-    .page-title{font-size:20px;font-weight:700;margin-bottom:10px}
-    .hint{color:var(--muted);font-size:13px;margin-bottom:18px}
+    /* NAV styling — matches other pages */
+    .nav{display:flex;gap:28px;margin-bottom:18px;font-weight:600;color:var(--muted);align-items:center}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
+    .nav a:hover{color:var(--text);border-bottom-color:var(--text)}
+    .nav a.active{color:var(--text);border-bottom-color:var(--text)}
+    .page-title{font-size:20px;font-weight:700;margin-bottom:6px}
     /* grid */
-    .book-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .book-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
     .book-item{display:flex;gap:12px;align-items:center;padding:12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(0,0,0,0.04)}
     .book-cover{width:64px;height:94px;object-fit:cover;border-radius:4px;background:#eceff4;flex-shrink:0}
     .book-meta{display:flex;flex-direction:column}
     .book-title{font-weight:700;margin-bottom:6px}
-    .book-author{color:var(--muted);font-size:14px;margin-bottom:6px}
-    .book-status{font-size:13px;color:#223; padding:4px 8px;border-radius:999px;background:#e6f0ff;display:inline-block;width:max-content}
-    .book-status.unread{background:#fff0f0;color:#a00}
+    .book-author{color:var(--muted);font-size:14px}
     .book-count{margin-top:12px;color:var(--muted);font-size:13px}
     @media (max-width:700px){ .book-grid{grid-template-columns:1fr} .container{padding:0 16px} }
   </style>
 </head>
 <body>
   <div class="container">
-    <nav class="nav">
-      <a href="/"><strong>Index</strong></a>
-      <a href="/portfolio">Portfolio</a>
-      <a href="/bookshelf">Bookshelf</a>
-      <a href="/principles">Principles</a>
+    <!-- same nav structure & styling as your other pages -->
+    <nav class="nav" aria-label="Main">
+      <a href="/" >Index</a>
+      <a href="/portfolio" >Portfolio</a>
+      <a href="/bookshelf" class="active">Bookshelf</a>
+      <a href="/principles" >Principles</a>
     </nav>
 
     <div class="page-title">Bookshelf</div>
-    <div class="hint">Books are loaded from a CSV file you upload (name: <code>/data/books.csv</code>). The page will try multiple locations automatically.</div>
 
+    <!-- book list -->
     <div id="book-list">Loading…</div>
     <div id="book-count" class="book-count" aria-live="polite"></div>
   </div>
 
   <script>
-  // ---------- CONFIG ----------
-  // Attempt these CSV URLs in order. Put your file as /data/books.csv on GitHub.
+  // CSV locations to try (in order). Production: /data/books.csv (recommended).
+  // Sandbox/test fallback (already uploaded here) is included as last item:
   const CSV_CANDIDATES = [
     '/data/books.csv',
     '/books.csv',
-    // sandbox upload path (only for local/sandbox testing) - DO NOT rely on this in production.
-    '/mnt/data/Books Tracker - Sheet2.csv'
+    '/mnt/data/Books Tracker - Sheet2.csv'   // local sandbox file (for canvas testing)
   ];
 
-  // ---------- UTIL: robust CSV parser ----------
-  // Minimal RFC4180-style CSV parser supporting quoted fields and newlines within quotes.
+  // Minimal RFC4180-ish CSV parser (supports quoted fields)
   function parseCSV(text) {
     const rows = [];
-    let cur = ''; let row = []; let inQuotes = false;
+    let cur = '', row = [], inQuotes = false;
     for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
-      const nxt = text[i+1];
-      if (ch === '"' ) {
-        if (inQuotes && nxt === '"') { cur += '"'; i++; continue; } // escaped quote
+      const ch = text[i], nxt = text[i+1];
+      if (ch === '"') {
+        if (inQuotes && nxt === '"') { cur += '"'; i++; continue; }
         inQuotes = !inQuotes;
         continue;
       }
-      if (ch === ',' && !inQuotes) {
-        row.push(cur); cur = ''; continue;
-      }
+      if (ch === ',' && !inQuotes) { row.push(cur); cur = ''; continue; }
       if ((ch === '\n' || ch === '\r') && !inQuotes) {
-        // handle CRLF
-        if (ch === '\r' && text[i+1] === '\n') { i++; }
+        if (ch === '\r' && text[i+1] === '\n') i++;
         row.push(cur); rows.push(row); row = []; cur = ''; continue;
       }
       cur += ch;
     }
-    // push last
-    if (cur !== '' || row.length > 0) { row.push(cur); rows.push(row); }
-    // trim empty trailing row if CSV ends with newline
+    if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
     if (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0] === '') rows.pop();
     return rows;
   }
 
-  // ---------- UTIL: normalize header names ----------
-  function normalizeHeader(h) {
-    return String(h || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_');
-  }
+  function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
+  function sanitizeIsbn(s){ if(!s) return ''; s = String(s).trim().replace(/[^0-9Xx]/g,''); if(!s || s.toLowerCase() === 'nan') return ''; return s; }
 
-  // ---------- UTIL: sanitize ISBN ----------
-  function sanitizeIsbn(s) {
-    if (!s) return '';
-    s = String(s).trim();
-    // remove non-digits except X
-    s = s.replace(/[^0-9Xx]/g, '');
-    if (!s || s.toLowerCase() === 'nan') return '';
-    return s;
-  }
-
-  // ---------- render books ----------
-  function renderBooks(dataArray) {
+  function renderBooks(items){
     const container = document.getElementById('book-list');
     const countEl = document.getElementById('book-count');
     container.innerHTML = '';
-    if (!Array.isArray(dataArray) || dataArray.length === 0) {
-      container.textContent = 'No books to show.';
-      countEl.textContent = '';
-      return;
-    }
+    if(!Array.isArray(items) || items.length === 0){ container.textContent = 'No books to show.'; countEl.textContent = ''; return; }
 
-    const grid = document.createElement('div');
-    grid.className = 'book-grid';
+    const grid = document.createElement('div'); grid.className = 'book-grid';
 
-    dataArray.forEach(item => {
-      const title = item.title || 'Untitled';
-      const author = item.author || item.authors || '';
-      const isbn = sanitizeIsbn(item.isbn || item.isbn13 || item.isbn10 || '');
-      const statusRaw = (item.status || item.read || '').toString().trim();
-      const status = (/read/i).test(statusRaw) ? 'Read' : (statusRaw ? statusRaw : 'Unread');
+    items.forEach(it => {
+      const title = it.title || 'Untitled';
+      const author = it.author || it.authors || it.writer || '';
+      const isbn = sanitizeIsbn(it.isbn || it.isbn13 || it.isbn10 || '');
+      const cover = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '';
 
-      const coverUrl = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '';
+      const card = document.createElement('div'); card.className = 'book-item';
 
-      const card = document.createElement('div');
-      card.className = 'book-item';
+      const img = document.createElement('img'); img.className = 'book-cover'; img.alt = title + ' cover';
+      if(cover){ img.src = cover; img.onerror = ()=>{ img.src=''; img.style.background='#e9edf3'; img.alt='No cover'; } }
 
-      const img = document.createElement('img');
-      img.className = 'book-cover';
-      img.alt = title + ' cover';
-      if (coverUrl) {
-        img.src = coverUrl;
-        img.onerror = () => { img.src = ''; img.style.background = '#e9edf3'; img.alt = 'No cover'; };
-      }
-
-      const meta = document.createElement('div');
-      meta.className = 'book-meta';
+      const meta = document.createElement('div'); meta.className = 'book-meta';
       const t = document.createElement('div'); t.className = 'book-title'; t.textContent = title;
       const a = document.createElement('div'); a.className = 'book-author'; a.textContent = author;
-      const s = document.createElement('div'); s.className = 'book-status' + (status.toLowerCase() === 'unread' ? ' unread' : ''); s.textContent = status;
 
       meta.appendChild(t);
-      if (author) meta.appendChild(a);
-      meta.appendChild(s);
+      if(author) meta.appendChild(a);
 
       card.appendChild(img);
       card.appendChild(meta);
@@ -149,59 +112,50 @@
     });
 
     container.appendChild(grid);
-    countEl.textContent = `${dataArray.length} book${dataArray.length > 1 ? 's' : ''}`;
+    countEl.textContent = `${items.length} book${items.length > 1 ? 's' : ''}`;
   }
 
-  // ---------- load CSV from candidates ----------
-  async function loadCsvFromCandidates() {
-    for (const url of CSV_CANDIDATES) {
-      try {
+  async function loadCsvCandidates() {
+    for(const url of CSV_CANDIDATES){
+      try{
         const res = await fetch(url, {cache: 'no-store'});
-        if (!res.ok) { console.warn('CSV not found at', url, res.status); continue; }
-        const text = await res.text();
-        const rows = parseCSV(text);
-        if (!rows || rows.length === 0) { continue; }
-        // first row = headers
-        const headers = rows[0].map(h => normalizeHeader(h));
+        if(!res.ok){ console.warn('CSV not found at', url, res.status); continue; }
+        const txt = await res.text();
+        const rows = parseCSV(txt);
+        if(!rows || rows.length < 1) continue;
+        const headers = rows[0].map(normalizeHeader);
         const objs = [];
-        for (let r = 1; r < rows.length; r++) {
+        for(let r = 1; r < rows.length; r++){
           const row = rows[r];
-          // skip empty rows
-          if (row.every(cell => String(cell || '').trim() === '')) continue;
+          if(row.every(c => String(c||'').trim() === '')) continue;
           const obj = {};
-          for (let c = 0; c < headers.length; c++) {
+          for(let c = 0; c < headers.length; c++){
             obj[headers[c]] = row[c] !== undefined ? row[c].trim() : '';
           }
           objs.push(obj);
         }
         return objs;
-      } catch (err) {
-        console.warn('Failed to fetch or parse CSV', url, err);
+      }catch(err){
+        console.warn('Failed to fetch/parse CSV', url, err);
         continue;
       }
     }
     return null;
   }
 
-  // ---------- init ----------
-  (async function init() {
-    const list = document.getElementById('book-list');
-    list.textContent = 'Loading books…';
-    const data = await loadCsvFromCandidates();
-    if (!data) {
-      list.innerHTML = 'No books found. <br/>Upload your CSV to <code>/data/books.csv</code> in the repo (recommended).';
+  (async function init(){
+    document.getElementById('book-list').textContent = 'Loading…';
+    const data = await loadCsvCandidates();
+    if(!data){
+      document.getElementById('book-list').innerHTML = 'No books found. Upload CSV to <code>/data/books.csv</code> (recommended).';
       return;
     }
-    // map common header names to canonical names
-    const mapped = data.map(row => {
-      // pick up title, author, isbn, status from various possible header names
-      return {
-        title: row.title || row.book || row.name || '',
-        author: row.author || row.authors || row.writer || '',
-        isbn: row.isbn || row.isbn13 || row.isbn10 || row.isbn_number || '',
-        status: row.status || row.read || row.progress || ''
-      };
-    });
+    // map commonly named fields to canonical ones
+    const mapped = data.map(row => ({
+      title: row.title || row.book || row.name || '',
+      author: row.author || row.authors || row.writer || '',
+      isbn: row.isbn || row.isbn13 || row.isbn10 || row.isbn_number || ''
+    }));
     renderBooks(mapped);
   })();
   </script>
