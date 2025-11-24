@@ -12,7 +12,7 @@
       --text:#111219;
       --muted:#5b6066;
       --card-bg: rgba(255,255,255,0.03);
-      --header-max-width:640px; /* header stays the same width as other pages */
+      --header-max-width:640px;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
@@ -24,13 +24,15 @@
     }
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
 
-    /* header/nav (same visual as Portfolio) */
+    /* header/nav */
     header{
       display:flex;
       justify-content:center;
       border-bottom:1px solid rgba(0,0,0,0.06);
       background:transparent;
       width:100%;
+      position:relative;
+      z-index:40;
     }
     .nav{
       max-width:var(--header-max-width);
@@ -48,11 +50,11 @@
     .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
     .nav a.active{color:var(--text);border-bottom-color:var(--text)}
 
-    /* main: FULL WIDTH so the grid can expand into the red boxes */
+    /* main */
     main{
       width:100%;
       margin:48px auto;
-      padding:0 24px; /* a bit more horizontal breathing room */
+      padding:0 24px;
     }
     .page-title{
       font-weight:700;
@@ -62,72 +64,58 @@
       padding:0 16px;
     }
 
-    /* GRID: fill entire available width (this makes books appear in the red boxes) */
+    /* grid (covers-only) */
     .books-grid{
       width:100%;
-      /* allow the grid to expand edge-to-edge; items will wrap to fill space */
       max-width:none;
       display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* many columns to fill full width */
-      gap:20px;
+      grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+      gap:18px;
       align-items:start;
       padding: 0 8px 48px;
+      justify-items:center;
     }
 
     .book-card{
-      background:var(--card-bg);
-      border:1px solid rgba(0,0,0,0.04);
-      border-radius:10px;
-      padding:12px;
+      width:160px;
       display:flex;
-      gap:12px;
-      align-items:flex-start;
+      justify-content:center;
+      align-items:center;
+      border-radius:8px;
+      overflow:hidden;
       transition: transform .12s ease, box-shadow .12s ease;
-      min-height: 140px;
+      background:transparent;
+      padding:6px;
     }
-    .book-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 28px rgba(16,24,40,0.10); }
+    .book-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 24px rgba(16,24,40,0.08); }
 
     .cover-wrap{
-      width:86px;
-      min-width:86px;
-      height:130px;
+      width:150px;
+      height:220px;
       border-radius:6px;
       overflow:hidden;
+      display:block;
       background:#e9edf6;
       display:flex;
       align-items:center;
       justify-content:center;
-      color: #fff;
-      font-weight:700;
-      font-size:18px;
-      flex-shrink:0;
-      text-transform:uppercase;
     }
-    .book-cover{width:100%;height:100%;object-fit:cover;display:block}
-    .book-meta{display:flex;flex-direction:column;justify-content:center}
-    .book-title{font-weight:700;font-size:14px;line-height:1.2;margin-bottom:6px}
-    .book-author{font-size:13px;color:var(--muted)}
-    .book-count{margin-top:12px;color:var(--muted);font-size:13px}
+    .book-cover{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    /* responsive adjustments */
-    @media (max-width:1200px){
-      .cover-wrap{width:90px;height:135px}
-      .book-title{font-size:14px}
-    }
+    /* responsive */
     @media (max-width:920px){
-      .cover-wrap{width:84px;height:126px}
-      .book-card{padding:10px}
+      .books-grid{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px; }
+      .cover-wrap{ width:130px; height:190px; }
+      .book-card{ width:130px; }
     }
     @media (max-width:560px){
-      .books-grid{grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:12px}
-      .cover-wrap{width:84px;height:126px}
+      .books-grid{ grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; }
+      .cover-wrap{ width:120px; height:175px; }
+      .book-card{ width:120px; }
     }
 
-    /* placeholder color classes */
-    .placeholder-1 { background: #6B8DF6; }
-    .placeholder-2 { background: #7ED7A6; }
-    .placeholder-3 { background: #FFA86B; }
-    .placeholder-4 { background: #C39BFF; }
+    /* small note and count */
+    .book-count{max-width:var(--header-max-width);margin:10px auto;color:var(--muted);font-size:13px}
   </style>
 </head>
 <body>
@@ -146,7 +134,7 @@
     <div class="page-title">Bookshelf</div>
 
     <div id="books-grid" class="books-grid" aria-live="polite">
-      <!-- book cards injected here -->
+      <!-- Covers will be injected here -->
     </div>
 
     <div id="book-count" class="book-count" aria-live="polite"></div>
@@ -165,18 +153,14 @@
   </div>
 
   <script>
-  /**
-   * CSV candidates (sandbox + production)
-   * Make sure the sandbox path matches your uploaded file if you preview in canvas.
-   */
+  /* CSV candidates (adjust if your site uses a different path) */
   const CSV_CANDIDATES = [
-    '/mnt/data/Books Tracker - Sheet3.csv',
     '/mnt/data/books.csv',
     '/data/books.csv',
     '/books.csv'
   ];
 
-  // Basic CSV parser (supports quoted fields)
+  // Simple CSV parser (supports quoted fields)
   function parseCSV(text){
     const rows = [];
     let cur = '', row = [], inQuotes = false;
@@ -201,53 +185,56 @@
   function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
   function sanitizeIsbn(s){ if(!s) return ''; s = String(s||'').trim().replace(/[^0-9Xx]/g,''); if(!s || s.toLowerCase() === 'nan') return ''; return s; }
 
-  // fallback initials SVG placeholder
-  function makeInitialsPlaceholder(text, w=240, h=360, bg='#6B8DF6'){
+  // Fallback initials SVG placeholder
+  function makeInitialsPlaceholder(text, w=300, h=440, bg='#6B8DF6'){
     const initials = (text||' ').split(/\s+/).slice(0,2).map(s=>s.charAt(0)).join('').toUpperCase() || '?';
     const fontSize = Math.round(Math.min(w,h) / 3.2);
     const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='100%' height='100%' fill='${bg}'/><text x='50%' y='50%' font-family='Inter, Arial, sans-serif' font-size='${fontSize}' fill='white' text-anchor='middle' dominant-baseline='middle'>${initials}</text></svg>`;
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   }
 
-  function createBookCard(item, idx){
+  function createCoverCard(item, idx){
     const title = (item.title || '').trim() || 'Unknown title';
     const isbn10 = sanitizeIsbn(item.isbn10 || '');
     const isbn13 = sanitizeIsbn(item.isbn13 || '');
     const isbn = isbn13 || isbn10 || '';
-    const coverUrl = item.cover_url || (isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '');
 
-    const card = document.createElement('div'); card.className = 'book-card';
-    const coverWrap = document.createElement('div'); coverWrap.className = 'cover-wrap';
-    const img = document.createElement('img'); img.className = 'book-cover'; img.alt = title + ' cover';
+    const card = document.createElement('div');
+    card.className = 'book-card';
 
-    const placeholderClass = 'placeholder-' + ((idx % 4) + 1);
+    const coverWrap = document.createElement('div');
+    coverWrap.className = 'cover-wrap';
 
-    if(coverUrl){
-      img.src = coverUrl;
-      img.onload = () => { /* ok */ };
-      img.onerror = () => {
-        img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6');
-        coverWrap.classList.add(placeholderClass);
-      };
+    const img = document.createElement('img');
+    img.className = 'book-cover';
+    img.alt = title + ' cover';
+    img.title = title; // native tooltip on hover
+
+    // Attempt to use cover_url from CSV if present
+    let cover = (item.cover_url || '').trim();
+
+    // fallback: OpenLibrary by ISBN
+    if(!cover && isbn){
+      cover = `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
+    }
+
+    if(cover){
+      img.src = cover;
+      img.onerror = () => { img.src = makeInitialsPlaceholder(title, 300, 440, '#6B8DF6'); };
     } else {
-      img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6');
-      coverWrap.classList.add(placeholderClass);
+      img.src = makeInitialsPlaceholder(title, 300, 440, '#6B8DF6');
     }
 
     coverWrap.appendChild(img);
-    const meta = document.createElement('div'); meta.className = 'book-meta';
-    const t = document.createElement('div'); t.className = 'book-title'; t.textContent = title;
-    meta.appendChild(t);
-
     card.appendChild(coverWrap);
-    card.appendChild(meta);
+
     return card;
   }
 
   async function loadCsvCandidates(){
     for(const url of CSV_CANDIDATES){
       try{
-        const res = await fetch(url, {cache: 'no-store'});
+        const res = await fetch(url, {cache:'no-store'});
         if(!res.ok){ console.warn('CSV not found at', url, res.status); continue; }
         const txt = await res.text();
         const rows = parseCSV(txt);
@@ -278,7 +265,7 @@
     grid.innerHTML = 'Loading…';
     const data = await loadCsvCandidates();
     if(!data || data.length === 0){
-      grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found. Upload your CSV to <code>/data/books.csv</code> or ensure the sandbox path is correct for preview.</div>';
+      grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found. Upload your CSV (books.csv) to your repo under /data or ensure the sandbox path is correct for preview.</div>';
       countEl.textContent = '';
       return;
     }
@@ -287,11 +274,12 @@
     const mapped = data.map((row) => ({
       title: row.title || row.book || row.name || '',
       isbn10: row.isbn10 || row.isbn_10 || row.isbn_10_clean || '',
-      isbn13: row.isbn13 || row.isbn_13 || row.isbn_13_clean || ''
+      isbn13: row.isbn13 || row.isbn_13 || row.isbn_13_clean || '',
+      cover_url: row.cover_url || row.cover || ''
     }));
 
     mapped.forEach((item, i) => {
-      const card = createBookCard(item, i);
+      const card = createCoverCard(item, i);
       grid.appendChild(card);
     });
 
