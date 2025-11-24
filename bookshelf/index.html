@@ -7,34 +7,48 @@
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--card-bg: rgba(255,255,255,0.03);--header-max-width:640px;}
+    :root{
+      --bg:#dbe2eb;
+      --text:#111219;
+      --muted:#5b6066;
+      --card-bg: rgba(255,255,255,0.03);
+      --header-max-width:1200px;
+    }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
-    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}    
+    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08)}
     header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
-    .nav{max-width:var(--header-max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap:28px;font-size:15px;font-weight:600;color:var(--muted);margin:0 auto;}
+    .nav{max-width:var(--header-max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap:28px;font-size:15px;font-weight:600;color:var(--muted);margin:0 auto}
     .nav a{color:var(--muted);text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
+    .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
     .nav a.active{color:var(--text);border-bottom-color:var(--text)}
-
     main{width:100%;margin:48px auto;padding:0 24px}
     .page-title{font-weight:700;font-size:18px;margin:0 auto 18px;max-width:var(--header-max-width);padding:0 16px}
 
+    /* grid (covers-only) */
     .books-grid{width:100%;max-width:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px;align-items:start;padding: 0 8px 48px;justify-items:center}
     .book-card{width:160px;display:flex;justify-content:center;align-items:center;border-radius:8px;overflow:hidden;transition: transform .12s ease, box-shadow .12s ease;background:transparent;padding:6px}
     .book-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 24px rgba(16,24,40,0.08); }
-    .cover-wrap{width:150px;height:220px;border-radius:6px;overflow:hidden;display:block;background:#e9edf6;display:flex;align-items:center;justify-content:center}
-    .book-cover{ width:100%; height:100%; object-fit:cover; display:block }
+    .cover-wrap{width:150px;height:220px;border-radius:6px;overflow:hidden;display:block;background:#e9edf6;display:flex;align-items:center;justify-content:center;position:relative;pointer-events:auto}
+    .book-cover{ width:100%; height:100%; object-fit:cover; display:block; pointer-events:auto }
     .book-meta{display:none !important}
+
+    /* styled tooltip */
+    .cover-tooltip{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 8px);white-space:nowrap;background:rgba(10,15,30,0.95);color:#fff;font-size:13px;padding:6px 10px;border-radius:6px;box-shadow:0 8px 20px rgba(16,24,40,0.2);opacity:0;pointer-events:none;transition:opacity .12s ease, transform .12s ease;transform-origin:50% 100%;z-index:100}
+    .cover-wrap:hover .cover-tooltip,.cover-wrap:focus .cover-tooltip{opacity:1;transform:translateX(-50%) translateY(-4px)}
 
     @media (max-width:920px){ .books-grid{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px; } .cover-wrap{ width:130px; height:190px; } .book-card{ width:130px; } }
     @media (max-width:560px){ .books-grid{ grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; } .cover-wrap{ width:120px; height:175px; } .book-card{ width:120px; } }
-
     .book-count{max-width:var(--header-max-width);margin:10px auto;color:var(--muted);font-size:13px}
+
+    .placeholder-1{background:#6B8DF6}
+    .placeholder-2{background:#7ED7A6}
+    .placeholder-3{background:#FFA86B}
+    .placeholder-4{background:#C39BFF}
   </style>
 </head>
 <body>
   <div class="page-top-border"></div>
-
   <header>
     <nav class="nav" aria-label="Main navigation">
       <a href="/">Index</a>
@@ -46,11 +60,7 @@
 
   <main>
     <div class="page-title">Bookshelf</div>
-
-    <div id="books-grid" class="books-grid" aria-live="polite">
-      <!-- Covers will be injected here -->
-    </div>
-
+    <div id="books-grid" class="books-grid" aria-live="polite"></div>
     <div id="book-count" class="book-count" aria-live="polite"></div>
   </main>
 
@@ -67,100 +77,110 @@
   </div>
 
   <script>
-    const CSV_CANDIDATES = ['/mnt/data/Books Tracker - Sheet3.csv','/mnt/data/books.csv','/data/books.csv','/books.csv'];
+  const CSV_CANDIDATES = [
+    '/mnt/data/Books Tracker - Sheet3.csv',
+    '/mnt/data/books.csv',
+    '/data/books.csv',
+    '/books.csv'
+  ];
 
-    function parseCSV(text){
-      const rows=[]; let cur='', row=[], inQuotes=false;
-      for(let i=0;i<text.length;i++){ const ch=text[i], nxt=text[i+1];
-        if(ch==='"'){ if(inQuotes && nxt==='"'){ cur+='"'; i++; continue;} inQuotes=!inQuotes; continue; }
-        if(ch===',' && !inQuotes){ row.push(cur); cur=''; continue; }
-        if((ch==='\n' || ch==='\r') && !inQuotes){ if(ch==='\r' && text[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; continue; }
-        cur+=ch;
-      }
-      if(cur !== '' || row.length){ row.push(cur); rows.push(row); }
-      if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
-      return rows;
+  function parseCSV(text){
+    const rows=[]; let cur='', row=[], inQuotes=false;
+    for(let i=0;i<text.length;i++){ const ch=text[i], nxt=text[i+1];
+      if(ch==='"'){ if(inQuotes && nxt==='"'){ cur+='"'; i++; continue;} inQuotes=!inQuotes; continue; }
+      if(ch===',' && !inQuotes){ row.push(cur); cur=''; continue; }
+      if((ch==='\n' || ch==='\r') && !inQuotes){ if(ch==='\r' && text[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; continue; }
+      cur+=ch;
     }
-    function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
-    function sanitizeIsbn(s){ if(!s) return ''; s=String(s||'').trim().replace(/[^0-9Xx]/g,''); if(!s||s.toLowerCase()==='nan') return ''; return s; }
+    if(cur !== '' || row.length){ row.push(cur); rows.push(row); }
+    if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
+    return rows;
+  }
 
-    function makeInitialsPlaceholder(text,w=240,h=360,bg='#6B8DF6'){
-      const initials=(text||' ').split(/\s+/).slice(0,2).map(s=>s.charAt(0)).join('').toUpperCase()||'?';
-      const fontSize=Math.round(Math.min(w,h)/3.2);
-      const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='100%' height='100%' fill='${bg}'/><text x='50%' y='50%' font-family='Inter, Arial, sans-serif' font-size='${fontSize}' fill='white' text-anchor='middle' dominant-baseline='middle'>${initials}</text></svg>`;
-      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    }
+  function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
+  function sanitizeIsbn(s){ if(!s) return ''; s=String(s||'').trim().replace(/[^0-9Xx]/g,''); if(!s||s.toLowerCase()==='nan') return ''; return s; }
 
-    function createBookCard(item, idx){
-      const title = (item.title || '').trim() || 'Unknown title';
-      const isbn10 = sanitizeIsbn(item.isbn10 || '');
-      const isbn13 = sanitizeIsbn(item.isbn13 || '');
-      const isbn = isbn13 || isbn10 || '';
-      const coverUrl = (item.cover_url || '').trim() || (isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '');
+  function makeInitialsPlaceholder(text,w=240,h=360,bg='#6B8DF6'){
+    const initials=(text||' ').split(/\s+/).slice(0,2).map(s=>s.charAt(0)).join('').toUpperCase()||'?';
+    const fontSize=Math.round(Math.min(w,h)/3.2);
+    const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='100%' height='100%' fill='${bg}'/><text x='50%' y='50%' font-family='Inter, Arial, sans-serif' font-size='${fontSize}' fill='white' text-anchor='middle' dominant-baseline='middle'>${initials}</text></svg>`;
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
 
-      const card = document.createElement('div'); card.className='book-card';
-      const coverWrap = document.createElement('div'); coverWrap.className='cover-wrap';
-      const img = document.createElement('img'); img.className='book-cover'; img.alt = title + ' cover';
+  function createBookCard(item, idx){
+    const title = (item.title || '').trim() || 'Unknown title';
+    const isbn10 = sanitizeIsbn(item.isbn10 || '');
+    const isbn13 = sanitizeIsbn(item.isbn13 || '');
+    const isbn = isbn13 || isbn10 || '';
+    const coverUrl = (item.cover_url || '').trim() || (isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '');
 
-      // KEY: native tooltip
-      img.title = title;
+    const card = document.createElement('div'); card.className = 'book-card';
+    const coverWrap = document.createElement('div'); coverWrap.className = 'cover-wrap';
+    const img = document.createElement('img'); img.className = 'book-cover'; img.alt = title + ' cover';
 
-      const placeholderClass = 'placeholder-' + ((idx % 4) + 1);
-      if(coverUrl){
-        img.src = coverUrl;
-        img.onerror = () => { img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6'); coverWrap.classList.add(placeholderClass); };
-      } else {
-        img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6');
-        coverWrap.classList.add(placeholderClass);
-      }
+    // fallback native title (keeps accessibility) + wrapper title
+    img.title = title;
+    coverWrap.title = title;
+    coverWrap.tabIndex = 0;
 
-      coverWrap.appendChild(img);
-      // Option A: no visible meta appended
-      card.appendChild(coverWrap);
-      return card;
-    }
+    // styled tooltip element
+    const tip = document.createElement('div'); tip.className = 'cover-tooltip'; tip.textContent = title; coverWrap.appendChild(tip);
 
-    async function loadCsvCandidates(){
-      for(const url of CSV_CANDIDATES){
-        try{
-          const res = await fetch(url, {cache:'no-store'});
-          if(!res.ok) continue;
-          const txt = await res.text();
-          const rows = parseCSV(txt);
-          if(!rows || rows.length<1) continue;
-          const headers = rows[0].map(normalizeHeader);
-          const objs = [];
-          for(let r=1;r<rows.length;r++){
-            const row = rows[r];
-            if(row.every(c => String(c||'').trim()==='')) continue;
-            const obj = {};
-            for(let c=0;c<headers.length;c++){ obj[headers[c]] = row[c] !== undefined ? row[c].trim() : ''; }
-            objs.push(obj);
-          }
-          return objs;
-        }catch(e){ console.warn('csv fetch/parse failed', url, e); continue; }
-      }
-      return null;
+    const placeholderClass = 'placeholder-' + ((idx % 4) + 1);
+    if(coverUrl){
+      img.src = coverUrl;
+      img.onerror = () => { img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6'); coverWrap.classList.add(placeholderClass); };
+    } else {
+      img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6');
+      coverWrap.classList.add(placeholderClass);
     }
 
-    (async function init(){
-      const grid = document.getElementById('books-grid');
-      const countEl = document.getElementById('book-count');
-      grid.innerHTML = 'Loading…';
-      const data = await loadCsvCandidates();
-      if(!data || !data.length){ grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found — upload your CSV to <code>/data/books.csv</code> or ensure the sandbox path is correct.</div>'; countEl.textContent=''; return; }
+    coverWrap.appendChild(img);
+    card.appendChild(coverWrap);
+    return card;
+  }
 
-      grid.innerHTML = '';
-      const mapped = data.map(row => ({
-        title: row.title || row.book || row.name || '',
-        isbn10: row.isbn10 || row.isbn_10 || '',
-        isbn13: row.isbn13 || row.isbn_13 || '',
-        cover_url: row.cover_url || row.cover || ''
-      }));
+  async function loadCsvCandidates(){
+    for(const url of CSV_CANDIDATES){
+      try{
+        const res = await fetch(url, {cache:'no-store'});
+        if(!res.ok){ console.warn('CSV not found at', url, res.status); continue; }
+        const txt = await res.text();
+        const rows = parseCSV(txt);
+        if(!rows || rows.length < 1) continue;
+        const headers = rows[0].map(normalizeHeader);
+        const objs = [];
+        for(let r = 1; r < rows.length; r++){
+          const row = rows[r];
+          if(row.every(c => String(c||'').trim() === '')) continue;
+          const obj = {};
+          for(let c = 0; c < headers.length; c++){ obj[headers[c]] = row[c] !== undefined ? row[c].trim() : ''; }
+          objs.push(obj);
+        }
+        return objs;
+      }catch(err){ console.warn('Failed to fetch/parse CSV', url, err); continue; }
+    }
+    return null;
+  }
 
-      mapped.forEach((item,i) => { grid.appendChild(createBookCard(item,i)); });
-      countEl.textContent = `${mapped.length} book${mapped.length>1?'s':''}`;
-    })();
+  (async function init(){
+    const grid = document.getElementById('books-grid');
+    const countEl = document.getElementById('book-count');
+    grid.innerHTML = 'Loading…';
+    const data = await loadCsvCandidates();
+    if(!data || data.length === 0){ grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found. Upload your CSV (books.csv) to your repo under /data or ensure the sandbox path is correct for preview.</div>'; countEl.textContent = ''; return; }
+
+    grid.innerHTML = '';
+    const mapped = data.map((row) => ({
+      title: row.title || row.book || row.name || '',
+      isbn10: row.isbn10 || row.isbn_10 || row.isbn_10_clean || '',
+      isbn13: row.isbn13 || row.isbn_13 || row.isbn_13_clean || '',
+      cover_url: row.cover_url || row.cover || ''
+    }));
+
+    mapped.forEach((item, i) => { const card = createBookCard(item, i); grid.appendChild(card); });
+    countEl.textContent = `${mapped.length} book${mapped.length>1?'s':''}`;
+  })();
   </script>
 </body>
 </html>
