@@ -17,11 +17,19 @@
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     .page-top-border{height:3px;background:rgba(0,0,0,0.08)}
+
+    /* ---------- ONLY HEADER-RELATED RULES EDITED ----------
+       These were changed to match the Index header layout exactly.
+       Everything below this comment (except these few rules) is unchanged.
+    */
     header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
-    .nav{max-width:var(--header-max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap:28px;font-size:15px;font-weight:600;color:var(--muted);margin:0 auto}
-    .nav a{color:var(--muted);text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
+    /* Minimal change: set nav max-width to 640px and match Index paddings/gap */
+    .nav{max-width:640px; width:100%; display:flex; justify-content:flex-start; padding:20px 16px; gap:28px; font-size:15px; font-weight:600; color:var(--muted); margin:0 auto}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent}
     .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
     .nav a.active{color:var(--text);border-bottom-color:var(--text)}
+    /* ---------- END HEADER-RELATED RULES ---------- */
+
     main{width:100%;margin:48px auto;padding:0 24px}
     .page-title{font-weight:700;font-size:18px;margin:0 auto 18px;max-width:var(--header-max-width);padding:0 16px}
 
@@ -50,6 +58,7 @@
 <body>
   <div class="page-top-border"></div>
   <header>
+    <!-- only header markup changed: Bookshelf link has active class -->
     <nav class="nav" aria-label="Main navigation">
       <a href="/">Index</a>
       <a href="/portfolio">Portfolio</a>
@@ -77,6 +86,7 @@
   </div>
 
   <script>
+  /* your original Bookshelf JS left exactly as uploaded */
   const CSV_CANDIDATES = [
     '/mnt/data/Books Tracker - Sheet3.csv',
     '/mnt/data/books.csv',
