@@ -20,14 +20,12 @@
     main{max-width:1200px;margin:48px auto;padding:0 16px}
     .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
 
-    /* TWO COLUMN LAYOUT */
     .two-col{
       display:grid;
       grid-template-columns: 64% 34%;
       gap:28px;
     }
 
-    /* LEFT COLUMN: Portfolio */
     .projects-grid{display:flex;flex-direction:column;gap:18px}
     .project-card{display:flex;flex-direction:row;gap:18px;align-items:center;border-radius:8px;overflow:hidden;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.03);padding:8px;transition:transform 180ms ease, box-shadow 180ms ease}
     .project-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(16,24,40,0.12)}
@@ -37,7 +35,6 @@
     .project-title{font-weight:700;margin-bottom:6px}
     .project-tagline{color:var(--muted);font-size:14px}
 
-    /* RIGHT COLUMN: TOOLS */
     .tools-col{display:flex;flex-direction:column;gap:16px}
     .tool-header{font-weight:700;font-size:16px;margin-bottom:4px}
     .tool-card{display:flex;gap:14px;align-items:flex-start;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.04);padding:12px;text-decoration:none;color:var(--text);transition:transform 160ms ease, box-shadow 160ms ease}
@@ -76,7 +73,6 @@
 
     <div class="two-col">
 
-      <!-- LEFT COLUMN: CURRENT PROJECTS -->
       <div class="projects-grid">
         <a href="https://heyabc.notion.site/Dunzo-Increasing-AOV-edc4632e76b74acfae93aeccb882da55" class="project-card" target="_blank" rel="noopener">
           <img src="/images/1.webp" alt="Dunzo : Increasing AOV" />
@@ -111,7 +107,6 @@
         </a>
       </div>
 
-      <!-- RIGHT COLUMN: TOOLS -->
       <div class="tools-col">
 
         <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank" rel="noopener">
@@ -122,22 +117,16 @@
           </div>
         </a>
 
-        <!-- Existing YC Tracker Entry -->
         <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="data:image/svg+xml;utf8,
-  <svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>
-    <rect width='200' height='200' fill='%23FF6F1F'/>
-    <text x='50%' y='55%' font-size='110' font-family='Inter' fill='white' text-anchor='middle' alignment-baseline='middle'>Y</text>
-  </svg>" alt="YC Startup Tracker" />
+          <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS Icon" />
           <div>
             <div class="tool-title">DiscoveryOS</div>
             <div class="tool-sub">Using Y combinator and Product Hunt APIs to track the next big thing!</div>
           </div>
         </a>
 
-        <!-- ⭐ NEW ENTRY: Y Combinator Bot -->
         <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="/images/yc-logo.png" alt="Y Combinator Logo" />
+          <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="Y Combinator Logo" />
           <div>
             <div class="tool-title">Y Combinator Bot</div>
             <div class="tool-sub">Posting Twitter updates whenever a new startup hits the YC directory.</div>
@@ -151,4 +140,11 @@
 
   <div class="social-fixed">
     <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M4.98 3.5a2.5 2.5 0 11-.01 5.001A2.5 2.5 0 014.98 3.5zM3 8.98h4v12H3v-12zm7 0h3.8v1.64h.05c.53-1 1.84-2.06 3.8-2.06 4.06 0 4.8 2.67 4.8 6.14v6.28h-4v-5.56c0-1.33-.02-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95v5.66h-4v-12z"/>
+      </svg>
+    </a>
+  </div>
+
+</body>
+</html>
