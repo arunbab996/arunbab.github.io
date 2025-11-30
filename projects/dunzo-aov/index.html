@@ -6,73 +6,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.png" type="image/png">
     <style>
-      :root{--max-width:980px;--accent:#0b63d6;--muted:#6b7280;--card-bg:#fff}
-      html,body{height:100%}
-      body{
-        font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;
-        line-height:1.6;
-        color:#0f1724;
-        background:#f7f9fb;
-        padding:28px;
+      :root {
+        --content-max: 1100px;
+        --accent: #0b63d6;
+        --muted: #6b7280;
+        --card-bg: #ffffff;
+        --panel: #f0fff5; /* for hero green panel */
+      }
+      html, body { height: 100%; }
+      body {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        line-height: 1.6;
+        color: #0f1724;
+        background: #f7f9fb;
+        padding: 28px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .wrap { max-width: var(--content-max); width: 100%; }
+      header { border-bottom: 1px solid #e6e9ef; padding-bottom: 12px; margin-bottom: 18px; }
+      nav a { margin-right: 12px; color: var(--muted); text-decoration: none; font-size: 15px; }
+      main {
+        background: var(--card-bg);
+        padding: 28px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(15,23,36,0.06);
+        border: 1px solid #eef2f7;
+      }
+
+      h1 { font-size: 26px; margin: 0 0 6px; }
+      .meta-line { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+      section { margin-top: 20px; }
+      h2 { font-size: 18px; margin-bottom: 10px; color: #0f1724; }
+      h3 { font-size: 15.5px; margin: 12px 0 8px; color: #0b2546; }
+      p { color: #172031; margin: 8px 0; }
+      ul { margin: 8px 0 8px 20px; }
+      .two-col { display: grid; grid-template-columns: 1fr 320px; gap: 26px; align-items: start; }
+      .aside-card { background: var(--card-bg); padding: 14px; border-radius: 8px; border: 1px solid #eef2f7; }
+      table { width: 100%; border-collapse: collapse; margin-top: 8px; background: var(--card-bg); }
+      th, td { border: 1px solid #e8ecf2; padding: 10px; text-align: left; }
+      th { background: #f8fafc; color: #0f1724; }
+
+      /* HERO styling - centered small tile in coloured panel */
+      .hero-panel {
+        background: linear-gradient(180deg, var(--panel), var(--panel));
+        border-radius: 10px;
+        padding: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 12px 0 18px;
+      }
+      .hero-panel .hero-inner {
+        width: 480px;
+        max-width: 88%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .hero-panel img {
+        width: 320px;            /* tile-like size */
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(12,24,48,0.08);
+        border: 1px solid rgba(255,255,255,0.4);
+        background: #fff;
+      }
+
+      /* Solution images card */
+      .figure-card {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 12px;
+        border: 1px solid #eef2f7;
+        margin: 14px 0;
         display:flex;
-        justify-content:center
+        justify-content:center;
       }
-      .wrap{max-width:var(--max-width);width:100%}
-      a{color:var(--accent);text-decoration:none}
-      header{
-        border-bottom:1px solid #e6e9ef;
-        padding-bottom:12px;
-        margin-bottom:18px
-      }
-      nav a{margin-right:10px;color:var(--muted)}
-      main{
-        background:#ffffff;
-        padding:26px;
-        border-radius:12px;
-        box-shadow:0 6px 18px rgba(15,23,36,0.06);
-        border:1px solid #eef2f7
-      }
-      h1{font-size:24px;margin:0 0 6px 0}
-      .meta-line{color:var(--muted);font-size:14px;margin-bottom:14px}
-      .hero img{
-        max-width:100%;
-        height:auto;
-        border-radius:8px;
+      .figure-card img {
+        max-width: 560px;
+        width: 100%;
+        height: auto;
         display:block;
-        margin:12px 0 18px
+        border-radius: 6px;
       }
-      section{margin-top:18px;}
-      h2{font-size:18px;margin-bottom:8px;color:#0f1724}
-      h3{font-size:16px;margin:12px 0 8px;color:#0b2546}
-      p{color:#172031;margin:8px 0}
-      ul{margin:8px 0 8px 20px}
-      .two-col{
-        display:grid;
-        grid-template-columns:1fr 300px;
-        gap:20px;
-        align-items:start
+      figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; text-align:center; }
+
+      /* Responsive & table overflow */
+      .table-wrap { overflow-x: auto; border-radius: 6px; }
+      table { min-width: 560px; }
+      @media (max-width: 1000px) {
+        .two-col { grid-template-columns: 1fr; }
+        .aside-card { margin-top: 6px; }
+        .hero-panel { padding: 20px; }
       }
-      .aside-card{
-        background:var(--card-bg);
-        padding:14px;
-        border-radius:8px;
-        border:1px solid #eef2f7
-      }
-      table{
-        width:100%;
-        border-collapse:collapse;
-        margin-top:8px;
-        background:var(--card-bg)
-      }
-      th,td{
-        border:1px solid #e8ecf2;
-        padding:10px;
-        text-align:left
-      }
-      th{background:#f8fafc;color:#0f1724}
-      figure{margin:12px 0}
-      figcaption{font-size:13px;color:var(--muted);margin-top:6px}
-      @media (max-width:900px){.two-col{grid-template-columns:1fr}}
     </style>
   </head>
   <body>
@@ -89,8 +118,12 @@
         <h1>Dunzo Daily – Increasing Average Order Value (AOV)</h1>
         <div class="meta-line"><em>Type: Product Strategy / Growth · Domain: Hyperlocal Commerce, B2C</em></div>
 
-        <section class="hero">
-          <img src="/projects/dunzo-aov/images/image1.png" alt="Dunzo hero image" />
+        <!-- HERO: prefers hero.png, falls back to image1.png -->
+        <section class="hero-panel" aria-hidden="false">
+          <div class="hero-inner">
+            <img src="/projects/dunzo-aov/images/hero.png" alt="Dunzo tile / hero image"
+                 onerror="this.onerror=null;this.src='/projects/dunzo-aov/images/image1.png'">
+          </div>
         </section>
 
         <div class="two-col">
@@ -115,19 +148,13 @@
 
             <section>
               <h2>3. Understanding Unit Economics</h2>
-              <p>Dunzo Daily completed ~55 lakh orders in June (year referenced). The business operated with a monthly burn of ₹176 Cr, driven by:</p>
-              <ul>
-                <li>Delivery cost</li>
-                <li>Storage, handling & packaging</li>
-                <li>Payment gateway charges</li>
-              </ul>
+              <p>Dunzo Daily completed ~55 lakh orders in June (year referenced). The business operated with a monthly burn of ₹176 Cr, driven by delivery cost, storage/handling/packaging and payment gateway charges.</p>
               <p><strong>AOV = Revenue / Number of Orders</strong></p>
               <p>To improve AOV, we can:</p>
               <ul>
                 <li>Increase revenue per order (larger baskets)</li>
                 <li>Reduce the proportion of small-cart orders</li>
               </ul>
-              <p>High-frequency + low-value orders → economically unsustainable · High-frequency + high-value orders → ideal</p>
             </section>
 
             <section>
@@ -160,85 +187,85 @@
               <h3>1. Reposition “Add More” in Checkout (Medium Effort, High Impact)</h3>
               <p>Currently, users move to checkout without seeing what they might be missing. By repositioning “+ Add More” prominently at the end of the Review Items list, it triggers a last-minute review of essentials, encourages cart top-ups and leverages the psychology of “I’m already paying for delivery; let me get everything in one go.” This reduces low-value orders and improves average basket size.</p>
 
-              <figure>
+              <figure class="figure-card">
                 <img src="/projects/dunzo-aov/images/image1.png" alt="Reposition Add More mock" />
-                <figcaption>Illustration: Repositioning the “Add More” CTA in checkout to prompt top-ups.</figcaption>
               </figure>
+              <figcaption>Repositioning the “Add More” CTA in checkout to prompt top-ups.</figcaption>
 
               <h3>2. Item Prompts – Contextual Recommendations (High Effort, High Impact)</h3>
-              <p>Introduce intelligent “Customers Also Bought” recommendations across Checkout and Product category pages.</p>
-              <ul>
-                <li>Razor → Shaving cream</li>
-                <li>Pasta → Pasta sauce</li>
-                <li>Bread → Eggs</li>
-              </ul>
-              <p>Impact: reduces decision-making effort and drives incremental purchases.</p>
+              <p>Introduce intelligent “Customers Also Bought” recommendations across Checkout and Product category pages (e.g., Razor → Shaving cream, Pasta → Pasta sauce).</p>
 
-              <figure>
+              <figure class="figure-card">
                 <img src="/projects/dunzo-aov/images/image2.png" alt="Item prompts mock" />
-                <figcaption>Illustration: Contextual item prompts on checkout and product pages.</figcaption>
               </figure>
+              <figcaption>Contextual item prompts on checkout and product pages to reduce decision effort.</figcaption>
 
               <h3>3. Combos – Item Bundles (High Effort, High Impact)</h3>
-              <p>Launch a dedicated Combos section with pre-curated bundles (Weekly vegetable packs, Breakfast kits, Cleaning essentials combos, Fruits-of-the-week). Designed based on popular regional buying patterns and seasonal changes.</p>
+              <p>Launch a dedicated Combos section with pre-curated bundles (Weekly vegetable packs, Breakfast kits, Cleaning essentials). Designed based on popular regional buying patterns and seasonal changes.</p>
 
-              <figure>
+              <figure class="figure-card">
                 <img src="/projects/dunzo-aov/images/image3.png" alt="Combos mock" />
-                <figcaption>Illustration: Pre-curated bundles (Combos) for convenience and higher AOV.</figcaption>
               </figure>
+              <figcaption>Pre-curated bundles (Combos) for convenience and higher AOV.</figcaption>
 
               <h3>4. Post-Checkout Nudges (Low Effort, Low Impact)</h3>
-              <p>After order placement, replace the idle delivery-tracking screen with “Popular purchases in your neighbourhood”, discovery nudges for next time, and new/seasonal item suggestions.</p>
+              <p>After order placement, replace the idle delivery-tracking screen with “Popular purchases in your neighbourhood”, discovery nudges, and new/seasonal item suggestions to educate users for the next purchase.</p>
             </section>
 
             <section>
               <h2>7. Competitor Benchmarking</h2>
               <p>Competitors already use a mix of bundled SKUs, high-visibility upsells, and smart recommendations. Dunzo can close the gap via better personalization + placement.</p>
-              <table>
-                <thead>
-                  <tr><th>Company</th><th>Funding</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Swiggy Instamart</td><td>$3.6B</td></tr>
-                  <tr><td>BigBasket</td><td>$1.3B</td></tr>
-                  <tr><td>Blinkit</td><td>$1B</td></tr>
-                  <tr><td>Zepto</td><td>$360M</td></tr>
-                  <tr><td>Milkbasket</td><td>$38.5M</td></tr>
-                  <tr><td>JioMart</td><td>Subsidiary of Reliance</td></tr>
-                </tbody>
-              </table>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Company</th><th>Funding</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Swiggy Instamart</td><td>$3.6B</td></tr>
+                    <tr><td>BigBasket</td><td>$1.3B</td></tr>
+                    <tr><td>Blinkit</td><td>$1B</td></tr>
+                    <tr><td>Zepto</td><td>$360M</td></tr>
+                    <tr><td>Milkbasket</td><td>$38.5M</td></tr>
+                    <tr><td>JioMart</td><td>Subsidiary of Reliance</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section>
               <h2>8. Impact Estimation</h2>
               <p>Proposed Solution, Priority, AOV Impact are summarised below. Highest AOV lift comes from combining Item Prompts + Combos.</p>
-              <table>
-                <thead>
-                  <tr><th>Proposed Solution</th><th>Priority</th><th>AOV Impact</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Reposition “+ Add More”</td><td>Medium</td><td>High</td></tr>
-                  <tr><td>Item Prompts (Upsell)</td><td>High</td><td>High</td></tr>
-                  <tr><td>Combos / Bundles</td><td>High</td><td>High</td></tr>
-                  <tr><td>Post-Checkout Nudges</td><td>Low</td><td>Low</td></tr>
-                </tbody>
-              </table>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Proposed Solution</th><th>Priority</th><th>AOV Impact</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Reposition “+ Add More”</td><td>Medium</td><td>High</td></tr>
+                    <tr><td>Item Prompts (Upsell)</td><td>High</td><td>High</td></tr>
+                    <tr><td>Combos / Bundles</td><td>High</td><td>High</td></tr>
+                    <tr><td>Post-Checkout Nudges</td><td>Low</td><td>Low</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section>
               <h2>9. Success Metrics</h2>
               <p>To measure impact on both behaviour and business outcomes:</p>
-              <table>
-                <thead>
-                  <tr><th>Question</th><th>Metric</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Are users discovering features?</td><td>% users interacting with Add More / Combos</td></tr>
-                  <tr><td>Are they converting?</td><td>Funnel progression (view → add → purchase)</td></tr>
-                  <tr><td>Are they satisfied?</td><td>NPS, post-checkout feedback</td></tr>
-                  <tr><td>Is AOV increasing?</td><td>AOV of exposed users vs control group</td></tr>
-                </tbody>
-              </table>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Question</th><th>Metric</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Are users discovering features?</td><td>% users interacting with Add More / Combos</td></tr>
+                    <tr><td>Are they converting?</td><td>Funnel progression (view → add → purchase)</td></tr>
+                    <tr><td>Are they satisfied?</td><td>NPS, post-checkout feedback</td></tr>
+                    <tr><td>Is AOV increasing?</td><td>AOV of exposed users vs control group</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section>
@@ -273,7 +300,7 @@
           </aside>
         </div>
 
-        <footer style="margin-top:26px;color:#6b7280;font-size:13px">
+        <footer style="margin-top:26px;color:var(--muted);font-size:13px">
           Source document included in portfolio (content unchanged).
         </footer>
       </main>
