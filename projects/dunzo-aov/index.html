@@ -11,7 +11,8 @@
         --accent:#0b63d6;
         --muted:#6b7280;
         --card-bg:#ffffff;
-        --panel:#effff3; /* softer green panel */
+        --panel:#effff3;
+        --table-max:700px; /* medium width per your choice */
       }
       html,body{height:100%}
       body{
@@ -41,11 +42,7 @@
       h3{font-size:15.5px;margin:12px 0 8px;color:#0b2546}
       p{color:#172031;margin:8px 0}
       ul{margin:8px 0 8px 20px}
-      table{width:100%;border-collapse:collapse;margin-top:8px;background:var(--card-bg)}
-      th,td{border:1px solid #e8ecf2;padding:10px;text-align:left}
-      th{background:#f8fafc;color:#0f1724}
-
-      /* HERO styling - now larger but contained */
+      /* HERO */
       .hero-panel{
         background: linear-gradient(180deg,var(--panel),var(--panel));
         border-radius:10px;
@@ -63,7 +60,7 @@
         align-items:center;
       }
       .hero-inner img{
-        width:520px;           /* larger tile */
+        width:520px;
         max-width:100%;
         height:auto;
         border-radius:8px;
@@ -71,8 +68,7 @@
         border:1px solid rgba(255,255,255,0.45);
         background:#fff;
       }
-
-      /* Solution images card - larger but responsive */
+      /* Solution images */
       .figure-card{
         background:#ffffff;
         border-radius:8px;
@@ -90,14 +86,25 @@
         border-radius:6px;
       }
       figcaption{font-size:13px;color:var(--muted);margin-top:8px;text-align:center}
-
-      /* tables responsive */
-      .table-wrap{overflow-x:auto;border-radius:6px}
-      table{min-width:560px}
-
-      /* single-column layout (no aside) adjustments */
+      /* Table container — centered, limited width */
+      .table-wrap{
+        overflow-x:auto;
+        border-radius:6px;
+        display:flex;
+        justify-content:center; /* center the inner table */
+        padding:6px 0;
+      }
+      table{
+        width:100%;
+        max-width:var(--table-max);
+        border-collapse:collapse;
+        background:var(--card-bg);
+        box-shadow:none;
+      }
+      th,td{border:1px solid #e8ecf2;padding:10px;text-align:left}
+      th{background:#f8fafc;color:#0f1724}
+      /* Single-column layout adjustments */
       .content { padding-right:0; }
-
       @media (max-width:1000px){
         .hero-inner{width:100%}
         .hero-inner img{width:420px}
@@ -294,9 +301,6 @@
             <p><strong>Expected outcome:</strong><br>30–40% improvement in AOV over 8–12 weeks for targeted user cohorts, with meaningful improvement to contribution margins.</p>
           </section>
 
-          <footer style="margin-top:26px;color:var(--muted);font-size:13px">
-            Source document included in portfolio (content unchanged).
-          </footer>
         </div>
       </main>
     </div>
