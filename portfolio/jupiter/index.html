@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jupiter — Gamification (PRD)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <meta name="description" content="Jupiter Gamification PRD — behaviour architecture to build budgeting habit." />
+    <style>
+      :root{
+        --content-max:1100px;
+        --accent:#0b63d6;
+        --muted:#6b7280;
+        --card-bg:#ffffff;
+        --panel:#f7fbff;
+        --table-max:500px; /* C - very narrow per your choice */
+      }
+      html,body{height:100%}
+      body{
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        line-height:1.6;
+        color:#0f1724;
+        background:#f7f9fb;
+        padding:28px;
+        display:flex;
+        justify-content:center;
+      }
+      .wrap{max-width:var(--content-max);width:100%}
+      header{border-bottom:1px solid #e6e9ef;padding-bottom:12px;margin-bottom:18px}
+      nav{display:flex;gap:18px}
+      nav a{color:var(--muted);text-decoration:none;font-size:15px}
+      main{
+        background:var(--card-bg);
+        padding:28px;
+        border-radius:12px;
+        box-shadow:0 6px 18px rgba(15,23,36,0.06);
+        border:1px solid #eef2f7;
+      }
+      h1{font-size:26px;margin:0 0 6px}
+      .meta-line{color:var(--muted);font-size:14px;margin-bottom:16px}
+      section{margin-top:20px}
+      h2{font-size:18px;margin-bottom:10px;color:#0f1724}
+      h3{font-size:15.5px;margin:12px 0 8px;color:#0b2546}
+      p{color:#172031;margin:8px 0}
+      ul{margin:8px 0 8px 20px}
+      /* HERO */
+      .hero-panel{
+        background: linear-gradient(180deg,var(--panel),var(--panel));
+        border-radius:10px;
+        padding:30px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin:12px 0 20px;
+      }
+      .hero-inner{
+        width:720px;
+        max-width:92%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+      }
+      .hero-inner img{
+        width:640px;
+        max-width:100%;
+        height:auto;
+        border-radius:8px;
+        box-shadow:0 10px 30px rgba(12,24,48,0.07);
+        border:1px solid rgba(255,255,255,0.45);
+        background:#fff;
+      }
+      /* tables centered and narrow */
+      .table-wrap{overflow-x:auto;border-radius:6px;display:flex;justify-content:center;padding:6px 0}
+      table{width:100%;max-width:var(--table-max);border-collapse:collapse;background:var(--card-bg)}
+      th,td{border:1px solid #e8ecf2;padding:10px;text-align:left}
+      th{background:#f8fafc;color:#0f1724}
+      @media (max-width:1000px){
+        .hero-inner img{width:100%}
+        main{padding:20px}
+      }
+      @media (max-width:600px){
+        body{padding:18px}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <nav>
+          <a href="/" title="Home">Home</a>
+          <a href="/portfolio" title="Portfolio">Portfolio</a>
+        </nav>
+      </header>
+
+      <main>
+        <h1>Jupiter — Gamification PRD</h1>
+        <div class="meta-line"><em>Source: Jupiter Gamification PRD (verbatim).</em></div>
+
+        <!-- hero.png (placed at /portfolio/jupiter/images/hero.png). If missing, it will show a broken image fallback; upload hero.png to avoid that. -->
+        <section class="hero-panel" aria-hidden="false">
+          <div class="hero-inner">
+            <img src="/portfolio/jupiter/images/hero.png" alt="Jupiter gamification hero image"
+                 onerror="this.onerror=null;this.style.display='none'">
+          </div>
+        </section>
+
+        <!-- CONTENT: Verbatim from your uploaded doc. Citation: Jupiter Gamification PRD. -->
+        <section>
+          <h2>1. Strategic Context</h2>
+          <p>Jupiter’s long-term strategic moat cannot be built on payments, which are fully commoditised, nor on banking rails, which are standardised. The real moat lies in habit formation: creating a financial behaviour ecosystem where users repeatedly return, not because they must, but because the system makes managing money feel rewarding, clarifying, and emotionally reinforcing.</p>
+          <p>Budgeting should be that anchor habit, but current user behaviour demonstrates the opposite pattern:
+ strong initial intent → rapid decay → long-term disengagement.</p>
+          <p>This drop-off is not unique to Jupiter; it is a well-documented behaviour gap across global fintech products: people want to “be better with money,” but the cognitive load of tracking expenses, interpreting data, and making weekly adjustments is high. What Jupiter lacks is not data, but a behaviour-shaping layer that transforms information into meaning, meaning into action, and action into sustained habit.</p>
+          <p><strong>The strategic imperative:</strong></p>
+          <p>If Jupiter can turn budgeting into a weekly ritual, it unlocks a multi-year LTV flywheel.</p>
+          <p>Why? Because disciplined users:</p>
+          <ul>
+            <li>Monitor spending → reduce bad behaviours</li>
+            <li>Build savings → increase deposits</li>
+            <li>Form trust → adopt pots, UPI++, card features</li>
+            <li>Become credit eligible → open lending opportunities</li>
+            <li>Engage weekly → deepen retention loops</li>
+          </ul>
+          <p>A budgeting habit is not a feature; it is a platform accelerant. The proposed Gamification Layer enables this by aligning product mechanics with human behavioural architecture.</p>
+        </section>
+
+        <section>
+          <h2>2. Problem Statement - The Behavioural Gap</h2>
+          <p>The problem is not that users “don’t budget.” The problem is that Jupiter’s current structure asks users to do the hard part of budgeting-interpretation and discipline-without providing the emotional scaffolding required to sustain it.</p>
+          <p>There are four intertwined behavioural gaps:</p>
+
+          <h3>2.1 Cognitive Interpretation Gap</h3>
+          <p>Users do not struggle with numbers; they struggle with meaning.</p>
+          <p>A category total of ₹3,450 is inert information. A contextual insight like “up 44% vs last week” is a narrative.</p>
+          <p>Narratives activate the brain’s pattern-detection systems. Numbers activate working memory, which fatigues quickly.</p>
+          <p>This is why current Insights underperform: they are accurate but meaningless without interpretation.</p>
+
+          <h3>2.2 Motivation Gap</h3>
+          <p>Discipline has no immediate reward; indulgence does. Ordering a meal = instant dopamine. Staying within budget = no visible reward.</p>
+          <p>Unless the system creates micro-reward loops, intention always loses to temptation. This is the core behavioural mismatch Jupiter needs to fix.</p>
+
+          <h3>2.3 Action Gap</h3>
+          <p>Even when meaning is clear, action is not. “Your food spending increased” is merely information. “Set a ₹2,500 weekly food budget?” is an actionable trigger.</p>
+          <p>Without reducing the number of decisions required, users default to avoidance.</p>
+
+          <h3>2.4 Feedback Loop Gap</h3>
+          <p>Humans build habits through tight feedback loops. Jupiter’s budgeting currently provides:</p>
+          <ul>
+            <li>No weekly closure</li>
+            <li>No emotional reinforcement</li>
+            <li>No visible progress</li>
+            <li>No comparative context</li>
+          </ul>
+          <p>The user is left floating in ambiguity. To correct behaviour, the system must provide fast, emotionally salient, and identity-building feedback.</p>
+        </section>
+
+        <section>
+          <h2>3. Product Vision</h2>
+          <p>Build a behaviour-shaping financial layer that translates raw spending into emotionally resonant insights, action-ready triggers, and weekly progress loops - enabling young Indians to internalize financial discipline as part of their identity.</p>
+          <p>This is not “gamification” in the entertainment sense. This is behavioural infrastructure, similar to what Duolingo did for learning or Strava did for fitness.</p>
+          <p>Our goal is not to delight the user superficially; it is to build a system that makes disciplined behaviour statistically more likely over time.</p>
+        </section>
+
+        <section>
+          <h2>4. Proposed Solution - The Behaviour Architecture</h2>
+          <p>The solution consists of four interlocking systems, each reinforcing the others. Each is described deeply but clearly, ensuring the narrative remains digestible.</p>
+
+          <h3>4.1 Insight Reframing Layer</h3>
+          <p>The first step in behaviour change is comprehension, not action.</p>
+          <p>We replace passive category totals with interpretive insights:</p>
+          <ul>
+            <li>Week-over-week changes</li>
+            <li>Percentage deltas</li>
+            <li>Contextual interpretation</li>
+            <li>Spend anomalies</li>
+            <li>Behaviour-based micro-narratives</li>
+          </ul>
+          <p>Example:</p>
+          <p>“You spent 44% more on Food this week - likely due to two Swiggy orders on Friday. If you repeat this pattern, you’ll overshoot next week’s food budget by ₹600.”</p>
+          <p>This approach does three things:</p>
+          <ul>
+            <li>Converts numeric data into stories the user can act on.</li>
+            <li>Reduces cognitive load by shifting interpretation from user → product.</li>
+            <li>Builds emotional salience by highlighting implications, not just numbers.</li>
+          </ul>
+
+          <h3>4.2 Weekly Budget Challenge Engine</h3>
+          <p>The second layer converts insight into actionable choice architecture.</p>
+          <p>Instead of asking users to “create a budget,” which feels heavy, we offer a pre-framed prompt:</p>
+          <p>“Set a Food challenge for next week? Recommended budget: ₹2,500.”</p>
+          <p>The user makes a single binary decision: yes or no.</p>
+          <p>Once activated, the challenge becomes a weekly behavioural loop: Budget limit; Real-time tracking; Smart nudges at 70% and 100%; Win/Loss evaluation every Sunday; Automatic reset prompt.</p>
+          <p>Importantly, the design principle is: Win or lose, the user should feel safe returning. (This preserves psychological safety and prevents churn after failures.)</p>
+          <p>How this rewires behaviour:</p>
+          <ul>
+            <li>Reduces the upfront cost of self-regulation</li>
+            <li>Establishes weekly cycles that align with mental budgeting frames</li>
+            <li>Bridges the gap between intent and commitment</li>
+            <li>Creates emotionally resonant outcomes (wins/losses)</li>
+            <li>Reinforces identity (“I’m the kind of person who monitors spending”)</li>
+          </ul>
+
+          <h3>4.3 Social Benchmarking Layer</h3>
+          <p>People are more motivated by relative progress than absolute metrics. However, competitive ranking can be demotivating if not designed carefully.</p>
+          <p>We use soft benchmarking: Percentile bands; City-level comparison; “Among users with similar budgets” framing; Never showing “you are worse than X%”.</p>
+          <p>Example:</p>
+          <p>“You’re in the top 30% of Food budgeters in Bengaluru this week.”</p>
+          <p>This taps into social proof, light accountability, belongingness, identity reinforcement.</p>
+
+          <h3>4.4 Emotional Feedback Layer</h3>
+          <p>Humans repeat behaviours that generate emotional closure.</p>
+          <p>This layer uses confetti micro-interactions, haptic taps, expressive emojis, warm, conversational tone, weekly progress cards.</p>
+          <p>This creates affective memory, which is a predictor of long-term user return.</p>
+        </section>
+
+        <section>
+          <h2>5. Technical Architecture</h2>
+          <p>Designed to be modular, scalable, and low-latency.</p>
+
+          <h3>5.1 Key Services</h3>
+          <p>Insights Service: data ingestion → categorisation → weekly delta computation</p>
+          <p>Budget Engine: challenge state machine; threshold computation</p>
+          <p>Nudge Engine: dynamic triggers; rate limiting; user preference filters</p>
+          <p>Ranking Engine: city segmentation; percentile computation; Z-score clustering</p>
+          <p>Report Card Service: weekly aggregation; narrative generation</p>
+
+          <h3>5.2 Data Requirements</h3>
+          <p>Highly accurate categorisation (≥90% automated, manual override allowed)</p>
+          <p>Transaction streaming via ledger service</p>
+          <p>Weekly time-window aggregation</p>
+          <p>Real-time nudge eligibility computation</p>
+
+          <h3>5.3 System Goals</h3>
+          <p>Low latency (&lt;200ms) for dashboard load</p>
+          <p>State consistency for challenges (idempotent writes)</p>
+          <p>High reliability for weekly evaluation (cron + queue backup)</p>
+        </section>
+
+        <section>
+          <h2>6. Measurement Framework</h2>
+          <p>Instead of isolated KPIs, we measure a behavioural funnel:</p>
+          <ul>
+            <li><strong>Awareness:</strong> Users who view Insights weekly → indicates meaningful narrative pull.</li>
+            <li><strong>Activation:</strong> Users who set challenges → indicates intent crystallisation.</li>
+            <li><strong>Engagement:</strong> Users who return midweek to track → indicates ongoing self-regulation behaviour.</li>
+            <li><strong>Behavioural Outcome:</strong> Reduction in category overspend → indicates real improvement, not vanity metrics.</li>
+            <li><strong>Retention:</strong> Users who complete 4+ weekly cycles → indicates habit formation.</li>
+          </ul>
+          <p>We measure causally: Does viewing insights → increase challenge adoption? Does challenge adoption → reduce overspend? Does reduced overspend → increase NPS or retention?</p>
+        </section>
+
+        <section>
+          <h2>7. Risks & Tradeoffs</h2>
+          <p>Risk: Over-Nudging → Fatigue. Mitigation: 2/week limit, personalised nudge timing.</p>
+          <p>Risk: Benchmarking → Shame. Mitigation: strictly positive framing; percentile bands only.</p>
+          <p>Risk: Categorisation Errors → Distrust. Mitigation: manual edit flows; reinforced ML correction; recategorisation awareness alerts.</p>
+          <p>Risk: Emotional Overload → Infantilisation. Mitigation: neutral colours, mature tone, controlled animation usage.</p>
+          <p>Tradeoff: Personalisation Depth vs Cognitive Simplicity. We choose simplicity-first for V1 to build habit before complexity.</p>
+        </section>
+
+        <section>
+          <h2>8. Rollout Plan</h2>
+          <p>Internal Dogfood: Validate tone, emotionality, narrative coherence</p>
+          <p>Bangalore Android (40%): High UPI density + budget usage</p>
+          <p>Mumbai Android (40%): Behavioural validation across another metro</p>
+          <p>iOS Rollout: Users tend to be older → checks cross-cohort behavioural variance</p>
+          <p>Pan-India: Scale after validating habit loops</p>
+          <p>V2 Enhancements: Streaks, difficulty adjustment, cross-category challenges</p>
+        </section>
+
+        <!-- no footer text per your request -->
+      </main>
+    </div>
+  </body>
+</html>
