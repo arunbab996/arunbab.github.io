@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <title>Jupiter — Gamification PRD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon-blue.png" type="image/png">
+    <!-- favicon: blue box -->
+    <link rel="icon" href="/favicon.png" type="image/png">
 
     <style>
       :root{
@@ -12,8 +13,9 @@
         --muted:#6b7280;
         --accent:#0b63d6;
         --panel:#f6f9ff;
-        --table-max:500px; /* C: narrow tables */
-        --content-font: 17px;
+        --table-max:500px;   /* C: narrow tables */
+        --content-size:17px;
+        --line:1.72;
       }
 
       html,body{height:100%}
@@ -38,48 +40,54 @@
         border:1px solid #eef2f7;
       }
 
+      /* headings & meta */
       h1{font-size:26px;margin:0 0 6px}
       .meta{color:var(--muted);font-size:14px;margin-bottom:18px}
 
-      /* content readability */
-      .content { font-size:var(--content-font); line-height:1.75; color:#172031; }
-      section { margin-top:26px; }
+      /* content readability - uniform spacing */
+      .content { font-size:var(--content-size); line-height:var(--line); color:#172031; }
+      section { margin-top:24px; }
       h2{font-size:19px;margin-bottom:10px;color:#0f1724}
-      h3{font-size:16px;margin:14px 0 8px;color:#0b2546}
-      p, li { margin:8px 0; }
-      ul { margin-left:20px; }
+      h3{font-size:16px;margin:12px 0 8px;color:#0b2546}
+      /* make p and li uniform */
+      p, li {
+        margin:8px 0;
+        padding:0;
+      }
+      ul { margin-left:20px; padding-left:0; }
+      ul li { margin:6px 0; }
 
       /* hero */
       .hero {
         background: linear-gradient(180deg,var(--panel),var(--panel));
         border-radius:12px;
-        padding:28px;
+        padding:24px;
         display:flex;
         justify-content:center;
         margin-bottom:18px;
       }
       .hero img{
-        width:760px; max-width:100%;
+        width:820px; max-width:100%;
         height:auto;border-radius:10px;
         box-shadow:0 14px 40px rgba(12,24,48,0.08);
       }
 
-      /* images inside content */
+      /* figures */
       .figure { margin:18px 0; display:flex; justify-content:center; }
-      .figure img{ width:100%; max-width:760px; border-radius:8px; border:1px solid #eef2f7 }
+      .figure img{ width:100%; max-width:760px; border-radius:8px; border:1px solid #eef2f7; display:block; }
       figcaption{ font-size:13px; color:var(--muted); text-align:center; margin-top:8px; }
 
       /* tables centered and narrow */
       .table-wrap { display:flex; justify-content:center; overflow-x:auto; padding:8px 0; }
-      table{ width:100%; max-width:var(--table-max); border-collapse:collapse; background:white; }
-      th, td{ border:1px solid #e8ecf2; padding:10px; text-align:left; }
+      table{ width:100%; max-width:var(--table-max); border-collapse:collapse; background:white; margin:0 auto; }
+      th, td{ border:1px solid #e8ecf2; padding:10px; text-align:left; vertical-align:top; }
       th{ background:#f8fafc; color:#0f1724; font-weight:600; }
 
       /* subtle separators for long content */
       hr.sep{ border:0; border-top:1px solid #eef2f7; margin:26px 0; }
 
       /* responsive tweaks */
-      @media (max-width:820px){
+      @media (max-width:920px){
         .hero img{ width:100%; }
         .figure img{ max-width:100%; }
       }
@@ -100,7 +108,7 @@
       <main>
         <article class="content">
           <h1>Jupiter — Gamification PRD</h1>
-          <div class="meta">(Document reproduced verbatim.)</div>
+          <!-- source removed as requested -->
 
           <!-- HERO: uses hero.png if present, otherwise falls back to image1.png -->
           <section class="hero" aria-hidden="false">
@@ -111,11 +119,10 @@
           <section>
             <h2>1. Strategic Context</h2>
             <p>Jupiter’s long-term strategic moat cannot be built on payments, which are fully commoditised, nor on banking rails, which are standardised. The real moat lies in habit formation: creating a financial behaviour ecosystem where users repeatedly return, not because they must, but because the system makes managing money feel rewarding, clarifying, and emotionally reinforcing.</p>
-            <p>Budgeting should be that anchor habit, but current user behaviour demonstrates the opposite pattern:
- strong initial intent → rapid decay → long-term disengagement.</p>
+            <p>Budgeting should be that anchor habit, but current user behaviour demonstrates the opposite pattern: strong initial intent → rapid decay → long-term disengagement.</p>
             <p>This drop-off is not unique to Jupiter; it is a well-documented behaviour gap across global fintech products: people want to “be better with money,” but the cognitive load of tracking expenses, interpreting data, and making weekly adjustments is high. What Jupiter lacks is not data, but a behaviour-shaping layer that transforms information into meaning, meaning into action, and action into sustained habit.</p>
-            <p>The strategic imperative:</p>
             <p>If Jupiter can turn budgeting into a weekly ritual, it unlocks a multi-year LTV flywheel.</p>
+
             <ul>
               <li>Monitor spending → reduce bad behaviours</li>
               <li>Build savings → increase deposits</li>
@@ -123,7 +130,8 @@
               <li>Become credit eligible → open lending opportunities</li>
               <li>Engage weekly → deepen retention loops</li>
             </ul>
-            <p>A budgeting habit is not a feature; it is a platform accelerant. The proposed Gamification Layer enables this by aligning product mechanics with human behavioural architecture.</p>
+
+            <p>The proposed Gamification Layer enables this by aligning product mechanics with human behavioural architecture.</p>
           </section>
 
           <hr class="sep">
@@ -133,9 +141,7 @@
             <p>The problem is not that users “don’t budget.” The problem is that Jupiter’s current structure asks users to do the hard part of budgeting—interpretation and discipline—without providing the emotional scaffolding required to sustain it.</p>
 
             <h3>2.1 Cognitive Interpretation Gap</h3>
-            <p>Users do not struggle with numbers; they struggle with meaning.</p>
-            <p>A category total of ₹3,450 is inert information. A contextual insight like “up 44% vs last week” is a narrative.</p>
-            <p>Narratives activate the brain’s pattern-detection systems. Numbers activate working memory, which fatigues quickly. This is why current Insights underperform: they are accurate but meaningless without interpretation.</p>
+            <p>Users do not struggle with numbers; they struggle with meaning. A category total of ₹3,450 is inert information. A contextual insight like “up 44% vs last week” is a narrative. Narratives activate the brain’s pattern-detection systems. Numbers activate working memory, which fatigues quickly. This is why current Insights underperform: they are accurate but meaningless without interpretation.</p>
 
             <h3>2.2 Motivation Gap</h3>
             <p>Discipline has no immediate reward; indulgence does. Ordering a meal = instant dopamine. Staying within budget = no visible reward. Unless the system creates micro-reward loops, intention always loses to temptation.</p>
@@ -175,30 +181,29 @@
 
             <h3>4.2 Weekly Budget Challenge Engine</h3>
             <p>Instead of asking users to “create a budget,” which feels heavy, we offer a pre-framed prompt: “Set a Food challenge for next week? Recommended budget: ₹2,500.” The user makes a single binary decision: yes or no.</p>
-            <p>Once activated, the challenge becomes a weekly behavioural loop: Budget limit, Real-time tracking, Smart nudges at 70% and 100%, Win/Loss evaluation every Sunday, Automatic reset prompt.</p>
-            <p>Important: Win or lose, the user should feel safe returning. This preserves psychological safety and prevents churn after failures.</p>
+            <p>Once activated, the challenge becomes a weekly behavioural loop: Budget limit, Real-time tracking, Smart nudges at 70% and 100%, Win/Loss evaluation every Sunday, Automatic reset prompt. Important: Win or lose, the user should feel safe returning.</p>
 
             <h3>4.3 Social Benchmarking Layer</h3>
-            <p>People are more motivated by relative progress than absolute metrics. However, competitive ranking can be demotivating if not designed carefully. We use soft benchmarking: Percentile bands, City-level comparison, “Among users with similar budgets” framing, never showing “you are worse than X%”.</p>
+            <p>People are more motivated by relative progress than absolute metrics. However, competitive ranking can be demotivating if not designed carefully. We use soft benchmarking: Percentile bands, City-level comparison, “Among users with similar budgets” framing — never showing “you are worse than X%”.</p>
             <p>Example: “You’re in the top 30% of Food budgeters in Bengaluru this week.”</p>
 
             <h3>4.4 Emotional Feedback Layer</h3>
             <p>Humans repeat behaviours that generate emotional closure. This layer uses confetti micro-interactions, haptic taps, expressive emojis, warm conversational tone, and weekly progress cards. Even small wins matter: “You stayed within budget despite a higher spend on Saturday - impressive discipline!”</p>
 
-            <!-- image1.png mockup added here per your request -->
+            <!-- image1.png mockup added here (challenge mock) -->
             <div class="figure" aria-hidden="false">
-              <img src="/portfolio/jupiter/images/image1.png" alt="Challenge mockup (image1)" />
+              <img src="/portfolio/jupiter/images/image1.png" alt="Challenge mockup (image1)">
             </div>
             <figcaption>Mockup: Weekly challenge UI.</figcaption>
+
           </section>
 
           <hr class="sep">
 
-          <!-- wireframe -->
           <section>
             <h2>Wireframe</h2>
             <div class="figure">
-              <img src="/portfolio/jupiter/images/image2.png" alt="Wireframe (image2)" />
+              <img src="/portfolio/jupiter/images/image2.png" alt="Wireframe (image2)">
             </div>
             <figcaption>Wireframe for the Gamification layer.</figcaption>
           </section>
