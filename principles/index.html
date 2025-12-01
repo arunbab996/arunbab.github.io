@@ -19,7 +19,6 @@
     main{max-width:var(--max-width);margin:48px auto;padding:0 16px}
     .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
 
-    /* Principles list: aligned numbers + titles */
     .principles-list{list-style:none;counter-reset:principle-counter;padding:0}
     .principles-list li{
       counter-increment:principle-counter;
@@ -29,20 +28,18 @@
       align-items:flex-start;
     }
 
-    /* number */
     .principles-list li::before{
       content:counter(principle-counter) ".";
       font-weight:700;
-      width:28px;            /* fixed column for numbers */
+      width:28px;
       text-align:right;
       flex:0 0 28px;
       color:var(--text);
-      margin-top:2px;        /* nudge so it lines up with title baseline */
+      margin-top:2px;
     }
 
-    /* title and body */
     .principles-list strong{
-      display:block;         /* keep title on its own line inside the right column */
+      display:block;
       margin-bottom:6px;
       font-weight:700;
     }
@@ -51,6 +48,23 @@
       color:var(--muted);
       line-height:1.45;
     }
+
+    /* === Staggered page-enter transitions === */
+    .page-enter > * {
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity 320ms ease-out,
+        transform 320ms ease-out;
+    }
+
+    .page-enter.page-enter-active > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
+    .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
 
     .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
     .social-fixed a{color:var(--text);text-decoration:none}
@@ -69,44 +83,47 @@
   </header>
 
   <main>
-    <div class="page-title">Principles</div>
+    <!-- page-enter wrapper around title + list -->
+    <div class="page-enter">
+      <div class="page-title">Principles</div>
 
-    <ul class="principles-list">
-      <li>
-        <div>
-          <strong>Bias toward shipping.</strong>
-          <p>If something can be shared in a week, don’t let it sit for a month. Small shipped projects beat big unfinished ideas.</p>
-        </div>
-      </li>
+      <ul class="principles-list">
+        <li>
+          <div>
+            <strong>Bias toward shipping.</strong>
+            <p>If something can be shared in a week, don’t let it sit for a month. Small shipped projects beat big unfinished ideas.</p>
+          </div>
+        </li>
 
-      <li>
-        <div>
-          <strong>Start from the user, not the feature.</strong>
-          <p>Understand the person — their pain, workflow, and constraints — before designing product or recommending investments.</p>
-        </div>
-      </li>
+        <li>
+          <div>
+            <strong>Start from the user, not the feature.</strong>
+            <p>Understand the person — their pain, workflow, and constraints — before designing product or recommending investments.</p>
+          </div>
+        </li>
 
-      <li>
-        <div>
-          <strong>Write to think.</strong>
-          <p>When confused, write. Clear writing forces clearer thinking and better decisions.</p>
-        </div>
-      </li>
+        <li>
+          <div>
+            <strong>Write to think.</strong>
+            <p>When confused, write. Clear writing forces clearer thinking and better decisions.</p>
+          </div>
+        </li>
 
-      <li>
-        <div>
-          <strong>Long-term games, long-term people.</strong>
-          <p>Careers compound. Prefer collaborators you can imagine working with for a decade.</p>
-        </div>
-      </li>
+        <li>
+          <div>
+            <strong>Long-term games, long-term people.</strong>
+            <p>Careers compound. Prefer collaborators you can imagine working with for a decade.</p>
+          </div>
+        </li>
 
-      <li>
-        <div>
-          <strong>Data-informed, not data-paralysed.</strong>
-          <p>Numbers should sharpen judgement, not replace it; use qualitative feedback when sample sizes are small.</p>
-        </div>
-      </li>
-    </ul>
+        <li>
+          <div>
+            <strong>Data-informed, not data-paralysed.</strong>
+            <p>Numbers should sharpen judgement, not replace it; use qualitative feedback when sample sizes are small.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </main>
 
   <div class="social-fixed">
@@ -120,5 +137,15 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
     </a>
   </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      var containers = document.querySelectorAll('.page-enter');
+      containers.forEach(function (el) {
+        void el.offsetWidth;
+        el.classList.add('page-enter-active');
+      });
+    });
+  </script>
 </body>
 </html>
