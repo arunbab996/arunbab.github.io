@@ -49,6 +49,26 @@
       .project-card img{width:100%;height:180px}
     }
 
+    /* === Staggered page-enter transitions === */
+    .page-enter > * {
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity 320ms ease-out,
+        transform 320ms ease-out;
+    }
+
+    .page-enter.page-enter-active > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
+    .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
+    .page-enter.page-enter-active > *:nth-child(3) { transition-delay: 0.10s; }
+    .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
+    .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
+
     .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
     .social-fixed a{color:var(--text);text-decoration:none}
     .social-fixed a:hover{opacity:0.7}
@@ -66,68 +86,71 @@
   </header>
 
   <main>
-    <div class="page-title" style="display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1200px; margin-bottom:18px;">
-      <span>Portfolio</span>
-      <span style="font-weight:700; font-size:16px;">Tools</span>
-    </div>
-
-    <div class="two-col">
-
-      <div class="projects-grid">
-        <a href="/portfolio/dunzo/" class="project-card">
-          <img src="/images/1.webp" alt="Dunzo : Increasing AOV" />
-          <div class="project-meta">
-            <div class="project-title">Dunzo: Increasing the Average Order Value</div>
-            <div class="project-tagline">The Tale of Maximising AOV</div>
-          </div>
-        </a>
-
-        <a href="/portfolio/jupiter/" class="project-card" target="_blank" rel="noopener">
-          <img src="/images/2.webp" alt="Jupiter App Gamification" />
-          <div class="project-meta">
-            <div class="project-title">Jupiter - App Gamification</div>
-            <div class="project-tagline">An attempt to incorporate game elements to Jupiter - a Neobank.</div>
-          </div>
-        </a>
-
-        <a href="/portfolio/swiggy/" class="project-card" target="_blank" rel="noopener">
-          <img src="/images/3.jpeg" alt="Swiggy" />
-          <div class="project-meta">
-            <div class="project-title">Swiggy - How to Tackle Multiple Orders?</div>
-            <div class="project-tagline">Solving Bulk Delivery - i.e Food orders from multiple restaurants at once.</div>
-          </div>
-        </a>
-
+    <!-- page-enter wrapper around title + layout -->
+    <div class="page-enter">
+      <div class="page-title" style="display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1200px; margin-bottom:18px;">
+        <span>Portfolio</span>
+        <span style="font-weight:700; font-size:16px;">Tools</span>
       </div>
 
-      <div class="tools-col">
+      <div class="two-col">
 
-        <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="/images/bitcoin.webp" alt="BTC Tool" />
-          <div>
-            <div class="tool-title">Monitoring Magic Internet Money</div>
-            <div class="tool-sub">Real-time BTC tools, charts, and utilities.</div>
-          </div>
-        </a>
+        <div class="projects-grid">
+          <a href="/portfolio/dunzo/" class="project-card">
+            <img src="/images/1.webp" alt="Dunzo : Increasing AOV" />
+            <div class="project-meta">
+              <div class="project-title">Dunzo: Increasing the Average Order Value</div>
+              <div class="project-tagline">The Tale of Maximising AOV</div>
+            </div>
+          </a>
 
-        <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS Icon" />
-          <div>
-            <div class="tool-title">DiscoveryOS</div>
-            <div class="tool-sub">Using Y combinator and Product Hunt APIs to track the next big thing!</div>
-          </div>
-        </a>
+          <a href="/portfolio/jupiter/" class="project-card" target="_blank" rel="noopener">
+            <img src="/images/2.webp" alt="Jupiter App Gamification" />
+            <div class="project-meta">
+              <div class="project-title">Jupiter - App Gamification</div>
+              <div class="project-tagline">An attempt to incorporate game elements to Jupiter - a Neobank.</div>
+            </div>
+          </a>
 
-        <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="Y Combinator Logo" />
-          <div>
-            <div class="tool-title">Y Combinator Bot</div>
-            <div class="tool-sub">Posting Twitter updates whenever a new startup hits the YC directory.</div>
-          </div>
-        </a>
+          <a href="/portfolio/swiggy/" class="project-card" target="_blank" rel="noopener">
+            <img src="/images/3.jpeg" alt="Swiggy" />
+            <div class="project-meta">
+              <div class="project-title">Swiggy - How to Tackle Multiple Orders?</div>
+              <div class="project-tagline">Solving Bulk Delivery - i.e Food orders from multiple restaurants at once.</div>
+            </div>
+          </a>
+
+        </div>
+
+        <div class="tools-col">
+
+          <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank" rel="noopener">
+            <img class="tool-thumb" src="/images/bitcoin.webp" alt="BTC Tool" />
+            <div>
+              <div class="tool-title">Monitoring Magic Internet Money</div>
+              <div class="tool-sub">Real-time BTC tools, charts, and utilities.</div>
+            </div>
+          </a>
+
+          <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank" rel="noopener">
+            <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS Icon" />
+            <div>
+              <div class="tool-title">DiscoveryOS</div>
+              <div class="tool-sub">Using Y combinator and Product Hunt APIs to track the next big thing!</div>
+            </div>
+          </a>
+
+          <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank" rel="noopener">
+            <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="Y Combinator Logo" />
+            <div>
+              <div class="tool-title">Y Combinator Bot</div>
+              <div class="tool-sub">Posting Twitter updates whenever a new startup hits the YC directory.</div>
+            </div>
+          </a>
+
+        </div>
 
       </div>
-
     </div>
   </main>
 
@@ -139,5 +162,14 @@
     </a>
   </div>
 
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      var containers = document.querySelectorAll('.page-enter');
+      containers.forEach(function (el) {
+        void el.offsetWidth;
+        el.classList.add('page-enter-active');
+      });
+    });
+  </script>
 </body>
 </html>
