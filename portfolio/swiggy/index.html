@@ -111,6 +111,27 @@
         background: #fff;
       }
 
+      /* CASE STUDY FIGURES – constrain Swiggy images so they don't overflow */
+      .figure-card {
+        margin: 18px 0;
+        display: flex;
+        justify-content: center;
+      }
+      .figure-card img {
+        max-width: 760px;   /* keeps them nicely within the column */
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #eef2f7;
+        display: block;
+      }
+      figcaption {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+        text-align: center;
+      }
+
       @media (max-width: 900px) {
         main { padding: 20px; }
         .hero-inner { width: 100%; }
@@ -304,7 +325,6 @@
           <p>Instead of one linear progress bar, the app shows a synchronized preparation view. The tone is calm, not rushed:</p>
           <p>“Restaurant A is finishing up. Rider will pick from Restaurant B next.”</p>
           <p>It repositions waiting as deliberate coordination—not delay.</p>
-
 
           <figure class="figure-card">
             <img src="/portfolio/swiggy/images/image2.png" alt="Composite delivery experience wireframe" />
