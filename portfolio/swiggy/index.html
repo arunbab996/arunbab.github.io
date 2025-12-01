@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Swiggy Case Study — Enabling Multi-Restaurant Composite Delivery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Blue box favicon you use on your site -->
+    <link rel="icon" href="/favicon-blue.png" type="image/png">
+    <style>
+      :root {
+        --content-max: 1100px;
+        --accent: #0b63d6;
+        --muted: #6b7280;
+        --card-bg: #ffffff;
+        --panel: #f3f8ff;
+      }
+      html, body { height: 100%; }
+      body {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                     Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.7;
+        color: #0f1724;
+        background: #f7f9fb;
+        padding: 28px;
+        display: flex;
+        justify-content: center;
+      }
+      .wrap {
+        max-width: var(--content-max);
+        width: 100%;
+      }
+      header {
+        border-bottom: 1px solid #e6e9ef;
+        padding-bottom: 12px;
+        margin-bottom: 18px;
+      }
+      nav {
+        display: flex;
+        gap: 18px;
+      }
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 15px;
+      }
+      main {
+        background: var(--card-bg);
+        padding: 28px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(15,23,36,0.06);
+        border: 1px solid #eef2f7;
+      }
+      h1 {
+        font-size: 26px;
+        margin: 0 0 6px;
+      }
+      .meta-line {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 16px;
+      }
+      section {
+        margin-top: 22px;
+      }
+      h2 {
+        font-size: 19px;
+        margin-bottom: 10px;
+        color: #0f1724;
+      }
+      h3 {
+        font-size: 16px;
+        margin: 14px 0 6px;
+        color: #0b2546;
+      }
+      p {
+        color: #172031;
+        margin: 6px 0;
+      }
+      ul {
+        margin: 6px 0 6px 22px;
+        padding: 0;
+      }
+      li {
+        margin: 4px 0;
+      }
+
+      /* HERO */
+      .hero-panel {
+        background: var(--panel);
+        border-radius: 10px;
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 12px 0 22px;
+      }
+      .hero-inner {
+        width: 680px;
+        max-width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .hero-inner img {
+        width: 520px;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(12,24,48,0.07);
+        border: 1px solid rgba(255,255,255,0.45);
+        background: #fff;
+      }
+
+      @media (max-width: 900px) {
+        main { padding: 20px; }
+        .hero-inner { width: 100%; }
+        .hero-inner img { width: 420px; }
+      }
+      @media (max-width: 600px) {
+        body { padding: 18px; }
+        .hero-inner img { width: 340px; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <nav>
+          <a href="/" title="Home">Home</a>
+          <a href="/portfolio" title="Portfolio">Portfolio</a>
+        </nav>
+      </header>
+
+      <main>
+        <h1>Swiggy Case Study: Enabling Multi-Restaurant Composite Delivery</h1>
+        <div class="meta-line">
+          Case study on composite delivery for social, multi-restaurant orders.
+        </div>
+
+        <!-- HERO -->
+        <section class="hero-panel">
+          <div class="hero-inner">
+            <!-- You provide this: /portfolio/swiggy/images/hero.png -->
+            <img src="/portfolio/swiggy/images/hero.png"
+                 alt="Swiggy composite delivery hero">
+          </div>
+        </section>
+
+        <!-- 01. Context & Problem Background -->
+        <section>
+          <h2>01. Context &amp; Problem Background</h2>
+          <p>Food delivery in India has become deeply social. Office lunch groups, shared apartments, weekend meet-ups, or even families at home often order together—but rarely from the same restaurant. Each person has their own favourites, dietary preferences, cravings, or coupons, and they order independently. Yet everyone expects the same outcome: all food should arrive together, hot enough to eat as a meal, without multiple riders knocking on the door.</p>
+          <p>Today, Swiggy’s fulfilment system is still built around its original design assumption: one order, one restaurant, one delivery partner. The platform treats multiple orders to the same address as separate events. On paper, this seems simpler and faster. In practice, it introduces friction across the entire chain.</p>
+          <ul>
+            <li>Riders land at the same building multiple times</li>
+            <li>Early-finished dishes degrade while waiting</li>
+            <li>Prep time mismatches inflate total delivery time</li>
+            <li>Delivery partners get stuck waiting instead of completing more orders</li>
+            <li>The customer experience feels fragmented, delayed, and inefficient</li>
+          </ul>
+          <p>And the user doesn’t blame the restaurant—or the group—they blame Swiggy.</p>
+          <p>Once you zoom out, this is not a minor UX gap. It’s a fulfilment architecture problem that surfaces when multiple production nodes (restaurants) converge into one consumption point (single address). As composite ordering patterns grow, Swiggy needs a stable, synchronized delivery mode that gives users control, preserves food quality, and maintains operational efficiency.</p>
+        </section>
+
+        <!-- 02. Understanding the Friction -->
+        <section>
+          <h2>02. Understanding the Friction</h2>
+          <p>Composite delivery breaks for three interconnected reasons:</p>
+
+          <h3>User-side friction</h3>
+          <p>Users don’t think in order IDs—they think in shared meals. When items arrive at different times, the entire experience feels incomplete. There’s also a planning anxiety when group members can’t see others’ additions, pay in split transactions, or track fulfilment progress together.</p>
+
+          <h3>Restaurant-side friction</h3>
+          <p>Every restaurant has its own prep window. A biryani kitchen operating at peak dinner hours is not the same as a dosa spot on a slow weekday afternoon. When Swiggy stacks multiple restaurants into the same “delivery moment,” the entire cycle becomes bottlenecked by whichever kitchen is slowest.</p>
+
+          <h3>Rider-side friction</h3>
+          <p>Delivery partners are productive when they’re moving. When forced to wait for slower kitchens, or hop inefficiently from outlet to outlet, their earning throughput decreases. On top of that, multi-pickup routing without kitchen readiness visibility makes pathing unpredictable and time-wasteful.</p>
+        </section>
+
+        <!-- 03. Root Cause -->
+        <section>
+          <h2>03. Root Cause: Prep-Time Variance and Unsynchronized Routing</h2>
+          <p>The biggest invisible enemy in composite fulfilment is prep-time variance.</p>
+          <p>Example scenario:</p>
+          <ul>
+            <li>Restaurant A: ready in 8 mins</li>
+            <li>Restaurant B: ready in 14 mins</li>
+            <li>Restaurant C: ready in 38 mins</li>
+            <li>Restaurant D: ready in 22 mins</li>
+          </ul>
+          <p>If one rider must collect all items, the “finish time” defaults to the slowest node (Restaurant C at 38 minutes). Now, everything from Restaurant A sits idle. Fries lose crispness. Biryani edges dry. Dosas collapse. Moisture seeps through packaging. And the food that arrives might technically be “on time,” but it no longer feels freshly cooked.</p>
+          <p>Routing makes this worse. In composite pickups, distance is not the true optimization factor. It’s readiness. A restaurant 2 km away that’s ready in 10 minutes may actually be “closer” than a restaurant 500m away that still has 20 minutes left. When Swiggy uses map distance alone, riders either wait, idle, or arrive too late and collect already-degraded food.</p>
+          <p>So the core failure is simple:</p>
+          <p>The platform isn’t orchestrating preparation windows and pickup sequencing as a unified delivery event.</p>
+          <p>Unless prep windows are aligned and rider arrival is sequenced according to readiness, composite delivery will always feel like Swiggy stitched four unrelated orders together with duct tape.</p>
+        </section>
+
+        <!-- 04. Key User Insights -->
+        <section>
+          <h2>04. Key User Insights (Host &amp; Participants)</h2>
+          <p>Composite ordering has two behavioural archetypes:</p>
+
+          <h3>The Host</h3>
+          <p>The host is usually the initiator. They worry about:</p>
+          <ul>
+            <li>everything arriving together</li>
+            <li>fairness in food temperature</li>
+            <li>multiple delivery fees</li>
+            <li>the embarrassment of four riders showing up separately</li>
+            <li>whether the group is waiting on one late dish</li>
+          </ul>
+          <p>For them, synchronized delivery is about social coherence. It matters because everyone wants to start eating at the same time.</p>
+
+          <h3>Group Participants</h3>
+          <p>They want:</p>
+          <ul>
+            <li>the freedom to choose ANY restaurant</li>
+            <li>visibility into what others are ordering</li>
+            <li>the confidence that their dish won’t be the “late cold one”</li>
+          </ul>
+          <p>They won’t manually coordinate delivery times. They believe Swiggy should “figure it out.”</p>
+          <p>Across both groups, the expectation is the same: If everyone orders to the same address, the platform should treat that as one meal, not multiple isolated transactions.</p>
+        </section>
+
+        <!-- 05. Operational Insights -->
+        <section>
+          <h2>05. Operational Insights from the Network</h2>
+          <p>When you zoom one layer deeper, composite fulfilment begins to resemble a time-sensitive graph problem.</p>
+          <ul>
+            <li>Each restaurant is a production node</li>
+            <li>Each prep window is a time constraint</li>
+            <li>The rider is the connecting edge</li>
+            <li>The destination is the terminal node</li>
+          </ul>
+          <p>The “critical path” always runs through the slowest kitchen. So instead of forcing riders to wait, or delivering items in fragments, Swiggy needs to prevent extreme prep-time variance at the selection layer, and sequence pickup timing around readiness instead of distance.</p>
+          <p>When this is solved at the system level, everything downstream becomes predictable:</p>
+          <ul>
+            <li>fewer idle minutes</li>
+            <li>fewer backtracks</li>
+            <li>fewer multiple dispatches</li>
+            <li>more consistent food quality</li>
+            <li>higher earnings per hour for riders</li>
+          </ul>
+          <p>The problem stops being a creative hack—it becomes a coordinated fulfilment mode.</p>
+        </section>
+
+        <!-- 06. Design Direction -->
+        <section>
+          <h2>06. Design Direction (High-Level, Not Screens)</h2>
+          <p>The solution isn’t to teach users how to order better. It’s to build a system that helps them order in a way that is compatible with synchronized fulfilment.</p>
+          <p>Four ideas form the backbone:</p>
+
+          <h3>1. Bulk Order Mode</h3>
+          <p>A dedicated ordering state when Swiggy detects:</p>
+          <ul>
+            <li>multiple people ordering</li>
+            <li>or host-initiated group ordering</li>
+          </ul>
+          <p>From this point onward, restaurant discovery, item selection, and fulfilment logic follow composite rules.</p>
+
+          <h3>2. Prep-Time Clustering</h3>
+          <p>Users still browse normally, but Swiggy quietly filters eligible restaurants into clusters that match similar readiness windows. This prevents catastrophic prep-time mismatch before it even begins. No force. Just curated lists that make synchronized delivery possible by design.</p>
+
+          <h3>3. Host-Mode Orchestration</h3>
+          <p>One person starts the order, sends a link or QR, and everyone adds items from any of the eligible restaurants. The entire cart becomes a single fulfilment object with:</p>
+          <ul>
+            <li>one payment</li>
+            <li>one SLA promise</li>
+            <li>one drop</li>
+          </ul>
+
+          <h3>4. Time-Window Routing</h3>
+          <p>Pickup sequencing prioritizes arrival-match rather than proximity. The rider moves through restaurants in an order that minimizes idle minutes. Instead of improvising based on location, routing becomes an orchestration of readiness signals.</p>
+          <p>Together, these give Swiggy a fulfilment layer specifically designed for composite meals.</p>
+        </section>
+
+        <!-- 07. Proposed Experience -->
+        <section>
+          <h2>07. Proposed Experience: How Composite Delivery Feels for Users</h2>
+          <p>The UX should subtly give structure without making users feel restricted.</p>
+
+          <h3>Entering Bulk Mode</h3>
+          <p>A prompt appears when Swiggy detects parallel orders to the same address or allows users to toggle it proactively:</p>
+          <p>“Ordering with others? Get everything delivered together.”</p>
+
+          <h3>Restaurant List</h3>
+          <p>All restaurants visible in Bulk Mode are “prep-compatible.” Users don’t see what was removed—so nothing feels like a restriction.</p>
+
+          <h3>Item Collection</h3>
+          <p>Participants add items just like they would in a normal cart, but all items aggregate into one master order owned by the host. The only difference is that choices are operationally compatible.</p>
+
+          <h3>Delivery Promise</h3>
+          <p>Swiggy gives a realistic window:</p>
+          <p>“All dishes will arrive together in ~23–27 minutes.”</p>
+          <p>Users interpret this as confidence, not constraint.</p>
+
+          <h3>Order Tracking</h3>
+          <p>Instead of one linear progress bar, the app shows a synchronized preparation view. The tone is calm, not rushed:</p>
+          <p>“Restaurant A is finishing up. Rider will pick from Restaurant B next.”</p>
+          <p>It repositions waiting as deliberate coordination—not delay.</p>
+        </section>
+
+        <!-- 08. Handling Edge Cases -->
+        <section>
+          <h2>08. Handling Edge Cases</h2>
+          <p>Some combinations are too incompatible.</p>
+          <p>Example:</p>
+          <ul>
+            <li>One person insists on a slow, 40-minute prep restaurant</li>
+            <li>Another wants an outlet with a 10-minute window</li>
+          </ul>
+          <p>The interface should nudge gently:</p>
+          <p>“This restaurant’s prep time may delay the group’s delivery by 20–25 minutes.”</p>
+          <p>Suggestions appear:</p>
+          <ul>
+            <li>faster alternatives</li>
+            <li>restaurants historically more punctual</li>
+          </ul>
+          <p>If the host still insists, Swiggy evaluates the cart size. For large orders, it can dispatch two riders who merge near the destination.</p>
+          <p>To the user, this looks like a smooth exception—not a network repair job.</p>
+        </section>
+
+        <!-- 09. Restaurant & Fleet -->
+        <section>
+          <h2>09. Restaurant &amp; Fleet Considerations</h2>
+          <p>Restaurants benefit from pickup timing that aligns with their prep windows. Instead of riders standing around crowding pickup counters, arrival patterns stabilize. That minimizes kitchen congestion, and kitchens aren’t blamed for “late delivery” when the real issue is multi-pickup sequencing.</p>
+          <p>For delivery partners, predictable routing and fewer idle minutes mean:</p>
+          <ul>
+            <li>tighter payout cycles</li>
+            <li>cleaner order density graphs</li>
+            <li>higher per-hour throughput</li>
+          </ul>
+          <p>The rider experience improves not because the UI changed, but because ops logic did.</p>
+        </section>
+
+        <!-- 10. What Success Looks Like -->
+        <section>
+          <h2>10. What Success Looks Like</h2>
+          <p>If Swiggy gets composite delivery right, three outcomes should emerge:</p>
+
+          <h3>1. Users feel that Swiggy understands social dining</h3>
+          <p>When everyone’s food arrives together and hot, the platform earns trust in new contexts: office teams, shared flats, weekend dinners, campus crowds.</p>
+
+          <h3>2. Riders see stronger utilization</h3>
+          <p>More motion time, less idle time, cleaner sequences instead of disorderly multi-pickup paths.</p>
+
+          <h3>3. Swiggy improves its unit economics</h3>
+          <ul>
+            <li>fewer redundant dispatches</li>
+            <li>fewer repeated building entries</li>
+            <li>fewer SLA refunds</li>
+            <li>fewer negative chats</li>
+            <li>higher repeat orders to the same address</li>
+          </ul>
+          <p>It also unlocks a new behavioural flywheel: Once people trust composite delivery, they default to it every time they order together.</p>
+        </section>
+
+        <!-- 11. Rollout Strategy -->
+        <section>
+          <h2>11. Rollout Strategy</h2>
+          <p>Start small:</p>
+          <ul>
+            <li>key micro-markets where composite ordering behaviour is most common (tech parks, student neighbourhoods, gated layouts)</li>
+            <li>lunch and dinner peak windows</li>
+            <li>Android first for rapid iteration</li>
+          </ul>
+          <p>Instrument the system to observe:</p>
+          <ul>
+            <li>prep-time mismatches rejected</li>
+            <li>number of eligible restaurants surfaced</li>
+            <li>rider idle minute reduction</li>
+            <li>change in composite SLA compliance</li>
+            <li>food rating deltas for composite orders</li>
+          </ul>
+          <p>If data trends positive, gradually scale geography and time spans.</p>
+        </section>
+
+        <!-- 12. Risks & Trade-offs -->
+        <section>
+          <h2>12. Risks &amp; Trade-offs</h2>
+          <p>Introducing composite fulfilment adds logic to selection and routing. If poorly tuned, users may feel “limited” in restaurant choice. It must stay invisible, with smart substitutions and clear UX framing.</p>
+          <p>Dual riders should stay rare because they increase cost. They solve the worst-case scenario, not the norm. Prep-time clustering should be strong enough that 90% of variance is avoided upstream, not patched downstream.</p>
+          <p>And above all, the system shouldn’t degrade the core promise: if someone wants a quick solo order from a fast-prep outlet, that mode must stay untouched.</p>
+          <p>Composite delivery should activate only when it clearly improves the experience.</p>
+        </section>
+
+        <!-- 13. Final View -->
+        <section>
+          <h2>13. Final View</h2>
+          <p>This isn’t a flashy UI feature. It’s a fulfilment architecture upgrade that respects three intertwined truths:</p>
+          <ul>
+            <li>People don’t want random arrivals—they want shared meals</li>
+            <li>Food quality is fragile under delays</li>
+            <li>Delivery partners are economically efficient only when in motion</li>
+          </ul>
+          <p>By clustering restaurants around prep-windows, routing riders based on readiness, and structuring ordering as a coordinated composite event, Swiggy can turn a messy multi-order scenario into a synchronized, efficient, and delightful experience.</p>
+          <p>And when it works, nobody sees the operational machinery under it. They just see four bags arriving together, still hot, and a meal that starts on time.</p>
+        </section>
+
+      </main>
+    </div>
+  </body>
+</html>
