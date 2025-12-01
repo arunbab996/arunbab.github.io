@@ -4,83 +4,156 @@
     <meta charset="utf-8" />
     <title>Specter Talent — A Deep-Dive Case Study</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Your blue box favicon -->
+    <!-- Blue box favicon -->
     <link rel="icon" href="/favicon-blue.png" type="image/png">
     <style>
       :root {
-        --content-max: 900px;
+        --content-max: 1100px;
         --accent: #0b63d6;
         --muted: #6b7280;
         --card-bg: #ffffff;
-        --bg: #f7f9fb;
+        --panel: #f3f8ff;
       }
+
       html, body { height: 100%; }
       body {
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
                      Roboto, "Helvetica Neue", Arial, sans-serif;
         line-height: 1.7;
         color: #0f1724;
-        background: var(--bg);
+        background: #f7f9fb;
         padding: 28px;
         display: flex;
         justify-content: center;
       }
+
       .wrap {
         max-width: var(--content-max);
         width: 100%;
       }
+
       header {
         border-bottom: 1px solid #e6e9ef;
         padding-bottom: 12px;
         margin-bottom: 18px;
       }
+
       nav {
         display: flex;
         gap: 18px;
       }
+
       nav a {
         color: var(--muted);
         text-decoration: none;
         font-size: 15px;
       }
+
       main {
         background: var(--card-bg);
-        padding: 26px 24px 30px;
+        padding: 28px;
         border-radius: 12px;
         box-shadow: 0 6px 18px rgba(15,23,36,0.06);
         border: 1px solid #eef2f7;
       }
+
       h1 {
         font-size: 26px;
-        margin: 0 0 4px;
+        margin: 0 0 6px;
       }
+
       .subtitle {
         color: var(--muted);
-        font-size: 15px;
+        font-size: 14px;
         margin-bottom: 16px;
       }
+
       section {
         margin-top: 22px;
       }
+
       h2 {
         font-size: 19px;
         margin-bottom: 10px;
         color: #0f1724;
       }
+
       p {
         color: #172031;
         margin: 6px 0;
       }
+
       ul {
         margin: 6px 0 6px 22px;
         padding: 0;
       }
+
       li {
         margin: 4px 0;
       }
-      @media (max-width: 700px) {
+
+      /* HERO */
+      .hero-panel {
+        background: var(--panel);
+        border-radius: 10px;
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 12px 0 22px;
+      }
+
+      .hero-inner {
+        width: 680px;
+        max-width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .hero-inner img {
+        width: 520px;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(12,24,48,0.07);
+        border: 1px solid rgba(255,255,255,0.45);
+        background: #fff;
+      }
+
+      /* Case study images (old/new UI) */
+      .figure-block {
+        margin: 18px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .figure-block img {
+        max-width: 640px;   /* keeps it comfortably inside the text width */
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #eef2f7;
+        display: block;
+      }
+
+      .figure-block figcaption {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        main { padding: 20px; }
+        .hero-inner { width: 100%; }
+        .hero-inner img { width: 420px; }
+      }
+
+      @media (max-width: 600px) {
         body { padding: 18px; }
-        main { padding: 20px 18px 24px; }
+        .hero-inner img { width: 340px; }
       }
     </style>
   </head>
@@ -100,7 +173,15 @@
           Building the founder discovery engine powering modern startup scouting
         </div>
 
-        <!-- 1. Core Problem -->
+        <!-- HERO (JPEG) -->
+        <section class="hero-panel">
+          <div class="hero-inner">
+            <img src="/portfolio/specter/images/hero.jpg"
+                 alt="Specter Talent hero">
+          </div>
+        </section>
+
+        <!-- 1. The Core Problem in Venture Discovery. -->
         <section>
           <h2>1. The Core Problem in Venture Discovery.</h2>
           <p>My journey with Specter began as an intern, joining a small team trying to solve one question that always frustrated investors: why do funds learn about promising founders so late?</p>
@@ -138,6 +219,17 @@
           <h2>6. Early Delivery:  From CSV Files to Zoho Creator.</h2>
           <p>Talent didn’t start with a polished interface. It began with weekly CSV dumps. We would export founder detections, attach fields and context, and send them to VC users who would manually evaluate them. Those early files validated that what we were surfacing mattered. Even as simple rows, the idea of detecting people before companies clicked with investors.</p>
           <p>But CSVs had obvious limitations. They stripped signals of context, forced people to mentally reconstruct founder stories, and made even meaningful discoveries feel flat. So the next step was visualizing the data through a front-end. Our first attempt was Zoho Creator. It served us for nearly two years as a quick way to present fields, list founders, and show basic associations. It was never elegant. It was glitchy, restrictive, slow at scale, and visually incapable of communicating the richness of the intelligence behind it. The more data points we extracted, the more obvious the UI bottleneck became. The product beneath was maturing rapidly; the container housing it was not. That disconnect eventually triggered the decision to build a dedicated interface, one that could express signal strength, founder context, sequence of activity, platform footprints, and the full scope of what Talent knew about a person.</p>
+
+          <!-- OLD & NEW UI IMAGES AFTER SECTION 6 -->
+          <figure class="figure-block">
+            <img src="/portfolio/specter/images/image1.png" alt="Specter Talent old UI (Zoho-based)" />
+            <figcaption>Old UI — early Zoho Creator-based interface for Talent.</figcaption>
+          </figure>
+
+          <figure class="figure-block">
+            <img src="/portfolio/specter/images/image2.png" alt="Specter Talent new UI" />
+            <figcaption>New UI — dedicated interface reflecting Talent’s signal intelligence.</figcaption>
+          </figure>
         </section>
 
         <!-- 7. Signal Design -->
@@ -147,7 +239,7 @@
           <p>This became the foundation of the “Signal Score,” our internal metric that quantified the credibility of a founder’s movement based on the strength of the signal, sequence of events, contextual factors, and validation from multiple sources. It allowed us to treat discovery as something measurable rather than theoretical. Signal Score made Talent more discerning, cutting noise, elevating meaningful activity, and allowing analysts to focus on people most likely to be building something real.</p>
         </section>
 
-        <!-- 8. User Needs -->
+        <!-- 8. Understanding User Needs -->
         <section>
           <h2>8. Understanding User Needs Through Second-Degree Conversations.</h2>
           <p>I didn’t sit across the table from the funds discussing what they wanted. But I learned just as much from distance. Analysts wrote back requesting metadata fields. Partners asked for more context. VCs in demo calls questioned the absence of certain attributes or pressed us on how we inferred intent. These insights often arrived as email threads forwarded internally or as summaries shared after demos.</p>
@@ -172,7 +264,7 @@
           <p>Building our own front-end changed what people saw. Fields had structure. Founder profiles showed identity, intent, and context. Signal Scores gave clarity. Paths were traceable. Patterns were easier to interpret. Most importantly, the interface finally felt proportional to the product’s intelligence. It wasn’t just prettier. It was explanatory, contextual, and designed to help analysts make decisions. It framed early founder intent as a structured story rather than a loose collection of signals.</p>
         </section>
 
-        <!-- 12. What Talent Taught Me -->
+        <!-- 12. What Building Talent Taught Me -->
         <section>
           <h2>12. What Building Talent Taught Me.</h2>
           <p>Five years of working on Talent taught me how deeply messy, unstructured and vague early-stage markets are and how much clarity you can extract if you’re willing to sit with the noise long enough. It taught me how to interpret digital exhaust as direction, how to separate weak fingerprints from strong intent, and how to see patterns in founders long before the rest of the world sees their companies. It shaped how I think about products, data, and venture ecosystems. I learned that the earliest signals are subtle, contextual, and behavioural, not loud or obvious. More than anything, I learned to respect the complexity behind discovery. Everyone wants to find “the next big thing.” Few want to read 2,000 signals to figure out which five even matter. Talent forced me to do that repeatedly, and it shaped how I think about innovation going forward.</p>
