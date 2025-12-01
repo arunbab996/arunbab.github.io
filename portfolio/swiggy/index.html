@@ -111,19 +111,20 @@
         background: #fff;
       }
 
-      /* CASE STUDY FIGURES – constrain Swiggy images so they don't overflow */
+      /* FIGURES (image1 & image2) – smaller, centered, responsive */
       .figure-card {
-        margin: 18px 0;
+        margin: 16px 0 4px;
         display: flex;
         justify-content: center;
       }
       .figure-card img {
-        max-width: 760px;   /* keeps them nicely within the column */
+        max-width: 620px;   /* <== dial this up/down if you want */
         width: 100%;
         height: auto;
         border-radius: 8px;
         border: 1px solid #eef2f7;
-        display: block;
+        box-shadow: 0 8px 22px rgba(12,24,48,0.06);
+        background: #fff;
       }
       figcaption {
         font-size: 13px;
