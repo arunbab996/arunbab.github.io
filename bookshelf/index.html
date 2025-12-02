@@ -8,9 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Base styles copied from main index (header, layout, etc.) ===== */
+    /* ===== Base styles (aligned with main index) ===== */
     :root{
-      /* Tweaked bg to a more neutral grey like Gustavo's page */
       --bg:#f4f5f7;
       --text:#111219;
       --muted:#5b6066;
@@ -25,6 +24,11 @@
       font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
       color:var(--text);
       -webkit-font-smoothing:antialiased;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
     }
 
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
@@ -68,7 +72,7 @@
       padding:0 16px;
     }
 
-    /* staggered transitions (kept, but optional for you) */
+    /* stagger animation (same pattern as home) */
     .page-enter > * {
       opacity: 0;
       transform: translateY(6px);
@@ -89,18 +93,18 @@
     .page-enter.page-enter-active > *:nth-child(7) { transition-delay: 0.30s; }
     .page-enter.page-enter-active > *:nth-child(8) { transition-delay: 0.35s; }
 
-    .social-fixed{ /* you probably don't want social links on bookshelf */
-      display:none;
+    .social-fixed{
+      display:none; /* hide socials on this page */
     }
 
-    /* ===== BOOKSHELF-SPECIFIC LAYOUT ===== */
-
-    /* Make the content wider than your home page, but keep nav at 640px */
+    /* Make content wider than home page on larger screens */
     @media (min-width: 768px) {
       main {
-        max-width: 960px; /* wider canvas for books */
+        max-width: 960px;
       }
     }
+
+    /* ===== BOOKSHELF LAYOUT ===== */
 
     .books-layout{
       display:grid;
@@ -115,7 +119,7 @@
       padding-top:4px;
     }
 
-    /* empty for now – kept just to mirror Gustavo's left column */
+    /* empty for now – reserved for future filters */
     .books-sidebar::before{
       content:"";
     }
@@ -133,6 +137,7 @@
       font-weight:600;
       letter-spacing:-0.02em;
       margin-bottom:4px;
+      text-align:left;
     }
 
     .books-subtitle{
@@ -140,30 +145,26 @@
       color:var(--muted);
     }
 
-    /* ===== Books grid & cards (Gustavo-style) ===== */
+    /* ===== Books grid & "standing book" cards ===== */
 
     .books-grid{
       display:grid;
-      /* larger tiles – closer to reference */
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap:28px;
+      grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 per row on desktop */
+      column-gap:32px;
+      row-gap:32px;
     }
 
+    /* card wrapper, no big white tile */
     .book-card{
-      background:#ffffff;
-      border-radius:14px;
-      padding:12px 12px 14px;
-      box-shadow:0 16px 40px rgba(15,23,42,0.10);
+      background:transparent;
+      padding:0;
+      box-shadow:none;
       display:flex;
       flex-direction:column;
-      transition:transform 0.18s ease, box-shadow 0.18s ease;
+      align-items:flex-start;
     }
 
-    .book-card:hover{
-      transform:translateY(-4px);
-      box-shadow:0 20px 55px rgba(15,23,42,0.18);
-    }
-
+    /* cover looks like the actual book, with shadow */
     .book-cover{
       position:relative;
       width:100%;
@@ -171,7 +172,8 @@
       border-radius:10px;
       overflow:hidden;
       background:#e5e7eb;
-      margin-bottom:10px;
+      box-shadow:0 14px 30px rgba(15,23,42,0.18);
+      transition:transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     .book-cover img{
@@ -181,7 +183,14 @@
       object-fit:cover;
     }
 
+    /* subtle lift on hover */
+    .book-card:hover .book-cover{
+      transform:translateY(-4px);
+      box-shadow:0 20px 45px rgba(15,23,42,0.25);
+    }
+
     .book-meta{
+      margin-top:8px;
       display:flex;
       flex-direction:column;
     }
@@ -190,7 +199,7 @@
       font-size:13px;
       font-weight:600;
       line-height:1.4;
-      margin-bottom:3px;
+      margin-bottom:2px;
       color:var(--text);
       display:-webkit-box;
       -webkit-line-clamp:2;
@@ -208,7 +217,13 @@
       overflow:hidden;
     }
 
-    /* ===== Responsive tweaks ===== */
+    /* ===== Responsive ===== */
+
+    @media (max-width: 1024px){
+      .books-grid{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
 
     @media (max-width: 768px){
       main{
@@ -228,7 +243,8 @@
 
       .books-grid{
         grid-template-columns:repeat(2, minmax(0,1fr));
-        gap:18px;
+        column-gap:18px;
+        row-gap:22px;
       }
 
       .books-title{
@@ -239,11 +255,8 @@
     @media (max-width: 480px){
       .books-grid{
         grid-template-columns:repeat(2, minmax(0,1fr));
-        gap:14px;
-      }
-
-      .book-card{
-        padding:8px 8px 10px;
+        column-gap:14px;
+        row-gap:18px;
       }
 
       .book-title{
@@ -261,7 +274,7 @@
 
   <header>
     <nav class="nav">
-      <a href="/" >Index</a>
+      <a href="/">Index</a>
       <a href="/portfolio">Portfolio</a>
       <a href="/bookshelf" class="active">Bookshelf</a>
       <a href="/principles">Principles</a>
@@ -271,7 +284,7 @@
   <main>
     <section class="page-enter">
       <div class="books-layout">
-        <!-- Left column kept empty for now (mirrors Gustavo's sidebar) -->
+        <!-- Left gutter column (empty for now, kept for layout balance) -->
         <aside class="books-sidebar"></aside>
 
         <!-- Main column -->
@@ -282,7 +295,7 @@
           </header>
 
           <div class="books-grid">
-            <!-- Example books – replace with your real covers/titles/authors -->
+            <!-- Example books – replace with your real ones -->
 
             <article class="book-card">
               <div class="book-cover">
@@ -350,8 +363,7 @@
               </div>
             </article>
 
-            <!-- Add more books by duplicating a .book-card block and updating
-                 the src, alt, title and author -->
+            <!-- To add more books, copy-paste a .book-card block and update src/alt/title/author -->
           </div>
         </div>
       </div>
@@ -359,7 +371,7 @@
   </main>
 
   <script>
-    // Trigger staggered transitions on load (same as index)
+    // Trigger stagger animation on load
     window.addEventListener('DOMContentLoaded', function () {
       var containers = document.querySelectorAll('.page-enter');
       containers.forEach(function (el) {
