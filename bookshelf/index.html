@@ -4,367 +4,369 @@
   <meta charset="UTF-8" />
   <title>Bookshelf | Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* --- Base reset (light) --- */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    /* ===== Base styles copied from main index (header, layout, etc.) ===== */
+    :root{
+      /* Tweaked bg to a more neutral grey like Gustavo's page */
+      --bg:#f4f5f7;
+      --text:#111219;
+      --muted:#5b6066;
+      --max-width:640px;
+      --nav-gap:28px;
     }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      -webkit-font-smoothing: antialiased;
-      background: #f5f5f7;
-      color: #111827;
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      background:var(--bg);
+      font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
+
+    header{
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      background:transparent;
+      width:100%;
     }
 
-    /* --- Simple shared header/nav (similar to your other pages) --- */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(245, 245, 247, 0.96);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(209, 213, 219, 0.7);
-    }
-
-    .site-nav {
-      max-width: 1100px;
+    .nav{
+      max-width: var(--max-width);
+      width:100%;
+      display:flex;
+      justify-content:flex-start;
+      padding:20px 16px;
+      gap: var(--nav-gap);
+      font-size:15px;
+      font-weight:600;
+      color:var(--muted);
       margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      font-size: 14px;
-      color: #4b5563;
     }
 
-    .site-nav a {
-      position: relative;
-      padding-bottom: 4px;
-      opacity: 0.75;
-      transition: opacity 0.18s ease, color 0.18s ease;
+    .nav a{
+      color:var(--muted);
+      text-decoration:none;
+      padding-bottom:2px;
+      border-bottom:2px solid transparent;
     }
 
-    .site-nav a:hover {
+    .nav a.active{
+      color:var(--text);
+      border-bottom-color:var(--text);
+    }
+
+    main{
+      max-width:var(--max-width);
+      margin:48px auto;
+      padding:0 16px;
+    }
+
+    /* staggered transitions (kept, but optional for you) */
+    .page-enter > * {
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity 320ms ease-out,
+        transform 320ms ease-out;
+    }
+    .page-enter.page-enter-active > * {
       opacity: 1;
-      color: #111827;
+      transform: translateY(0);
+    }
+    .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
+    .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
+    .page-enter.page-enter-active > *:nth-child(3) { transition-delay: 0.10s; }
+    .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
+    .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
+    .page-enter.page-enter-active > *:nth-child(6) { transition-delay: 0.25s; }
+    .page-enter.page-enter-active > *:nth-child(7) { transition-delay: 0.30s; }
+    .page-enter.page-enter-active > *:nth-child(8) { transition-delay: 0.35s; }
+
+    .social-fixed{ /* you probably don't want social links on bookshelf */
+      display:none;
     }
 
-    .site-nav a.active {
-      opacity: 1;
-      color: #111827;
-    }
+    /* ===== BOOKSHELF-SPECIFIC LAYOUT ===== */
 
-    .site-nav a.active::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: #111827;
-    }
-
-    @media (max-width: 640px) {
-      .site-nav {
-        justify-content: center;
-        gap: 16px;
-        font-size: 13px;
+    /* Make the content wider than your home page, but keep nav at 640px */
+    @media (min-width: 768px) {
+      main {
+        max-width: 960px; /* wider canvas for books */
       }
     }
 
-    /* --- Bookshelf layout & styles (scoped) --- */
-
-    :root {
-      --books-bg-page: #f5f5f7;
-      --books-bg-card: #ffffff;
-      --books-text-main: #111827;
-      --books-text-muted: #6b7280;
-      --books-shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
-      --books-shadow-soft-hover: 0 16px 35px rgba(15, 23, 42, 0.15);
-      --books-radius-card: 12px;
+    .books-layout{
+      display:grid;
+      grid-template-columns: 150px minmax(0,1fr); /* left gutter + main */
+      column-gap:40px;
+      align-items:flex-start;
     }
 
-    .bookshelf-page {
-      background: var(--books-bg-page);
-      padding: 40px 0 60px;
+    .books-sidebar{
+      font-size:13px;
+      color:var(--muted);
+      padding-top:4px;
     }
 
-    .bookshelf-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: 210px minmax(0, 1fr);
-      column-gap: 40px;
-      row-gap: 24px;
+    /* empty for now – kept just to mirror Gustavo's left column */
+    .books-sidebar::before{
+      content:"";
     }
 
-    .bookshelf-sidebar {
-      padding-top: 8px;
-      font-size: 13px;
-      color: var(--books-text-muted);
-      min-height: 40px;
-      /* intentionally empty – kept for future filters / labels */
+    .books-main{
+      min-width:0;
     }
 
-    .bookshelf-main {
-      min-width: 0;
+    .books-header{
+      margin-bottom:24px;
     }
 
-    .bookshelf-header {
-      margin-bottom: 24px;
+    .books-title{
+      font-size:26px;
+      font-weight:600;
+      letter-spacing:-0.02em;
+      margin-bottom:4px;
     }
 
-    .bookshelf-title {
-      font-size: 26px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
+    .books-subtitle{
+      font-size:13px;
+      color:var(--muted);
     }
 
-    .bookshelf-subtitle {
-      font-size: 13px;
-      color: var(--books-text-muted);
+    /* ===== Books grid & cards (Gustavo-style) ===== */
+
+    .books-grid{
+      display:grid;
+      /* larger tiles – closer to reference */
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap:28px;
     }
 
-    /* Grid */
-    .books-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 24px;
+    .book-card{
+      background:#ffffff;
+      border-radius:14px;
+      padding:12px 12px 14px;
+      box-shadow:0 16px 40px rgba(15,23,42,0.10);
+      display:flex;
+      flex-direction:column;
+      transition:transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    /* Book card */
-    .book-card {
-      background: var(--books-bg-card);
-      border-radius: var(--books-radius-card);
-      padding: 10px 10px 12px;
-      box-shadow: var(--books-shadow-soft);
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    .book-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 20px 55px rgba(15,23,42,0.18);
     }
 
-    .book-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--books-shadow-soft-hover);
+    .book-cover{
+      position:relative;
+      width:100%;
+      aspect-ratio: 3 / 4;
+      border-radius:10px;
+      overflow:hidden;
+      background:#e5e7eb;
+      margin-bottom:10px;
     }
 
-    .book-cover {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 4; /* consistent proportion */
-      border-radius: 9px;
-      overflow: hidden;
-      background: #e5e7eb;
-      margin-bottom: 10px;
+    .book-cover img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
     }
 
-    .book-cover img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
+    .book-meta{
+      display:flex;
+      flex-direction:column;
     }
 
-    .book-meta {
-      display: flex;
-      flex-direction: column;
+    .book-title{
+      font-size:13px;
+      font-weight:600;
+      line-height:1.4;
+      margin-bottom:3px;
+      color:var(--text);
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
 
-    .book-title {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.3;
-      margin-bottom: 3px;
-      color: var(--books-text-main);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .book-author{
+      font-size:11px;
+      color:var(--muted);
+      line-height:1.4;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
 
-    .book-author {
-      font-size: 11px;
-      color: var(--books-text-muted);
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
+    /* ===== Responsive tweaks ===== */
 
-    /* Responsive */
-    @media (max-width: 900px) {
-      .bookshelf-inner {
-        grid-template-columns: 180px minmax(0, 1fr);
-        column-gap: 24px;
+    @media (max-width: 768px){
+      main{
+        max-width:100%;
+        margin:32px auto;
+      }
+
+      .books-layout{
+        grid-template-columns:minmax(0,1fr);
+        column-gap:0;
+        row-gap:16px;
+      }
+
+      .books-sidebar{
+        display:none;
+      }
+
+      .books-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        gap:18px;
+      }
+
+      .books-title{
+        font-size:22px;
       }
     }
 
-    @media (max-width: 768px) {
-      .bookshelf-page {
-        padding-top: 28px;
+    @media (max-width: 480px){
+      .books-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        gap:14px;
       }
 
-      .bookshelf-inner {
-        grid-template-columns: minmax(0, 1fr);
-        row-gap: 16px;
+      .book-card{
+        padding:8px 8px 10px;
       }
 
-      .bookshelf-sidebar {
-        display: none; /* hide empty sidebar on mobile */
+      .book-title{
+        font-size:12px;
       }
 
-      .books-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px;
-      }
-
-      .bookshelf-title {
-        font-size: 22px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .books-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-      }
-
-      .book-card {
-        padding: 8px 8px 10px;
-      }
-
-      .book-title {
-        font-size: 12px;
-      }
-
-      .book-author {
-        font-size: 10px;
+      .book-author{
+        font-size:10px;
       }
     }
   </style>
 </head>
-
 <body>
-  <!-- HEADER / NAV (keep paths as per your site structure) -->
-  <header class="site-header">
-    <nav class="site-nav">
-      <a href="/index.html">Index</a>
-      <a href="/portfolio/index.html">Portfolio</a>
-      <a href="/bookshelf/index.html" class="active">Bookshelf</a>
-      <a href="/principles/index.html">Principles</a>
+  <div class="page-top-border"></div>
+
+  <header>
+    <nav class="nav">
+      <a href="/" >Index</a>
+      <a href="/portfolio">Portfolio</a>
+      <a href="/bookshelf" class="active">Bookshelf</a>
+      <a href="/principles">Principles</a>
     </nav>
   </header>
 
-  <!-- BOOKSHELF CONTENT -->
-  <main class="bookshelf-page">
-    <div class="bookshelf-inner">
-      <!-- Left column, intentionally empty for now -->
-      <aside class="bookshelf-sidebar"></aside>
+  <main>
+    <section class="page-enter">
+      <div class="books-layout">
+        <!-- Left column kept empty for now (mirrors Gustavo's sidebar) -->
+        <aside class="books-sidebar"></aside>
 
-      <!-- Main column -->
-      <section class="bookshelf-main">
-        <header class="bookshelf-header">
-          <h1 class="bookshelf-title">Books</h1>
-          <p class="bookshelf-subtitle">My own little library</p>
-        </header>
+        <!-- Main column -->
+        <div class="books-main">
+          <header class="books-header">
+            <h1 class="books-title">Books</h1>
+            <p class="books-subtitle">My own little library</p>
+          </header>
 
-        <div class="books-grid">
-          <!-- Example books – replace with your own list -->
+          <div class="books-grid">
+            <!-- Example books – replace with your real covers/titles/authors -->
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/superintelligence.jpg"
-                   alt="Superintelligence by Nick Bostrom" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Superintelligence</div>
-              <div class="book-author">Nick Bostrom</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/superintelligence.jpg"
+                     alt="Superintelligence by Nick Bostrom" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Superintelligence</div>
+                <div class="book-author">Nick Bostrom</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/steve-jobs.jpg"
-                   alt="Steve Jobs by Walter Isaacson" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Steve Jobs</div>
-              <div class="book-author">Walter Isaacson</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/steve-jobs.jpg"
+                     alt="Steve Jobs by Walter Isaacson" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Steve Jobs</div>
+                <div class="book-author">Walter Isaacson</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/harry-potter-deathly-hallows.jpg"
-                   alt="Harry Potter and the Deathly Hallows by J.K. Rowling" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Harry Potter and the Deathly Hallows</div>
-              <div class="book-author">J.K. Rowling</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/harry-potter-deathly-hallows.jpg"
+                     alt="Harry Potter and the Deathly Hallows by J.K. Rowling" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Harry Potter and the Deathly Hallows</div>
+                <div class="book-author">J.K. Rowling</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/american-kingpin.jpg"
-                   alt="American Kingpin by Nick Bilton" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">American Kingpin</div>
-              <div class="book-author">Nick Bilton</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/american-kingpin.jpg"
+                     alt="American Kingpin by Nick Bilton" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">American Kingpin</div>
+                <div class="book-author">Nick Bilton</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/shoe-dog.jpg"
-                   alt="Shoe Dog by Phil Knight" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Shoe Dog</div>
-              <div class="book-author">Phil Knight</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/shoe-dog.jpg"
+                     alt="Shoe Dog by Phil Knight" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Shoe Dog</div>
+                <div class="book-author">Phil Knight</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/zero-to-one.jpg"
-                   alt="Zero to One by Peter Thiel" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Zero to One</div>
-              <div class="book-author">Peter Thiel</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/zero-to-one.jpg"
+                     alt="Zero to One by Peter Thiel" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Zero to One</div>
+                <div class="book-author">Peter Thiel</div>
+              </div>
+            </article>
 
-          <!-- Copy-paste this block for each extra book:
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/FILE-NAME.jpg" alt="FULL TITLE by AUTHOR" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">FULL TITLE</div>
-              <div class="book-author">AUTHOR NAME</div>
-            </div>
-          </article>
-          -->
+            <!-- Add more books by duplicating a .book-card block and updating
+                 the src, alt, title and author -->
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </main>
+
+  <script>
+    // Trigger staggered transitions on load (same as index)
+    window.addEventListener('DOMContentLoaded', function () {
+      var containers = document.querySelectorAll('.page-enter');
+      containers.forEach(function (el) {
+        void el.offsetWidth; // force reflow
+        el.classList.add('page-enter-active');
+      });
+    });
+  </script>
 </body>
 </html>
