@@ -1,215 +1,375 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Bookshelf — Arun Baburaj</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" href="/favicon.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Bookshelf | Arun Baburaj</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root{
-      --bg:#dbe2eb;
-      --text:#111219;
-      --muted:#5b6066;
-      --card-bg: rgba(255,255,255,0.03);
-      --header-max-width:1200px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-    .page-top-border{height:3px;background:rgba(0,0,0,0.08)}
-
-    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
-    .nav{max-width:640px; width:100%; display:flex; justify-content:flex-start; padding:20px 16px; gap:28px; font-size:15px; font-weight:600; color:var(--muted); margin:0 auto}
-    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent}
-    .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
-    .nav a.active{color:var(--text);border-bottom-color:var(--text)}
-
-    main{width:100%;margin:48px auto;padding:0 24px}
-    .page-title{font-weight:700;font-size:18px;margin:0 auto 18px;max-width:var(--header-max-width);padding:0 16px}
-
-    .books-grid{width:100%;max-width:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px;align-items:start;padding: 0 8px 48px;justify-items:center}
-    .book-card{width:160px;display:flex;justify-content:center;align-items:center;border-radius:8px;overflow:hidden;transition: transform .12s ease, box-shadow .12s ease;background:transparent;padding:6px}
-    .book-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 24px rgba(16,24,40,0.08); }
-    .cover-wrap{width:150px;height:220px;border-radius:6px;overflow:hidden;display:block;background:#e9edf6;display:flex;align-items:center;justify-content:center;position:relative;pointer-events:auto}
-    .book-cover{ width:100%; height:100%; object-fit:cover; display:block; pointer-events:auto }
-    .book-meta{display:none !important}
-
-    .cover-tooltip{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 8px);white-space:nowrap;background:rgba(10,15,30,0.95);color:#fff;font-size:13px;padding:6px 10px;border-radius:6px;box-shadow:0 8px 20px rgba(16,24,40,0.2);opacity:0;pointer-events:none;transition:opacity .12s ease, transform .12s ease;transform-origin:50% 100%;z-index:100}
-    .cover-wrap:hover .cover-tooltip,.cover-wrap:focus .cover-tooltip{opacity:1;transform:translateX(-50%) translateY(-4px)}
-
-    @media (max-width:920px){ .books-grid{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px; } .cover-wrap{ width:130px; height:190px; } .book-card{ width:130px; } }
-    @media (max-width:560px){ .books-grid{ grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; } .cover-wrap{ width:120px; height:175px; } .book-card{ width:120px; } }
-    .book-count{max-width:var(--header-max-width);margin:10px auto;color:var(--muted);font-size:13px}
-
-    .placeholder-1{background:#6B8DF6}
-    .placeholder-2{background:#7ED7A6}
-    .placeholder-3{background:#FFA86B}
-    .placeholder-4{background:#C39BFF}
-
-    /* === Staggered page-enter transitions === */
-    .page-enter > * {
-      opacity: 0;
-      transform: translateY(6px);
-      transition:
-        opacity 320ms ease-out,
-        transform 320ms ease-out;
+    :root {
+      --bg-page: #f4f5f7;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --nav-text: #4b5563;
+      --nav-active: #111827;
+      --border-soft: #e5e7eb;
+      --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.08);
+      --shadow-soft-hover: 0 14px 30px rgba(15, 23, 42, 0.14);
+      --radius-card: 10px;
     }
 
-    .page-enter.page-enter-active > * {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Top nav */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(244, 245, 247, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+    }
+
+    .site-nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 14px;
+      color: var(--nav-text);
+    }
+
+    .site-nav a {
+      position: relative;
+      padding-bottom: 4px;
+      opacity: 0.75;
+      transition: opacity 0.18s ease, color 0.18s ease;
+    }
+
+    .site-nav a:hover {
       opacity: 1;
-      transform: translateY(0);
+      color: var(--nav-active);
     }
 
-    .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
-    .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
-    .page-enter.page-enter-active > *:nth-child(3) { transition-delay: 0.10s; }
-    .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
+    .site-nav a.active {
+      opacity: 1;
+      color: var(--nav-active);
+    }
+
+    .site-nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--nav-active);
+    }
+
+    /* Page layout */
+    .bookshelf-page {
+      padding: 32px 0 48px;
+    }
+
+    .bookshelf-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      column-gap: 40px;
+      row-gap: 24px;
+      align-items: flex-start;
+    }
+
+    /* Empty sidebar for now (keeps layout similar to inspo) */
+    .bookshelf-sidebar {
+      padding-top: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      min-height: 40px;
+    }
+
+    /* Main section */
+    .bookshelf-main {
+      min-width: 0;
+    }
+
+    .bookshelf-header h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .bookshelf-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* Grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 24px;
+    }
+
+    .book-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 10px 12px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease,
+        translate 0.18s ease;
+    }
+
+    .book-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-soft-hover);
+    }
+
+    .book-cover {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #e5e7eb;
+      margin-bottom: 10px;
+    }
+
+    .book-cover img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .book-meta {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .book-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .book-author {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .bookshelf-shell {
+        grid-template-columns: 180px minmax(0, 1fr);
+        column-gap: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-nav {
+        justify-content: center;
+      }
+
+      .bookshelf-page {
+        padding-top: 20px;
+      }
+
+      .bookshelf-shell {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 12px;
+      }
+
+      .bookshelf-sidebar {
+        display: none; /* hide empty sidebar on mobile */
+      }
+
+      .bookshelf-header h1 {
+        font-size: 22px;
+      }
+
+      .books-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .books-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .book-card {
+        padding: 8px 8px 10px;
+      }
+
+      .book-title {
+        font-size: 12px;
+      }
+
+      .book-author {
+        font-size: 10px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="page-top-border"></div>
-  <header>
-    <nav class="nav" aria-label="Main navigation">
-      <a href="/">Index</a>
-      <a href="/portfolio">Portfolio</a>
-      <a href="/bookshelf" class="active">Bookshelf</a>
-      <a href="/principles">Principles</a>
+  <!-- Top navigation (adjust hrefs to match your structure) -->
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="/index.html">Index</a>
+      <a href="/portfolio/index.html">Portfolio</a>
+      <a href="/bookshelf/index.html" class="active">Bookshelf</a>
+      <a href="/principles/index.html">Principles</a>
     </nav>
   </header>
 
-  <main>
-    <!-- page-enter wrapper around title, grid, count -->
-    <div class="page-enter">
-      <div class="page-title">Bookshelf</div>
-      <div id="books-grid" class="books-grid" aria-live="polite"></div>
-      <div id="book-count" class="book-count" aria-live="polite"></div>
+  <main class="bookshelf-page">
+    <div class="bookshelf-shell">
+      <!-- Empty sidebar reserved for future filters / sections -->
+      <aside class="bookshelf-sidebar">
+        <!-- Intentionally empty for now -->
+      </aside>
+
+      <section class="bookshelf-main">
+        <header class="bookshelf-header">
+          <h1>Books</h1>
+          <p>My own little library</p>
+        </header>
+
+        <div class="books-grid">
+          <!-- Book 1 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/superintelligence.jpg" alt="Superintelligence by Nick Bostrom" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">Superintelligence</h2>
+              <p class="book-author">Nick Bostrom</p>
+            </div>
+          </article>
+
+          <!-- Book 2 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/steve-jobs.jpg" alt="Steve Jobs by Walter Isaacson" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">Steve Jobs</h2>
+              <p class="book-author">Walter Isaacson</p>
+            </div>
+          </article>
+
+          <!-- Book 3 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/harry-potter-deathly-hallows.jpg" alt="Harry Potter and the Deathly Hallows by J.K. Rowling" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">Harry Potter and the Deathly Hallows</h2>
+              <p class="book-author">J.K. Rowling</p>
+            </div>
+          </article>
+
+          <!-- Book 4 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/american-kingpin.jpg" alt="American Kingpin by Nick Bilton" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">American Kingpin</h2>
+              <p class="book-author">Nick Bilton</p>
+            </div>
+          </article>
+
+          <!-- Book 5 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/shoe-dog.jpg" alt="Shoe Dog by Phil Knight" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">Shoe Dog</h2>
+              <p class="book-author">Phil Knight</p>
+            </div>
+          </article>
+
+          <!-- Book 6 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/zero-to-one.jpg" alt="Zero to One by Peter Thiel" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">Zero to One</h2>
+              <p class="book-author">Peter Thiel</p>
+            </div>
+          </article>
+
+          <!-- Book 7 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/the-war-of-art.jpg" alt="The War of Art by Steven Pressfield" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">The War of Art</h2>
+              <p class="book-author">Steven Pressfield</p>
+            </div>
+          </article>
+
+          <!-- Book 8 -->
+          <article class="book-card">
+            <div class="book-cover">
+              <img src="covers/rich-dad-poor-dad.jpg" alt="Rich Dad Poor Dad by Robert Kiyosaki" />
+            </div>
+            <div class="book-meta">
+              <h2 class="book-title">Rich Dad Poor Dad</h2>
+              <p class="book-author">Robert Kiyosaki</p>
+            </div>
+          </article>
+
+          <!-- Add more books by copy-pasting a .book-card and updating src/title/author -->
+        </div>
+      </section>
     </div>
   </main>
-
-  <div style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:24px;z-index:40">
-    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn" style="color:var(--text);text-decoration:none">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
-    </a>
-    <a href="https://x.com/96Arun" target="_blank" aria-label="X" style="color:var(--text);text-decoration:none">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
-    </a>
-    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email" style="color:var(--text);text-decoration:none">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-    </a>
-  </div>
-
-  <script>
-  const CSV_CANDIDATES = [
-    '/mnt/data/Books Tracker - Sheet3.csv',
-    '/mnt/data/books.csv',
-    '/data/books.csv',
-    '/books.csv'
-  ];
-
-  function parseCSV(text){
-    const rows=[]; let cur='', row=[], inQuotes=false;
-    for(let i=0;i<text.length;i++){ const ch=text[i], nxt=text[i+1];
-      if(ch==='"'){ if(inQuotes && nxt==='"'){ cur+='"'; i++; continue;} inQuotes=!inQuotes; continue; }
-      if(ch===',' && !inQuotes){ row.push(cur); cur=''; continue; }
-      if((ch==='\n' || ch==='\r') && !inQuotes){ if(ch==='\r' && text[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; continue; }
-      cur+=ch;
-    }
-    if(cur !== '' || row.length){ row.push(cur); rows.push(row); }
-    if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
-    return rows;
-  }
-
-  function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
-  function sanitizeIsbn(s){ if(!s) return ''; s=String(s||'').trim().replace(/[^0-9Xx]/g,''); if(!s||s.toLowerCase()==='nan') return ''; return s; }
-
-  function makeInitialsPlaceholder(text,w=240,h=360,bg='#6B8DF6'){
-    const initials=(text||' ').split(/\s+/).slice(0,2).map(s=>s.charAt(0)).join('').toUpperCase()||'?';
-    const fontSize=Math.round(Math.min(w,h)/3.2);
-    const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='100%' height='100%' fill='${bg}'/><text x='50%' y='50%' font-family='Inter, Arial, sans-serif' font-size='${fontSize}' fill='white' text-anchor='middle' dominant-baseline='middle'>${initials}</text></svg>`;
-    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  }
-
-  function createBookCard(item, idx){
-    const title = (item.title || '').trim() || 'Unknown title';
-    const isbn10 = sanitizeIsbn(item.isbn10 || '');
-    const isbn13 = sanitizeIsbn(item.isbn13 || '');
-    const isbn = isbn13 || isbn10 || '';
-    const coverUrl = (item.cover_url || '').trim() || (isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg` : '');
-
-    const card = document.createElement('div'); card.className = 'book-card';
-    const coverWrap = document.createElement('div'); coverWrap.className = 'cover-wrap';
-    const img = document.createElement('img'); img.className = 'book-cover'; img.alt = title + ' cover';
-
-    img.title = title;
-    coverWrap.title = title;
-    coverWrap.tabIndex = 0;
-
-    const tip = document.createElement('div'); tip.className = 'cover-tooltip'; tip.textContent = title; coverWrap.appendChild(tip);
-
-    const placeholderClass = 'placeholder-' + ((idx % 4) + 1);
-    if(coverUrl){
-      img.src = coverUrl;
-      img.onerror = () => { img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6'); coverWrap.classList.add(placeholderClass); };
-    } else {
-      img.src = makeInitialsPlaceholder(title, 240, 360, '#6B8DF6');
-      coverWrap.classList.add(placeholderClass);
-    }
-
-    coverWrap.appendChild(img);
-    card.appendChild(coverWrap);
-    return card;
-  }
-
-  async function loadCsvCandidates(){
-    for(const url of CSV_CANDIDATES){
-      try{
-        const res = await fetch(url, {cache:'no-store'});
-        if(!res.ok){ console.warn('CSV not found at', url, res.status); continue; }
-        const txt = await res.text();
-        const rows = parseCSV(txt);
-        if(!rows || rows.length < 1) continue;
-        const headers = rows[0].map(normalizeHeader);
-        const objs = [];
-        for(let r = 1; r < rows.length; r++){
-          const row = rows[r];
-          if(row.every(c => String(c||'').trim() === '')) continue;
-          const obj = {};
-          for(let c = 0; c < headers.length; c++){ obj[headers[c]] = row[c] !== undefined ? row[c].trim() : ''; }
-          objs.push(obj);
-        }
-        return objs;
-      }catch(err){ console.warn('Failed to fetch/parse CSV', url, err); continue; }
-    }
-    return null;
-  }
-
-  (async function init(){
-    const grid = document.getElementById('books-grid');
-    const countEl = document.getElementById('book-count');
-    grid.innerHTML = 'Loading…';
-    const data = await loadCsvCandidates();
-    if(!data || data.length === 0){ grid.innerHTML = '<div style="padding:12px;color:var(--muted)">No books found. Upload your CSV (books.csv) to your repo under /data or ensure the sandbox path is correct for preview.</div>'; countEl.textContent = ''; return; }
-
-    grid.innerHTML = '';
-    const mapped = data.map((row) => ({
-      title: row.title || row.book || row.name || '',
-      isbn10: row.isbn10 || row.isbn_10 || row.isbn_10_clean || '',
-      isbn13: row.isbn13 || row.isbn_13 || row.isbn_13_clean || '',
-      cover_url: row.cover_url || row.cover || ''
-    }));
-
-    mapped.forEach((item, i) => { const card = createBookCard(item, i); grid.appendChild(card); });
-    countEl.textContent = `${mapped.length} book${mapped.length>1?'s':''}`;
-  })();
-
-  // Staggered page-enter trigger
-  window.addEventListener('DOMContentLoaded', function () {
-    var containers = document.querySelectorAll('.page-enter');
-    containers.forEach(function (el) {
-      void el.offsetWidth;
-      el.classList.add('page-enter-active');
-    });
-  });
-  </script>
 </body>
 </html>
