@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Base (matches your main index) ===== */
     :root{
       --bg:#f4f5f7;
       --text:#111219;
@@ -20,7 +19,7 @@
       --book-width:95px;
       --gap:22px;
       --row-gap:28px;
-      --bookshelf-width:690px; /* perfect width for 4 columns */
+      --bookshelf-width:690px;
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -34,7 +33,10 @@
 
     a{color:inherit;text-decoration:none;}
 
-    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
+    .page-top-border{
+      height:3px;
+      background:rgba(0,0,0,0.08);
+    }
 
     header{
       display:flex;
@@ -68,8 +70,6 @@
       border-bottom-color:var(--text);
     }
 
-    .social-fixed{display:none;}
-
     main{
       max-width:1120px;
       margin:40px auto 60px;
@@ -77,10 +77,10 @@
     }
 
     @media (max-width: 900px){
-      main{padding:0 16px;}
+      main{ padding:0 16px; }
     }
 
-    /* ==== Layout: Offset grid like reference ==== */
+    /* ===== Layout like reference screenshot ===== */
     .books-layout{
       display:grid;
       grid-template-columns:150px minmax(0,1fr);
@@ -91,41 +91,23 @@
     @media(max-width:750px){
       .books-layout{
         grid-template-columns:1fr;
-        column-gap:0;
       }
-      .books-sidebar{display:none;}
+      .books-sidebar{ display:none; }
     }
 
     .books-sidebar{
       color:#c4c6cc;
       font-size:13px;
       line-height:1.7;
-      padding-top:2px;
       opacity:0.9;
     }
 
-    .books-main{min-width:0;}
+    .books-main{ min-width:0; }
 
-    .books-header{
-      margin-bottom:18px;
-    }
-
-    .books-title{
-      font-size:23px;
-      font-weight:600;
-      letter-spacing:-0.02em;
-      margin-bottom:2px;
-    }
-
-    .books-subtitle{
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    /* ===== 4 books per row, always ===== */
+    /* ===== 4 books per row ===== */
     .books-grid-wrap{
       max-width:var(--bookshelf-width);
-      margin-top:8px;
+      margin-top:0;
     }
 
     .books-grid{
@@ -136,12 +118,11 @@
       row-gap:var(--row-gap);
     }
 
-    /* ===== Book card (thin & tall) ===== */
+    /* ===== book cards ===== */
     .book-card{
       width:var(--book-width);
       display:flex;
       flex-direction:column;
-      align-items:flex-start;
     }
 
     .book-cover{
@@ -153,11 +134,14 @@
       box-shadow:
         0 6px 14px rgba(15,23,42,0.10),
         0 1px 2px rgba(15,23,42,0.08);
-      transition:transform 0.15s ease, box-shadow 0.15s ease;
+      transition:transform .15s ease, box-shadow .15s ease;
     }
 
     .book-cover img{
-      width:100%;height:100%;object-fit:cover;display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
     .book-card:hover .book-cover{
@@ -196,10 +180,7 @@
 
     /* ===== Responsive ===== */
     @media(max-width:750px){
-      .books-grid-wrap{
-        max-width:100%;
-      }
-
+      .books-grid-wrap{ max-width:100%; }
       .books-grid{
         grid-template-columns:repeat(3, var(--book-width));
         justify-content:flex-start;
@@ -209,12 +190,13 @@
     @media(max-width:590px){
       .books-grid{
         grid-template-columns:repeat(2, var(--book-width));
-        gap:18px 18px;
+        column-gap:18px;
+        row-gap:18px;
       }
     }
-
   </style>
 </head>
+
 <body>
 
   <div class="page-top-border"></div>
@@ -231,22 +213,15 @@
   <main>
     <section class="books-layout">
 
-      <!-- left gutter like reference -->
-      <aside class="books-sidebar">
-        <!-- place for Filters / Back / etc if ever needed -->
-      </aside>
+      <!-- left blank gutter to match reference -->
+      <aside class="books-sidebar"></aside>
 
-      <!-- main column -->
       <div class="books-main">
-        <header class="books-header">
-          <h1 class="books-title">Books</h1>
-          <p class="books-subtitle">My own little library</p>
-        </header>
 
         <div class="books-grid-wrap">
           <div class="books-grid">
 
-            <!-- sample books -->
+            <!-- Books -->
             <article class="book-card">
               <div class="book-cover">
                 <img src="covers/superintelligence.jpg" alt="Superintelligence" />
@@ -269,7 +244,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/harry-potter-deathly-hallows.jpg" alt="HP Deathly Hallows" />
+                <img src="covers/harry-potter-deathly-hallows.jpg" />
               </div>
               <div class="book-meta">
                 <div class="book-title">Harry Potter and the Deathly Hallows</div>
@@ -279,7 +254,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/american-kingpin.jpg" alt="American Kingpin" />
+                <img src="covers/american-kingpin.jpg" />
               </div>
               <div class="book-meta">
                 <div class="book-title">American Kingpin</div>
@@ -289,7 +264,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/shoe-dog.jpg" alt="Shoe Dog" />
+                <img src="covers/shoe-dog.jpg" />
               </div>
               <div class="book-meta">
                 <div class="book-title">Shoe Dog</div>
@@ -299,7 +274,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/zero-to-one.jpg" alt="Zero to One" />
+                <img src="covers/zero-to-one.jpg" />
               </div>
               <div class="book-meta">
                 <div class="book-title">Zero to One</div>
