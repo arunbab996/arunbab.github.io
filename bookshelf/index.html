@@ -4,20 +4,9 @@
   <meta charset="UTF-8" />
   <title>Bookshelf | Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg-page: #f4f5f7;
-      --bg-card: #ffffff;
-      --text-main: #111827;
-      --text-muted: #6b7280;
-      --nav-text: #4b5563;
-      --nav-active: #111827;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.08);
-      --shadow-soft-hover: 0 14px 30px rgba(15, 23, 42, 0.14);
-      --radius-card: 10px;
-    }
 
+  <style>
+    /* --- Base reset (light) --- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -27,9 +16,9 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: var(--bg-page);
-      color: var(--text-main);
       -webkit-font-smoothing: antialiased;
+      background: #f5f5f7;
+      color: #111827;
     }
 
     a {
@@ -37,25 +26,25 @@
       text-decoration: none;
     }
 
-    /* Top nav */
+    /* --- Simple shared header/nav (similar to your other pages) --- */
     .site-header {
       position: sticky;
       top: 0;
-      z-index: 10;
-      background: rgba(244, 245, 247, 0.95);
+      z-index: 20;
+      background: rgba(245, 245, 247, 0.96);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+      border-bottom: 1px solid rgba(209, 213, 219, 0.7);
     }
 
     .site-nav {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 22px;
       font-size: 14px;
-      color: var(--nav-text);
+      color: #4b5563;
     }
 
     .site-nav a {
@@ -67,12 +56,12 @@
 
     .site-nav a:hover {
       opacity: 1;
-      color: var(--nav-active);
+      color: #111827;
     }
 
     .site-nav a.active {
       opacity: 1;
-      color: var(--nav-active);
+      color: #111827;
     }
 
     .site-nav a.active::after {
@@ -83,49 +72,70 @@
       bottom: 0;
       height: 2px;
       border-radius: 999px;
-      background: var(--nav-active);
+      background: #111827;
     }
 
-    /* Page layout */
+    @media (max-width: 640px) {
+      .site-nav {
+        justify-content: center;
+        gap: 16px;
+        font-size: 13px;
+      }
+    }
+
+    /* --- Bookshelf layout & styles (scoped) --- */
+
+    :root {
+      --books-bg-page: #f5f5f7;
+      --books-bg-card: #ffffff;
+      --books-text-main: #111827;
+      --books-text-muted: #6b7280;
+      --books-shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --books-shadow-soft-hover: 0 16px 35px rgba(15, 23, 42, 0.15);
+      --books-radius-card: 12px;
+    }
+
     .bookshelf-page {
-      padding: 32px 0 48px;
+      background: var(--books-bg-page);
+      padding: 40px 0 60px;
     }
 
-    .bookshelf-shell {
+    .bookshelf-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 16px;
+      padding: 0 24px;
       display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
+      grid-template-columns: 210px minmax(0, 1fr);
       column-gap: 40px;
       row-gap: 24px;
-      align-items: flex-start;
     }
 
-    /* Empty sidebar for now (keeps layout similar to inspo) */
     .bookshelf-sidebar {
       padding-top: 8px;
       font-size: 13px;
-      color: var(--text-muted);
+      color: var(--books-text-muted);
       min-height: 40px;
+      /* intentionally empty – kept for future filters / labels */
     }
 
-    /* Main section */
     .bookshelf-main {
       min-width: 0;
     }
 
-    .bookshelf-header h1 {
+    .bookshelf-header {
+      margin-bottom: 24px;
+    }
+
+    .bookshelf-title {
       font-size: 26px;
       font-weight: 600;
       letter-spacing: -0.02em;
       margin-bottom: 4px;
     }
 
-    .bookshelf-header p {
+    .bookshelf-subtitle {
       font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 24px;
+      color: var(--books-text-muted);
     }
 
     /* Grid */
@@ -135,241 +145,11 @@
       gap: 24px;
     }
 
+    /* Book card */
     .book-card {
-      background: var(--bg-card);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      background: var(--books-bg-card);
+      border-radius: var(--books-radius-card);
       padding: 10px 10px 12px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease,
-        translate 0.18s ease;
-    }
-
-    .book-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-soft-hover);
-    }
-
-    .book-cover {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #e5e7eb;
-      margin-bottom: 10px;
-    }
-
-    .book-cover img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-    }
-
-    .book-meta {
-      flex: 1;
+      box-shadow: var(--books-shadow-soft);
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-
-    .book-title {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.3;
-      margin-bottom: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .book-author {
-      font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .bookshelf-shell {
-        grid-template-columns: 180px minmax(0, 1fr);
-        column-gap: 24px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .site-nav {
-        justify-content: center;
-      }
-
-      .bookshelf-page {
-        padding-top: 20px;
-      }
-
-      .bookshelf-shell {
-        grid-template-columns: minmax(0, 1fr);
-        row-gap: 12px;
-      }
-
-      .bookshelf-sidebar {
-        display: none; /* hide empty sidebar on mobile */
-      }
-
-      .bookshelf-header h1 {
-        font-size: 22px;
-      }
-
-      .books-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .books-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-      }
-
-      .book-card {
-        padding: 8px 8px 10px;
-      }
-
-      .book-title {
-        font-size: 12px;
-      }
-
-      .book-author {
-        font-size: 10px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <!-- Top navigation (adjust hrefs to match your structure) -->
-  <header class="site-header">
-    <nav class="site-nav">
-      <a href="/index.html">Index</a>
-      <a href="/portfolio/index.html">Portfolio</a>
-      <a href="/bookshelf/index.html" class="active">Bookshelf</a>
-      <a href="/principles/index.html">Principles</a>
-    </nav>
-  </header>
-
-  <main class="bookshelf-page">
-    <div class="bookshelf-shell">
-      <!-- Empty sidebar reserved for future filters / sections -->
-      <aside class="bookshelf-sidebar">
-        <!-- Intentionally empty for now -->
-      </aside>
-
-      <section class="bookshelf-main">
-        <header class="bookshelf-header">
-          <h1>Books</h1>
-          <p>My own little library</p>
-        </header>
-
-        <div class="books-grid">
-          <!-- Book 1 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/superintelligence.jpg" alt="Superintelligence by Nick Bostrom" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">Superintelligence</h2>
-              <p class="book-author">Nick Bostrom</p>
-            </div>
-          </article>
-
-          <!-- Book 2 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/steve-jobs.jpg" alt="Steve Jobs by Walter Isaacson" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">Steve Jobs</h2>
-              <p class="book-author">Walter Isaacson</p>
-            </div>
-          </article>
-
-          <!-- Book 3 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/harry-potter-deathly-hallows.jpg" alt="Harry Potter and the Deathly Hallows by J.K. Rowling" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">Harry Potter and the Deathly Hallows</h2>
-              <p class="book-author">J.K. Rowling</p>
-            </div>
-          </article>
-
-          <!-- Book 4 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/american-kingpin.jpg" alt="American Kingpin by Nick Bilton" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">American Kingpin</h2>
-              <p class="book-author">Nick Bilton</p>
-            </div>
-          </article>
-
-          <!-- Book 5 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/shoe-dog.jpg" alt="Shoe Dog by Phil Knight" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">Shoe Dog</h2>
-              <p class="book-author">Phil Knight</p>
-            </div>
-          </article>
-
-          <!-- Book 6 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/zero-to-one.jpg" alt="Zero to One by Peter Thiel" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">Zero to One</h2>
-              <p class="book-author">Peter Thiel</p>
-            </div>
-          </article>
-
-          <!-- Book 7 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/the-war-of-art.jpg" alt="The War of Art by Steven Pressfield" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">The War of Art</h2>
-              <p class="book-author">Steven Pressfield</p>
-            </div>
-          </article>
-
-          <!-- Book 8 -->
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/rich-dad-poor-dad.jpg" alt="Rich Dad Poor Dad by Robert Kiyosaki" />
-            </div>
-            <div class="book-meta">
-              <h2 class="book-title">Rich Dad Poor Dad</h2>
-              <p class="book-author">Robert Kiyosaki</p>
-            </div>
-          </article>
-
-          <!-- Add more books by copy-pasting a .book-card and updating src/title/author -->
-        </div>
-      </section>
-    </div>
-  </main>
-</body>
-</html>
+      flex-directi
