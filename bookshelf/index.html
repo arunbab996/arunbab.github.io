@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Base styles (aligned with main index) ===== */
+    /* ==== BASE STYLES (aligned with your main index) ==== */
     :root{
       --bg:#f4f5f7;
       --text:#111219;
@@ -18,7 +18,7 @@
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
-
+    
     body{
       background:var(--bg);
       font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
@@ -31,7 +31,10 @@
       text-decoration:none;
     }
 
-    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
+    .page-top-border{
+      height:3px;
+      background:rgba(0,0,0,0.08);
+    }
 
     header{
       display:flex;
@@ -56,7 +59,6 @@
 
     .nav a{
       color:var(--muted);
-      text-decoration:none;
       padding-bottom:2px;
       border-bottom:2px solid transparent;
     }
@@ -72,7 +74,7 @@
       padding:0 16px;
     }
 
-    /* stagger animation (same pattern as home) */
+    /* stagger animation */
     .page-enter > * {
       opacity: 0;
       transform: translateY(6px);
@@ -84,6 +86,7 @@
       opacity: 1;
       transform: translateY(0);
     }
+
     .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
     .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
     .page-enter.page-enter-active > *:nth-child(3) { transition-delay: 0.10s; }
@@ -93,23 +96,18 @@
     .page-enter.page-enter-active > *:nth-child(7) { transition-delay: 0.30s; }
     .page-enter.page-enter-active > *:nth-child(8) { transition-delay: 0.35s; }
 
-    .social-fixed{
-      display:none; /* hide socials on this page */
-    }
+    .social-fixed{display:none;}
 
-    /* Make content wider than home page on larger screens */
     @media (min-width: 768px) {
-      main {
-        max-width: 960px;
-      }
+      main { max-width: 960px; }
     }
 
-    /* ===== BOOKSHELF LAYOUT ===== */
+    /* ======= BOOKSHELF LAYOUT ======= */
 
     .books-layout{
       display:grid;
-      grid-template-columns: 150px minmax(0,1fr); /* left gutter + main */
-      column-gap:40px;
+      grid-template-columns: 130px minmax(0,1fr); /* slim left column */
+      column-gap:28px;
       align-items:flex-start;
     }
 
@@ -119,88 +117,81 @@
       padding-top:4px;
     }
 
-    /* empty for now – reserved for future filters */
-    .books-sidebar::before{
-      content:"";
-    }
-
     .books-main{
       min-width:0;
     }
 
     .books-header{
-      margin-bottom:24px;
+      margin-bottom:20px;
     }
 
     .books-title{
-      font-size:26px;
+      font-size:25px;
       font-weight:600;
       letter-spacing:-0.02em;
-      margin-bottom:4px;
-      text-align:left;
+      margin-bottom:2px;
     }
 
     .books-subtitle{
-      font-size:13px;
+      font-size:12px;
       color:var(--muted);
     }
 
-    /* ===== Books grid & "standing book" cards ===== */
+    /* ===== Standing book design ===== */
 
     .books-grid{
       display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 per row on desktop */
-      column-gap:32px;
-      row-gap:32px;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      column-gap:24px;
+      row-gap:28px;
     }
 
-    /* card wrapper, no big white tile */
     .book-card{
       background:transparent;
       padding:0;
-      box-shadow:none;
       display:flex;
       flex-direction:column;
       align-items:flex-start;
     }
 
-    /* cover looks like the actual book, with shadow */
+    /* slim, tall hardcover look */
     .book-cover{
-      position:relative;
       width:100%;
-      aspect-ratio: 3 / 4;
-      border-radius:10px;
+      aspect-ratio: 1 / 1.42; /* taller shape */
+      border-radius:7px;
       overflow:hidden;
-      background:#e5e7eb;
-      box-shadow:0 14px 30px rgba(15,23,42,0.18);
+      background:#e8e9ec;
+      box-shadow:
+        0 8px 18px rgba(15,23,42,0.10),
+        0 1px 2px rgba(15,23,42,0.08);
       transition:transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     .book-cover img{
       width:100%;
       height:100%;
-      display:block;
       object-fit:cover;
+      display:block;
     }
 
-    /* subtle lift on hover */
     .book-card:hover .book-cover{
-      transform:translateY(-4px);
-      box-shadow:0 20px 45px rgba(15,23,42,0.25);
+      transform:translateY(-3px);
+      box-shadow:
+        0 12px 30px rgba(15,23,42,0.15),
+        0 1px 3px rgba(15,23,42,0.08);
     }
 
     .book-meta{
-      margin-top:8px;
+      margin-top:6px;
       display:flex;
       flex-direction:column;
     }
 
     .book-title{
-      font-size:13px;
+      font-size:12px;
       font-weight:600;
-      line-height:1.4;
-      margin-bottom:2px;
-      color:var(--text);
+      margin-bottom:1px;
+      line-height:1.3;
       display:-webkit-box;
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
@@ -208,9 +199,9 @@
     }
 
     .book-author{
-      font-size:11px;
+      font-size:10px;
       color:var(--muted);
-      line-height:1.4;
+      line-height:1.3;
       display:-webkit-box;
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
@@ -222,6 +213,8 @@
     @media (max-width: 1024px){
       .books-grid{
         grid-template-columns: repeat(3, minmax(0, 1fr));
+        column-gap:20px;
+        row-gap:26px;
       }
     }
 
@@ -234,7 +227,7 @@
       .books-layout{
         grid-template-columns:minmax(0,1fr);
         column-gap:0;
-        row-gap:16px;
+        row-gap:18px;
       }
 
       .books-sidebar{
@@ -243,33 +236,32 @@
 
       .books-grid{
         grid-template-columns:repeat(2, minmax(0,1fr));
-        column-gap:18px;
-        row-gap:22px;
+        column-gap:16px;
+        row-gap:20px;
       }
 
       .books-title{
         font-size:22px;
       }
+
+      .book-title{ font-size:11px; }
+      .book-author{ font-size:9px; }
     }
 
     @media (max-width: 480px){
       .books-grid{
         grid-template-columns:repeat(2, minmax(0,1fr));
-        column-gap:14px;
+        column-gap:12px;
         row-gap:18px;
       }
 
-      .book-title{
-        font-size:12px;
-      }
-
-      .book-author{
-        font-size:10px;
-      }
+      .book-title{ font-size:10px; }
+      .book-author{ font-size:8px; }
     }
   </style>
 </head>
 <body>
+
   <div class="page-top-border"></div>
 
   <header>
@@ -284,10 +276,8 @@
   <main>
     <section class="page-enter">
       <div class="books-layout">
-        <!-- Left gutter column (empty for now, kept for layout balance) -->
         <aside class="books-sidebar"></aside>
 
-        <!-- Main column -->
         <div class="books-main">
           <header class="books-header">
             <h1 class="books-title">Books</h1>
@@ -295,12 +285,10 @@
           </header>
 
           <div class="books-grid">
-            <!-- Example books – replace with your real ones -->
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/superintelligence.jpg"
-                     alt="Superintelligence by Nick Bostrom" />
+                <img src="covers/superintelligence.jpg" alt="Superintelligence by Nick Bostrom" />
               </div>
               <div class="book-meta">
                 <div class="book-title">Superintelligence</div>
@@ -310,8 +298,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/steve-jobs.jpg"
-                     alt="Steve Jobs by Walter Isaacson" />
+                <img src="covers/steve-jobs.jpg" alt="Steve Jobs by Walter Isaacson" />
               </div>
               <div class="book-meta">
                 <div class="book-title">Steve Jobs</div>
@@ -332,8 +319,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/american-kingpin.jpg"
-                     alt="American Kingpin by Nick Bilton" />
+                <img src="covers/american-kingpin.jpg" alt="American Kingpin by Nick Bilton" />
               </div>
               <div class="book-meta">
                 <div class="book-title">American Kingpin</div>
@@ -343,8 +329,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/shoe-dog.jpg"
-                     alt="Shoe Dog by Phil Knight" />
+                <img src="covers/shoe-dog.jpg" alt="Shoe Dog by Phil Knight" />
               </div>
               <div class="book-meta">
                 <div class="book-title">Shoe Dog</div>
@@ -354,8 +339,7 @@
 
             <article class="book-card">
               <div class="book-cover">
-                <img src="covers/zero-to-one.jpg"
-                     alt="Zero to One by Peter Thiel" />
+                <img src="covers/zero-to-one.jpg" alt="Zero to One by Peter Thiel" />
               </div>
               <div class="book-meta">
                 <div class="book-title">Zero to One</div>
@@ -363,7 +347,6 @@
               </div>
             </article>
 
-            <!-- To add more books, copy-paste a .book-card block and update src/alt/title/author -->
           </div>
         </div>
       </div>
@@ -371,14 +354,14 @@
   </main>
 
   <script>
-    // Trigger stagger animation on load
     window.addEventListener('DOMContentLoaded', function () {
       var containers = document.querySelectorAll('.page-enter');
       containers.forEach(function (el) {
-        void el.offsetWidth; // force reflow
+        void el.offsetWidth;
         el.classList.add('page-enter-active');
       });
     });
   </script>
+
 </body>
 </html>
