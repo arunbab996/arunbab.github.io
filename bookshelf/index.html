@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Bookshelf | Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -80,7 +80,30 @@
       main{ padding:0 16px; }
     }
 
-    /* ===== Layout like reference screenshot ===== */
+    /* ========= PAGE ENTER ANIMATION ========= */
+
+    .page-enter > * {
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity 320ms ease-out,
+        transform 320ms ease-out;
+    }
+
+    .page-enter.page-enter-active > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* little stagger for multiple children (grid, etc.) */
+    .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
+    .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
+    .page-enter.page-enter-active > *:nth-child(3) { transition-delay: 0.10s; }
+    .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
+    .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
+
+    /* ========= BOOKSHELF LAYOUT ========= */
+
     .books-layout{
       display:grid;
       grid-template-columns:150px minmax(0,1fr);
@@ -104,7 +127,6 @@
 
     .books-main{ min-width:0; }
 
-    /* ===== 4 books per row ===== */
     .books-grid-wrap{
       max-width:var(--bookshelf-width);
       margin-top:0;
@@ -118,7 +140,8 @@
       row-gap:var(--row-gap);
     }
 
-    /* ===== book cards ===== */
+    /* ========= BOOK CARDS ========= */
+
     .book-card{
       width:var(--book-width);
       display:flex;
@@ -178,7 +201,8 @@
       overflow:hidden;
     }
 
-    /* ===== Responsive ===== */
+    /* ========= RESPONSIVE ========= */
+
     @media(max-width:750px){
       .books-grid-wrap{ max-width:100%; }
       .books-grid{
@@ -211,83 +235,95 @@
   </header>
 
   <main>
-    <section class="books-layout">
+    <!-- page-enter wrapper restores the load transition -->
+    <section class="page-enter">
+      <div class="books-layout">
 
-      <!-- left blank gutter to match reference -->
-      <aside class="books-sidebar"></aside>
+        <!-- left gutter -->
+        <aside class="books-sidebar"></aside>
 
-      <div class="books-main">
+        <div class="books-main">
+          <div class="books-grid-wrap">
+            <div class="books-grid">
 
-        <div class="books-grid-wrap">
-          <div class="books-grid">
+              <article class="book-card">
+                <div class="book-cover">
+                  <img src="covers/superintelligence.jpg" alt="Superintelligence" />
+                </div>
+                <div class="book-meta">
+                  <div class="book-title">Superintelligence</div>
+                  <div class="book-author">Nick Bostrom</div>
+                </div>
+              </article>
 
-            <!-- Books -->
-            <article class="book-card">
-              <div class="book-cover">
-                <img src="covers/superintelligence.jpg" alt="Superintelligence" />
-              </div>
-              <div class="book-meta">
-                <div class="book-title">Superintelligence</div>
-                <div class="book-author">Nick Bostrom</div>
-              </div>
-            </article>
+              <article class="book-card">
+                <div class="book-cover">
+                  <img src="covers/steve-jobs.jpg" alt="Steve Jobs" />
+                </div>
+                <div class="book-meta">
+                  <div class="book-title">Steve Jobs</div>
+                  <div class="book-author">Walter Isaacson</div>
+                </div>
+              </article>
 
-            <article class="book-card">
-              <div class="book-cover">
-                <img src="covers/steve-jobs.jpg" alt="Steve Jobs" />
-              </div>
-              <div class="book-meta">
-                <div class="book-title">Steve Jobs</div>
-                <div class="book-author">Walter Isaacson</div>
-              </div>
-            </article>
+              <article class="book-card">
+                <div class="book-cover">
+                  <img src="covers/harry-potter-deathly-hallows.jpg" alt="Harry Potter and the Deathly Hallows" />
+                </div>
+                <div class="book-meta">
+                  <div class="book-title">Harry Potter and the Deathly Hallows</div>
+                  <div class="book-author">J.K. Rowling</div>
+                </div>
+              </article>
 
-            <article class="book-card">
-              <div class="book-cover">
-                <img src="covers/harry-potter-deathly-hallows.jpg" />
-              </div>
-              <div class="book-meta">
-                <div class="book-title">Harry Potter and the Deathly Hallows</div>
-                <div class="book-author">J.K. Rowling</div>
-              </div>
-            </article>
+              <article class="book-card">
+                <div class="book-cover">
+                  <img src="covers/american-kingpin.jpg" alt="American Kingpin" />
+                </div>
+                <div class="book-meta">
+                  <div class="book-title">American Kingpin</div>
+                  <div class="book-author">Nick Bilton</div>
+                </div>
+              </article>
 
-            <article class="book-card">
-              <div class="book-cover">
-                <img src="covers/american-kingpin.jpg" />
-              </div>
-              <div class="book-meta">
-                <div class="book-title">American Kingpin</div>
-                <div class="book-author">Nick Bilton</div>
-              </div>
-            </article>
+              <article class="book-card">
+                <div class="book-cover">
+                  <img src="covers/shoe-dog.jpg" alt="Shoe Dog" />
+                </div>
+                <div class="book-meta">
+                  <div class="book-title">Shoe Dog</div>
+                  <div class="book-author">Phil Knight</div>
+                </div>
+              </article>
 
-            <article class="book-card">
-              <div class="book-cover">
-                <img src="covers/shoe-dog.jpg" />
-              </div>
-              <div class="book-meta">
-                <div class="book-title">Shoe Dog</div>
-                <div class="book-author">Phil Knight</div>
-              </div>
-            </article>
+              <article class="book-card">
+                <div class="book-cover">
+                  <img src="covers/zero-to-one.jpg" alt="Zero to One" />
+                </div>
+                <div class="book-meta">
+                  <div class="book-title">Zero to One</div>
+                  <div class="book-author">Peter Thiel</div>
+                </div>
+              </article>
 
-            <article class="book-card">
-              <div class="book-cover">
-                <img src="covers/zero-to-one.jpg" />
-              </div>
-              <div class="book-meta">
-                <div class="book-title">Zero to One</div>
-                <div class="book-author">Peter Thiel</div>
-              </div>
-            </article>
-
+            </div>
           </div>
         </div>
-
       </div>
     </section>
   </main>
+
+  <script>
+    // re-add the page-enter transition behavior
+    window.addEventListener('DOMContentLoaded', function () {
+      var containers = document.querySelectorAll('.page-enter');
+      containers.forEach(function (el) {
+        // force reflow so transition triggers
+        void el.offsetWidth;
+        el.classList.add('page-enter-active');
+      });
+    });
+  </script>
 
 </body>
 </html>
