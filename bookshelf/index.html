@@ -8,16 +8,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Base (matches your main index header) ===== */
+    /* ===== Base (matches your main index) ===== */
     :root{
       --bg:#f4f5f7;
       --text:#111219;
       --muted:#5b6066;
       --max-width:640px;
       --nav-gap:28px;
+
+      /* bookshelf tuning */
+      --book-width:95px;
+      --gap:22px;
+      --row-gap:28px;
+      --bookshelf-width:690px; /* perfect width for 4 columns */
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{margin:0;padding:0;box-sizing:border-box}
 
     body{
       background:var(--bg);
@@ -26,21 +32,14 @@
       -webkit-font-smoothing:antialiased;
     }
 
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
+    a{color:inherit;text-decoration:none;}
 
-    .page-top-border{
-      height:3px;
-      background:rgba(0,0,0,0.08);
-    }
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
 
     header{
       display:flex;
       justify-content:center;
       border-bottom:1px solid rgba(0,0,0,0.06);
-      width:100%;
       background:rgba(244,245,247,0.96);
       backdrop-filter:blur(10px);
     }
@@ -55,7 +54,7 @@
       font-size:15px;
       font-weight:600;
       color:var(--muted);
-      margin: 0 auto;
+      margin:0 auto;
     }
 
     .nav a{
@@ -78,48 +77,44 @@
     }
 
     @media (max-width: 900px){
-      main{
-        max-width:100%;
-        padding:0 16px;
-      }
+      main{padding:0 16px;}
     }
 
-    /* ===== Bookshelf Layout (like reference) ===== */
-
+    /* ==== Layout: Offset grid like reference ==== */
     .books-layout{
       display:grid;
-      grid-template-columns: 180px minmax(0,1fr); /* left gutter + main */
-      column-gap:40px;
+      grid-template-columns:150px minmax(0,1fr);
+      column-gap:32px;
       align-items:flex-start;
     }
 
+    @media(max-width:750px){
+      .books-layout{
+        grid-template-columns:1fr;
+        column-gap:0;
+      }
+      .books-sidebar{display:none;}
+    }
+
     .books-sidebar{
-      font-size:13px;
-      color:var(--muted);
-      opacity:0.7;
-      padding-top:4px;
-      line-height:1.8;
-    }
-
-    /* you can add items later; leaving it visually light for now */
-    .books-sidebar span{
-      display:block;
       color:#c4c6cc;
+      font-size:13px;
+      line-height:1.7;
+      padding-top:2px;
+      opacity:0.9;
     }
 
-    .books-main{
-      min-width:0;
-    }
+    .books-main{min-width:0;}
 
     .books-header{
-      margin-bottom:24px;
+      margin-bottom:18px;
     }
 
     .books-title{
-      font-size:24px;
+      font-size:23px;
       font-weight:600;
       letter-spacing:-0.02em;
-      margin-bottom:4px;
+      margin-bottom:2px;
     }
 
     .books-subtitle{
@@ -127,17 +122,23 @@
       color:var(--muted);
     }
 
-    /* ===== Small “standing” books grid ===== */
+    /* ===== 4 books per row, always ===== */
+    .books-grid-wrap{
+      max-width:var(--bookshelf-width);
+      margin-top:8px;
+    }
 
     .books-grid{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(80px, 110px));
-      gap:26px 34px; /* row / column gaps */
-      align-items:flex-start;
+      grid-template-columns:repeat(4, var(--book-width));
+      justify-content:space-between;
+      column-gap:var(--gap);
+      row-gap:var(--row-gap);
     }
 
+    /* ===== Book card (thin & tall) ===== */
     .book-card{
-      width:100%;
+      width:var(--book-width);
       display:flex;
       flex-direction:column;
       align-items:flex-start;
@@ -145,38 +146,35 @@
 
     .book-cover{
       width:100%;
-      aspect-ratio: 1 / 1.55;
+      aspect-ratio:1 / 1.55;
       border-radius:6px;
       overflow:hidden;
-      background:#e8e9ec;
+      background:#e7e8eb;
       box-shadow:
         0 6px 14px rgba(15,23,42,0.10),
         0 1px 2px rgba(15,23,42,0.08);
-      transition:transform 0.16s ease, box-shadow 0.16s ease;
+      transition:transform 0.15s ease, box-shadow 0.15s ease;
     }
 
     .book-cover img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
+      width:100%;height:100%;object-fit:cover;display:block;
     }
 
     .book-card:hover .book-cover{
       transform:translateY(-3px);
       box-shadow:
-        0 10px 22px rgba(15,23,42,0.16),
-        0 1px 3px rgba(15,23,42,0.10);
+        0 10px 22px rgba(15,23,42,0.15),
+        0 1px 3px rgba(15,23,42,0.08);
     }
 
     .book-meta{
-      margin-top:6px;
+      margin-top:5px;
       display:flex;
       flex-direction:column;
     }
 
     .book-title{
-      font-size:11.5px;
+      font-size:11.2px;
       font-weight:600;
       line-height:1.3;
       margin-bottom:1px;
@@ -187,7 +185,7 @@
     }
 
     .book-author{
-      font-size:9.8px;
+      font-size:9.4px;
       color:var(--muted);
       line-height:1.3;
       display:-webkit-box;
@@ -197,35 +195,28 @@
     }
 
     /* ===== Responsive ===== */
+    @media(max-width:750px){
+      .books-grid-wrap{
+        max-width:100%;
+      }
 
-    @media (max-width: 800px){
-      .books-layout{
-        grid-template-columns:minmax(0,1fr);
-        column-gap:0;
-      }
-      .books-sidebar{
-        display:none;
-      }
-      .books-header{
-        margin-bottom:18px;
-      }
       .books-grid{
-        gap:20px 20px;
+        grid-template-columns:repeat(3, var(--book-width));
         justify-content:flex-start;
       }
     }
 
-    @media (max-width: 480px){
+    @media(max-width:590px){
       .books-grid{
-        grid-template-columns:repeat(2, minmax(0,1fr));
-        gap:16px 16px;
+        grid-template-columns:repeat(2, var(--book-width));
+        gap:18px 18px;
       }
-      .book-title{font-size:10.5px;}
-      .book-author{font-size:8.8px;}
     }
+
   </style>
 </head>
 <body>
+
   <div class="page-top-border"></div>
 
   <header>
@@ -239,92 +230,89 @@
 
   <main>
     <section class="books-layout">
-      <!-- Left “sidebar” column (light, like ref) -->
+
+      <!-- left gutter like reference -->
       <aside class="books-sidebar">
-        <!-- keeping it subtle/empty for now; add labels if you want later -->
-        <span> </span>
+        <!-- place for Filters / Back / etc if ever needed -->
       </aside>
 
-      <!-- Main column -->
+      <!-- main column -->
       <div class="books-main">
         <header class="books-header">
           <h1 class="books-title">Books</h1>
           <p class="books-subtitle">My own little library</p>
         </header>
 
-        <div class="books-grid">
-          <!-- Example books – swap src/title/author as needed -->
+        <div class="books-grid-wrap">
+          <div class="books-grid">
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/superintelligence.jpg"
-                   alt="Superintelligence by Nick Bostrom" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Superintelligence</div>
-              <div class="book-author">Nick Bostrom</div>
-            </div>
-          </article>
+            <!-- sample books -->
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/superintelligence.jpg" alt="Superintelligence" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Superintelligence</div>
+                <div class="book-author">Nick Bostrom</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/steve-jobs.jpg"
-                   alt="Steve Jobs by Walter Isaacson" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Steve Jobs</div>
-              <div class="book-author">Walter Isaacson</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/steve-jobs.jpg" alt="Steve Jobs" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Steve Jobs</div>
+                <div class="book-author">Walter Isaacson</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/harry-potter-deathly-hallows.jpg"
-                   alt="Harry Potter and the Deathly Hallows by J.K. Rowling" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Harry Potter and the Deathly Hallows</div>
-              <div class="book-author">J.K. Rowling</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/harry-potter-deathly-hallows.jpg" alt="HP Deathly Hallows" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Harry Potter and the Deathly Hallows</div>
+                <div class="book-author">J.K. Rowling</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/american-kingpin.jpg"
-                   alt="American Kingpin by Nick Bilton" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">American Kingpin</div>
-              <div class="book-author">Nick Bilton</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/american-kingpin.jpg" alt="American Kingpin" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">American Kingpin</div>
+                <div class="book-author">Nick Bilton</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/shoe-dog.jpg"
-                   alt="Shoe Dog by Phil Knight" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Shoe Dog</div>
-              <div class="book-author">Phil Knight</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/shoe-dog.jpg" alt="Shoe Dog" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Shoe Dog</div>
+                <div class="book-author">Phil Knight</div>
+              </div>
+            </article>
 
-          <article class="book-card">
-            <div class="book-cover">
-              <img src="covers/zero-to-one.jpg"
-                   alt="Zero to One by Peter Thiel" />
-            </div>
-            <div class="book-meta">
-              <div class="book-title">Zero to One</div>
-              <div class="book-author">Peter Thiel</div>
-            </div>
-          </article>
+            <article class="book-card">
+              <div class="book-cover">
+                <img src="covers/zero-to-one.jpg" alt="Zero to One" />
+              </div>
+              <div class="book-meta">
+                <div class="book-title">Zero to One</div>
+                <div class="book-author">Peter Thiel</div>
+              </div>
+            </article>
 
-          <!-- Add more books by duplicating .book-card blocks -->
+          </div>
         </div>
+
       </div>
     </section>
   </main>
+
 </body>
 </html>
