@@ -12,24 +12,20 @@
       --bg:#dbe2eb;
       --text:#111219;
       --muted:#5b6066;
-      --max-width:640px;
+      --max-width:640px;       /* header rail (IDENTICAL TO HOME) */
       --nav-gap:28px;
+      --content-width:960px;   /* restored wide portfolio layout */
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
-
-    body{
-      background:var(--bg);
+    body{background:var(--bg);
       font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
       color:var(--text);
     }
 
-    .page-top-border{
-      height:3px;
-      background:rgba(0,0,0,0.08);
-    }
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08)}
 
-    /* === HEADER (EXACT COPY OF HOME) === */
+    /* HEADER - EXACT COPY OF HOME */
     header{
       display:flex;
       justify-content:center;
@@ -58,41 +54,31 @@
       border-bottom:2px solid transparent;
     }
 
-    .nav a:hover{
-      color:var(--text);
-      border-bottom-color:var(--text);
-    }
-
     .nav a.active{
       color:var(--text);
       border-bottom-color:var(--text);
     }
 
-    /* === MAIN CONTENT (SAME WIDTH AS HOME) === */
+    /* === CONTENT RESTORED TO OLD LAYOUT === */
     main{
-      max-width:var(--max-width);
+      max-width:var(--content-width);
       margin:48px auto;
       padding:0 16px;
     }
 
-    .page-title{
+    .section-title{
       font-weight:700;
       font-size:18px;
       margin-bottom:18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      width:100%;
-      max-width:1200px;
     }
 
     .two-col{
       display:grid;
-      grid-template-columns:1fr;
-      gap:18px;
+      grid-template-columns: 64% 34%;
+      gap:32px;
     }
 
-    .projects-grid,
+    .projects-col,
     .tools-col{
       display:flex;
       flex-direction:column;
@@ -102,16 +88,14 @@
     .project-card,
     .tool-card{
       display:flex;
-      flex-direction:row;
       gap:18px;
-      align-items:center;
-      border-radius:8px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(0,0,0,0.03);
-      padding:8px;
       text-decoration:none;
       color:var(--text);
-      transition:transform 180ms ease, box-shadow 180ms ease;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(0,0,0,0.04);
+      border-radius:10px;
+      padding:10px;
+      transition:transform 160ms ease, box-shadow 160ms ease;
     }
 
     .project-card:hover,
@@ -121,31 +105,11 @@
     }
 
     .project-card img{
-      width:220px;
+      width:240px;
       height:140px;
       object-fit:cover;
-      flex-shrink:0;
       border-radius:6px;
-      transition:transform 180ms ease,opacity 180ms ease;
-    }
-
-    .project-card:hover img{
-      transform:scale(1.03);
-      opacity:0.95;
-    }
-
-    .project-meta{padding:6px;}
-
-    .project-title{
-      font-weight:700;
-      margin-bottom:6px;
-      font-size:15px;
-    }
-
-    .project-tagline{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.4;
+      flex-shrink:0;
     }
 
     .tool-thumb{
@@ -157,49 +121,42 @@
       flex-shrink:0;
     }
 
+    .project-title,
     .tool-title{
       font-weight:700;
-      margin-bottom:4px;
+      margin-bottom:6px;
       font-size:15px;
     }
 
+    .project-tagline,
     .tool-sub{
       color:var(--muted);
-      font-size:13px;
-      line-height:1.3;
+      font-size:14px;
+      line-height:1.35;
     }
 
     @media(max-width:900px){
-      .project-card img{width:100%;height:180px}
-      .tool-thumb{width:100px;height:80px}
+      .two-col{grid-template-columns:1fr}
+
+      .project-card{
+        flex-direction:column;
+      }
+      .project-card img{
+        width:100%;
+        height:180px;
+      }
+
+      .tool-card{
+        flex-direction:row;
+      }
     }
-
-    .page-enter > * {
-      opacity: 0;
-      transform: translateY(6px);
-      transition:
-        opacity 320ms ease-out,
-        transform 320ms ease-out;
-    }
-
-    .page-enter.page-enter-active > * {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .page-enter.page-enter-active > *:nth-child(1){transition-delay:0s;}
-    .page-enter.page-enter-active > *:nth-child(2){transition-delay:0.05s;}
-    .page-enter.page-enter-active > *:nth-child(3){transition-delay:0.10s;}
-    .page-enter.page-enter-active > *:nth-child(4){transition-delay:0.15s;}
-    .page-enter.page-enter-active > *:nth-child(5){transition-delay:0.20s;}
-
   </style>
 </head>
 
 <body>
   <div class="page-top-border"></div>
 
-  <!-- HEADER -->
+  <!-- HEADER EXACTLY LIKE HOME -->
   <header>
     <nav class="nav">
       <a href="/" data-spa>Index</a>
@@ -209,98 +166,78 @@
     </nav>
   </header>
 
-  <!-- CONTENT -->
-  <main id="app">
-    <div class="page-enter">
+  <!-- CONTENT RESTORED -->
+  <main>
+    <div class="two-col">
 
-      <div class="page-title">
-        <span>Portfolio</span>
-        <span style="font-weight:700;font-size:16px;">Tools</span>
+      <!-- PORTFOLIO PROJECTS -->
+      <div class="projects-col">
+        <div class="section-title">Portfolio</div>
+
+        <a href="/portfolio/specter/" class="project-card" target="_blank">
+          <img src="/images/0.webp" alt="Specter Talent"/>
+          <div>
+            <div class="project-title">Specter Talent</div>
+            <div class="project-tagline">Building the founder discovery engine powering modern startup scouting.</div>
+          </div>
+        </a>
+
+        <a href="/portfolio/dunzo/" class="project-card">
+          <img src="/images/1.webp" alt="Dunzo"/>
+          <div>
+            <div class="project-title">Dunzo: Increasing the AOV</div>
+            <div class="project-tagline">Maximising average order value through subtle UX changes.</div>
+          </div>
+        </a>
+
+        <a href="/portfolio/jupiter/" class="project-card" target="_blank">
+          <img src="/images/2.webp" alt="Jupiter"/>
+          <div>
+            <div class="project-title">Jupiter – Gamification</div>
+            <div class="project-tagline">Incorporating game loops inside a Neobank experience.</div>
+          </div>
+        </a>
+
+        <a href="/portfolio/swiggy/" class="project-card" target="_blank">
+          <img src="/images/3.jpeg" alt="Swiggy"/>
+          <div>
+            <div class="project-title">Swiggy – Multi-Restaurant Orders</div>
+            <div class="project-tagline">Solving bulk delivery challenges.</div>
+          </div>
+        </a>
       </div>
 
-      <div class="two-col">
+      <!-- TOOLS -->
+      <div class="tools-col">
+        <div class="section-title">Tools</div>
 
-        <!-- PORTFOLIO PROJECTS -->
-        <div class="projects-grid">
+        <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank">
+          <img class="tool-thumb" src="/images/bitcoin.webp" alt="BTC"/>
+          <div>
+            <div class="tool-title">Monitoring Magic Internet Money</div>
+            <div class="tool-sub">Real-time BTC tools, charts, and utilities.</div>
+          </div>
+        </a>
 
-          <a href="/portfolio/specter/" class="project-card" target="_blank">
-            <img src="/images/0.webp" alt="Specter">
-            <div class="project-meta">
-              <div class="project-title">Specter Talent</div>
-              <div class="project-tagline">
-                Building the founder discovery engine powering modern startup scouting.
-              </div>
-            </div>
-          </a>
+        <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank">
+          <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS"/>
+          <div>
+            <div class="tool-title">DiscoveryOS</div>
+            <div class="tool-sub">YC + Product Hunt API tracking for new startups.</div>
+          </div>
+        </a>
 
-          <a href="/portfolio/dunzo/" class="project-card">
-            <img src="/images/1.webp" alt="Dunzo">
-            <div class="project-meta">
-              <div class="project-title">Dunzo: Increasing the AOV</div>
-              <div class="project-tagline">Maximising average order value through subtle UX changes.</div>
-            </div>
-          </a>
-
-          <a href="/portfolio/jupiter/" class="project-card" target="_blank">
-            <img src="/images/2.webp" alt="Jupiter">
-            <div class="project-meta">
-              <div class="project-title">Jupiter – Gamification</div>
-              <div class="project-tagline">Incorporating game loops inside a Neobank experience.</div>
-            </div>
-          </a>
-
-          <a href="/portfolio/swiggy/" class="project-card" target="_blank">
-            <img src="/images/3.jpeg" alt="Swiggy">
-            <div class="project-meta">
-              <div class="project-title">Swiggy – Multi-Restaurant Orders</div>
-              <div class="project-tagline">Solving bulk delivery challenges.</div>
-            </div>
-          </a>
-
-        </div>
-
-        <!-- TOOLS -->
-        <div class="tools-col">
-
-          <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank">
-            <img class="tool-thumb" src="/images/bitcoin.webp" alt="BTC">
-            <div>
-              <div class="tool-title">Monitoring Magic Internet Money</div>
-              <div class="tool-sub">Real-time BTC tools, charts, and utilities.</div>
-            </div>
-          </a>
-
-          <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank">
-            <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS">
-            <div>
-              <div class="tool-title">DiscoveryOS</div>
-              <div class="tool-sub">YC + Product Hunt API tracking for new startups.</div>
-            </div>
-          </a>
-
-          <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank">
-            <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="YC Bot">
-            <div>
-              <div class="tool-title">Y Combinator Bot</div>
-              <div class="tool-sub">Tweets when new startups hit the YC directory.</div>
-            </div>
-          </a>
-
-        </div>
-
+        <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank">
+          <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="YC Bot"/>
+          <div>
+            <div class="tool-title">Y Combinator Bot</div>
+            <div class="tool-sub">Tweets when new startups hit the YC directory.</div>
+          </div>
+        </a>
       </div>
+
     </div>
   </main>
 
-  <script src="/spa-nav.js"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', function () {
-      var els = document.querySelectorAll('.page-enter');
-      els.forEach(function(el){
-        void el.offsetWidth;
-        el.classList.add('page-enter-active');
-      });
-    });
-  </script>
 </body>
 </html>
