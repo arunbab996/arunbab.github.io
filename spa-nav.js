@@ -4,7 +4,8 @@ function runPageEnterAnimations() {
   var containers = document.querySelectorAll(".page-enter");
   containers.forEach(function (el) {
     el.classList.remove("page-enter-active");
-    void el.offsetWidth; // force reflow
+    // force reflow so animation restarts
+    void el.offsetWidth;
     el.classList.add("page-enter-active");
   });
 }
@@ -21,38 +22,63 @@ function setActiveNav(pathname) {
   });
 }
 
+// swap <style data-page-style> blocks in <head>
+function replacePageStyles(doc) {
+  var head = document.head;
+
+  // remove existing page styles
+  head
+    .querySelectorAll("style[data-page-style], link[data-page-style]")
+    .forEach(function (el) {
+      el.remove();
+    });
+
+  // add new page styles from fetched document
+  doc
+    .querySelectorAll("style[data-page-style], link[data-page-style]")
+    .forEach(function (el) {
+      head.appendChild(el.cloneNode(true));
+    });
+}
+
 async function loadPage(urlString, pushState = true) {
   try {
-    const url = new URL(urlString, window.location.origin);
+    var url = new URL(urlString, window.location.origin);
 
-    const response = await fetch(url.pathname + url.search, {
+    var response = await fetch(url.pathname + url.search, {
       headers: { "X-Requested-With": "spa-nav" },
     });
 
     if (!response.ok) {
-      window.location.href = url.href;
+      window.location.href = url.href; // fallback
       return;
     }
 
-    const html = await response.text();
+    var html = await response.text();
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, "text/html");
 
-    const newMain = doc.querySelector("main#app") || doc.querySelector("main");
-    const currentMain = document.querySelector("main#app");
+    // update page-specific styles first
+    replacePageStyles(doc);
+
+    var newMain = doc.querySelector("main#app") || doc.querySelector("main");
+    var currentMain = document.querySelector("main#app");
 
     if (!newMain || !currentMain) {
-      window.location.href = url.href;
+      window.location.href = url.href; // fallback
       return;
     }
 
+    // swap content
     currentMain.innerHTML = newMain.innerHTML;
 
+    // update title
     if (doc.title) {
       document.title = doc.title;
     }
 
+    // update URL without full reload
     if (pushState) {
       history.pushState(
         { path: url.pathname + url.search },
@@ -67,18 +93,21 @@ async function loadPage(urlString, pushState = true) {
     runPageEnterAnimations();
   } catch (err) {
     console.error("Error in loadPage:", err);
-    window.location.href = urlString;
+    window.location.href = urlString; // fallback
   }
 }
 
+// intercept clicks on <a data-spa>
 document.addEventListener("click", function (event) {
-  const link = event.target.closest("a[data-spa]");
+  var link = event.target.closest("a[data-spa]");
   if (!link) return;
 
-  const url = new URL(link.href, window.location.origin);
+  var url = new URL(link.href, window.location.origin);
 
+  // external links: let browser handle
   if (url.origin !== window.location.origin) return;
 
+  // same-page link: do nothing
   if (
     url.pathname === window.location.pathname &&
     url.search === window.location.search
@@ -91,12 +120,15 @@ document.addEventListener("click", function (event) {
   loadPage(url.href);
 });
 
+// browser back/forward
 window.addEventListener("popstate", function () {
   loadPage(window.location.href, false);
 });
 
+// initial setup on first full load
 window.addEventListener("DOMContentLoaded", function () {
   setActiveNav(window.location.pathname);
-  // your inline scripts already handle first animation,
-  // this just makes sure SPA nav re-uses the same behaviour
+  // animations on first load are handled by your inline scripts,
+  // but this ensures we can re-run them after SPA navigations too
+  runPageEnterAnimations();
 });
