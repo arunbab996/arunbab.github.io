@@ -53,7 +53,7 @@
   <div class="page-top-border"></div>
   <header>
     <nav class="nav">
-      <a href="/" data-spa>Index</a>
+      <a href="/" class="active" data-spa>Index</a>
       <a href="/portfolio" data-spa>Portfolio</a>
       <a href="/bookshelf" data-spa>Bookshelf</a>
       <a href="/principles" data-spa>Principles</a>
@@ -89,5 +89,15 @@
   </div>
 
   <script src="/spa-nav.js"></script>
+  <script>
+    // original animation
+    window.addEventListener('DOMContentLoaded', function () {
+      var containers = document.querySelectorAll('.page-enter');
+      containers.forEach(function (el) {
+        void el.offsetWidth;
+        el.classList.add('page-enter-active');
+      });
+    });
+  </script>
 </body>
 </html>
