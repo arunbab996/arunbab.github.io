@@ -7,18 +7,79 @@
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style data-page-style>
-    :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--max-width:640px;--nav-gap:28px}
+    :root{
+      --bg:#dbe2eb;
+      --text:#111219;
+      --muted:#5b6066;
+      --max-width:640px;
+      --nav-gap:28px
+    }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
+    body{
+      background:var(--bg);
+      font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color:var(--text);
+    }
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}    
-    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
-    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
-    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent}
-    .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
-    .nav a.active{color:var(--text);border-bottom-color:var(--text);}    
+    header{
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      background:transparent;
+      width:100%;
+    }
+    .nav{
+      max-width: var(--max-width);
+      width:100%;
+      display:flex;
+      justify-content:flex-start;
+      padding:20px 16px;
+      gap: var(--nav-gap);
+      font-size:15px;
+      font-weight:600;
+      color:var(--muted);
+      margin: 0 auto;
+    }
+    .nav a{
+      color:var(--muted);
+      text-decoration:none;
+      padding-bottom:2px;
+      border-bottom:2px solid transparent
+    }
+    .nav a:hover{
+      border-bottom-color:var(--text);
+      color:var(--text)
+    }
+    .nav a.active{
+      color:var(--text);
+      border-bottom-color:var(--text);
+    }    
 
-    main{max-width:1200px;margin:48px auto;padding:0 16px}
-    .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
+    /* MAIN CONTENT AREA – now clamped to the same width as Bookshelf */
+    main{
+      max-width:var(--max-width);
+      margin:48px auto;
+      padding:0 16px
+    }
+
+    .page-title{
+      font-weight:700;
+      font-size:18px;
+      margin-bottom:18px;
+    }
+
+    .page-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      width:100%;
+      margin-bottom:18px;
+    }
+
+    .page-header-tools{
+      font-weight:700;
+      font-size:16px;
+    }
 
     .two-col{
       display:grid;
@@ -26,20 +87,73 @@
       gap:28px;
     }
 
-    .projects-grid{display:flex;flex-direction:column;gap:18px}
-    .project-card{display:flex;flex-direction:row;gap:18px;align-items:center;border-radius:8px;overflow:hidden;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.03);padding:8px;transition:transform 180ms ease, box-shadow 180ms ease}
-    .project-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(16,24,40,0.12)}
-    .project-card img{width:220px;height:140px;object-fit:cover;flex-shrink:0;border-radius:6px;transition:transform 180ms ease,opacity 180ms ease}
-    .project-card:hover img{transform:scale(1.03);opacity:0.95}
+    .projects-grid{
+      display:flex;
+      flex-direction:column;
+      gap:18px
+    }
+    .project-card{
+      display:flex;
+      flex-direction:row;
+      gap:18px;
+      align-items:center;
+      border-radius:8px;
+      overflow:hidden;
+      text-decoration:none;
+      color:var(--text);
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(0,0,0,0.03);
+      padding:8px;
+      transition:transform 180ms ease, box-shadow 180ms ease
+    }
+    .project-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 10px 30px rgba(16,24,40,0.12)
+    }
+    .project-card img{
+      width:220px;
+      height:140px;
+      object-fit:cover;
+      flex-shrink:0;
+      border-radius:6px;
+      transition:transform 180ms ease,opacity 180ms ease
+    }
+    .project-card:hover img{
+      transform:scale(1.03);
+      opacity:0.95
+    }
     .project-meta{padding:6px}
     .project-title{font-weight:700;margin-bottom:6px}
     .project-tagline{color:var(--muted);font-size:14px}
 
-    .tools-col{display:flex;flex-direction:column;gap:16px}
-    .tool-header{font-weight:700;font-size:16px;margin-bottom:4px}
-    .tool-card{display:flex;gap:14px;align-items:flex-start;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.04);padding:12px;text-decoration:none;color:var(--text);transition:transform 160ms ease, box-shadow 160ms ease}
-    .tool-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(16,24,40,0.12)}
-    .tool-thumb{width:120px;height:90px;object-fit:cover;border-radius:6px;background:#e9edf6}
+    .tools-col{
+      display:flex;
+      flex-direction:column;
+      gap:16px
+    }
+    .tool-card{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      border-radius:10px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(0,0,0,0.04);
+      padding:12px;
+      text-decoration:none;
+      color:var(--text);
+      transition:transform 160ms ease, box-shadow 160ms ease
+    }
+    .tool-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 10px 30px rgba(16,24,40,0.12)
+    }
+    .tool-thumb{
+      width:120px;
+      height:90px;
+      object-fit:cover;
+      border-radius:6px;
+      background:#e9edf6
+    }
     .tool-title{font-weight:700;margin-bottom:4px;font-size:15px}
     .tool-sub{color:var(--muted);font-size:13px;line-height:1.3}
 
@@ -69,8 +183,20 @@
     .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
     .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
 
-    .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
-    .social-fixed a{color:var(--text);text-decoration:none}
+    .social-fixed{
+      position:fixed;
+      bottom:28px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:28px;
+      opacity:0.95;
+      z-index:40;
+    }
+    .social-fixed a{
+      color:var(--text);
+      text-decoration:none
+    }
     .social-fixed a:hover{opacity:0.7}
   </style>
 </head>
@@ -88,9 +214,10 @@
   <main id="app">
     <!-- page-enter wrapper around title + layout -->
     <div class="page-enter">
-      <div class="page-title" style="display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1200px; margin-bottom:18px;">
-        <span>Portfolio</span>
-        <span style="font-weight:700; font-size:16px;">Tools</span>
+
+      <div class="page-header">
+        <div class="page-title">Portfolio</div>
+        <div class="page-header-tools">Tools</div>
       </div>
 
       <div class="two-col">
