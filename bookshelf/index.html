@@ -15,7 +15,6 @@
       --max-width:640px;
       --nav-gap:28px;
 
-      /* bookshelf tuning */
       --book-width:95px;
       --gap:22px;
       --row-gap:28px;
@@ -80,8 +79,6 @@
       main{ padding:0 16px; }
     }
 
-    /* ========= PAGE ENTER ANIMATION ========= */
-
     .page-enter > * {
       opacity: 0;
       transform: translateY(6px);
@@ -101,8 +98,6 @@
     .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
     .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
 
-    /* ========= BOOKSHELF LAYOUT ========= */
-
     .books-layout{
       display:grid;
       grid-template-columns:150px minmax(0,1fr);
@@ -111,9 +106,7 @@
     }
 
     @media(max-width:750px){
-      .books-layout{
-        grid-template-columns:1fr;
-      }
+      .books-layout{grid-template-columns:1fr;}
       .books-sidebar{ display:none; }
     }
 
@@ -138,8 +131,6 @@
       column-gap:var(--gap);
       row-gap:var(--row-gap);
     }
-
-    /* ========= BOOK CARDS ========= */
 
     .book-card{
       width:var(--book-width);
@@ -200,8 +191,6 @@
       overflow:hidden;
     }
 
-    /* ========= RESPONSIVE ========= */
-
     @media(max-width:750px){
       .books-grid-wrap{ max-width:100%; }
       .books-grid{
@@ -228,7 +217,7 @@
     <nav class="nav">
       <a href="/" data-spa>Index</a>
       <a href="/portfolio" data-spa>Portfolio</a>
-      <a href="/bookshelf" data-spa>Bookshelf</a>
+      <a href="/bookshelf" class="active" data-spa>Bookshelf</a>
       <a href="/principles" data-spa>Principles</a>
     </nav>
   </header>
@@ -311,5 +300,14 @@
   </main>
 
   <script src="/spa-nav.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      var containers = document.querySelectorAll('.page-enter');
+      containers.forEach(function (el) {
+        void el.offsetWidth;
+        el.classList.add('page-enter-active');
+      });
+    });
+  </script>
 </body>
 </html>
