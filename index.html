@@ -6,245 +6,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style data-page-style>
+    :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--max-width:640px;--nav-gap:28px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}    
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}    
+    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
+    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent}
+    .nav a.active{color:var(--text);border-bottom-color:var(--text);}    
+    main{max-width:var(--max-width);margin:48px auto;padding:0 16px}
 
-  <style>
-    :root{
-      --bg:#dbe2eb;
-      --text:#111219;
-      --muted:#5b6066;
-      --max-width:640px;       /* EXACTLY like home header width */
-      --nav-gap:28px;
-      --content-width:960px;   /* Wider portfolio content */
+    .name{font-weight:700;font-size:18px;margin-bottom:12px}
+    .desc{font-family: Inter, Georgia, serif;font-style: normal;font-size:18px;line-height:1.7;color:var(--text);max-width:560px;}
+    .current{display:block;margin-top:18px;font-size:18px;line-height:1.6;max-width:560px;background:none;padding:0;border-radius:0;}
+
+    /* === Staggered page-enter transitions === */
+    .page-enter > * {
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity 320ms ease-out,
+        transform 320ms ease-out;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box}
-
-    body{
-      background:var(--bg);
-      font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      color:var(--text);
+    .page-enter.page-enter-active > * {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .page-top-border{
-      height:3px;
-      background:rgba(0,0,0,0.08);
-    }
+    .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
+    .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
+    .page-enter.page-enter-active > *:nth-child(3) { transition-delay: 0.10s; }
+    .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
+    .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
+    .page-enter.page-enter-active > *:nth-child(6) { transition-delay: 0.25s; }
+    .page-enter.page-enter-active > *:nth-child(7) { transition-delay: 0.30s; }
+    .page-enter.page-enter-active > *:nth-child(8) { transition-delay: 0.35s; }
 
-    /* === HEADER (COPIED 1:1 FROM HOME PAGE) === */
-    header{
-      display:flex;
-      justify-content:center;
-      border-bottom:1px solid rgba(0,0,0,0.06);
-      background:transparent;
-      width:100%;
-    }
-
-    .nav{
-      max-width: var(--max-width);
-      width:100%;
-      display:flex;
-      justify-content:flex-start;
-      padding:20px 16px;
-      gap: var(--nav-gap);
-      font-size:15px;
-      font-weight:600;
-      color:var(--muted);
-      margin: 0 auto;
-    }
-
-    .nav a{
-      color:var(--muted);
-      text-decoration:none;
-      padding-bottom:2px;
-      border-bottom:2px solid transparent;
-    }
-
-    .nav a:hover{
-      border-bottom-color:var(--text);
-      color:var(--text);
-    }
-
-    .nav a.active{
-      color:var(--text);
-      border-bottom-color:var(--text);
-    }
-
-    /* === MAIN CONTENT ONLY IS WIDER === */
-    main{
-      max-width:var(--content-width);
-      margin:48px auto;
-      padding:0 16px;
-    }
-
-    .section-title{
-      font-weight:700;
-      font-size:18px;
-      margin-bottom:18px;
-    }
-
-    .two-col{
-      display:grid;
-      grid-template-columns: 64% 34%;
-      gap:32px;
-    }
-
-    .projects-col,
-    .tools-col{
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-    }
-
-    .project-card,
-    .tool-card{
-      display:flex;
-      gap:18px;
-      text-decoration:none;
-      color:var(--text);
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(0,0,0,0.04);
-      border-radius:10px;
-      padding:10px;
-      transition:transform 160ms ease, box-shadow 160ms ease;
-    }
-
-    .project-card:hover,
-    .tool-card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 10px 30px rgba(16,24,40,0.12);
-    }
-
-    .project-card img{
-      width:240px;
-      height:140px;
-      object-fit:cover;
-      border-radius:6px;
-      flex-shrink:0;
-    }
-
-    .tool-thumb{
-      width:120px;
-      height:90px;
-      object-fit:cover;
-      border-radius:6px;
-      background:#e9edf6;
-      flex-shrink:0;
-    }
-
-    .project-title,
-    .tool-title{
-      font-weight:700;
-      margin-bottom:6px;
-      font-size:15px;
-    }
-
-    .project-tagline,
-    .tool-sub{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.35;
-    }
-
-    @media(max-width:900px){
-      .two-col{grid-template-columns:1fr;}
-
-      .project-card{
-        flex-direction:column;
-      }
-
-      .project-card img{
-        width:100%;
-        height:180px;
-      }
-    }
+    .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
+    .social-fixed a{color:var(--text);text-decoration:none}
+    .social-fixed a:hover{opacity:0.7}
   </style>
 </head>
-
 <body>
   <div class="page-top-border"></div>
-
-  <!-- HEADER EXACTLY LIKE HOME -->
   <header>
     <nav class="nav">
-      <a href="/" data-spa>Index</a>
-      <a href="/portfolio" class="active" data-spa>Portfolio</a>
+      <a href="/" class="active" data-spa>Index</a>
+      <a href="/portfolio" data-spa>Portfolio</a>
       <a href="/bookshelf/" data-spa>Bookshelf</a>
       <a href="/principles" data-spa>Principles</a>
     </nav>
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main>
-    <div class="two-col">
+  <main id="app">
+    <!-- page-enter wrapper applied here -->
+    <section id="index" class="page-enter">
+      <div class="name">Arun Baburaj</div>
 
-      <!-- LEFT: PORTFOLIO -->
-      <div class="projects-col">
-        <div class="section-title">Portfolio</div>
-
-        <a href="/portfolio/specter/" class="project-card" target="_blank" rel="noopener">
-          <img src="/images/0.webp" alt="Specter Talent">
-          <div>
-            <div class="project-title">Specter Talent</div>
-            <div class="project-tagline">Founder discovery engine powering modern startup scouting.</div>
-          </div>
-        </a>
-
-        <a href="/portfolio/dunzo/" class="project-card">
-          <img src="/images/1.webp" alt="Dunzo">
-          <div>
-            <div class="project-title">Dunzo: Increasing AOV</div>
-            <div class="project-tagline">Maximising average order value through subtle UX changes.</div>
-          </div>
-        </a>
-
-        <a href="/portfolio/jupiter/" class="project-card" target="_blank" rel="noopener">
-          <img src="/images/2.webp" alt="Jupiter">
-          <div>
-            <div class="project-title">Jupiter – Gamification</div>
-            <div class="project-tagline">Incorporating game loops inside a Neobank experience.</div>
-          </div>
-        </a>
-
-        <a href="/portfolio/swiggy/" class="project-card" target="_blank" rel="noopener">
-          <img src="/images/3.jpeg" alt="Swiggy">
-          <div>
-            <div class="project-title">Swiggy: Handling Multi-Restaurant Orders</div>
-            <div class="project-tagline">Solving bulk delivery challenges.</div>
-          </div>
-        </a>
+      <div class="desc">
+        <span style="font-family:'Times New Roman', serif; font-style:italic;">Product Manager and Researcher</span>. Thinking about and designing tools for building software. Interested in consumer psychology, AI and Venture Capital.
       </div>
 
-      <!-- RIGHT: TOOLS -->
-      <div class="tools-col">
-        <div class="section-title">Tools</div>
+      <div class="current">I'm currently leading a product at <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.</div>
 
-        <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="/images/bitcoin.webp" alt="BTC Tool">
-          <div>
-            <div class="tool-title">Monitoring Magic Internet Money</div>
-            <div class="tool-sub">Real-time BTC tools, charts, and utilities.</div>
-          </div>
-        </a>
-
-        <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS">
-          <div>
-            <div class="tool-title">DiscoveryOS</div>
-            <div class="tool-sub">YC + Product Hunt API based startup tracker.</div>
-          </div>
-        </a>
-
-        <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank" rel="noopener">
-          <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="YC Bot">
-          <div>
-            <div class="tool-title">Y Combinator Bot</div>
-            <div class="tool-sub">Tweets every time a new startup hits the YC directory.</div>
-          </div>
-        </a>
+      <div style="margin-top:20px; max-width:560px; font-size:18px; line-height:1.6;">
+        Previously built homehunter club – a rental platform for Gen-Z's using alternate data and acclr8 – Wellfound for Indian Startups.
       </div>
-
-    </div>
+    </section>
   </main>
 
+  <div class="social-fixed">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
+    </a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
+    </a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+
+  <script src="/spa-nav.js"></script>
+  <script>
+    // Trigger staggered transitions on load
+    window.addEventListener('DOMContentLoaded', function () {
+      var containers = document.querySelectorAll('.page-enter');
+      containers.forEach(function (el) {
+        void el.offsetWidth;
+        el.classList.add('page-enter-active');
+      });
+    });
+  </script>
 </body>
 </html>
