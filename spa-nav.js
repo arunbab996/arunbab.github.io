@@ -1,5 +1,14 @@
 // spa-nav.js
 
+function normalizePath(path) {
+  if (!path) return "/";
+  // strip trailing slash except for root
+  if (path.length > 1 && path.endsWith("/")) {
+    return path.slice(0, -1);
+  }
+  return path;
+}
+
 function runPageEnterAnimations() {
   var containers = document.querySelectorAll(".page-enter");
   containers.forEach(function (el) {
@@ -11,10 +20,14 @@ function runPageEnterAnimations() {
 }
 
 function setActiveNav(pathname) {
+  var current = normalizePath(pathname);
   var links = document.querySelectorAll("nav.nav a[data-spa]");
+
   links.forEach(function (link) {
-    var linkPath = new URL(link.href, window.location.origin).pathname;
-    if (linkPath === pathname) {
+    var linkPath = normalizePath(
+      new URL(link.href, window.location.origin).pathname
+    );
+    if (linkPath === current) {
       link.classList.add("active");
     } else {
       link.classList.remove("active");
@@ -109,7 +122,7 @@ document.addEventListener("click", function (event) {
 
   // same-page link: do nothing
   if (
-    url.pathname === window.location.pathname &&
+    normalizePath(url.pathname) === normalizePath(window.location.pathname) &&
     url.search === window.location.search
   ) {
     event.preventDefault();
@@ -128,7 +141,5 @@ window.addEventListener("popstate", function () {
 // initial setup on first full load
 window.addEventListener("DOMContentLoaded", function () {
   setActiveNav(window.location.pathname);
-  // animations on first load are handled by your inline scripts,
-  // but this ensures we can re-run them after SPA navigations too
   runPageEnterAnimations();
 });
