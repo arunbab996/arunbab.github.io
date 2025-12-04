@@ -6,79 +6,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
-    :root{
-      --bg:#f4f5f7;
-      --text:#111219;
-      --muted:#5b6066;
-      --max-width:640px;
-      --nav-gap:28px;
+    :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--max-width:640px;--nav-gap:28px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}    
+    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
+    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent}
+    .nav a:hover{border-bottom-color:var(--text);color:var(--text)}
+    .nav a.active{color:var(--text);border-bottom-color:var(--text);}    
 
-      --book-width:95px;
-      --gap:22px;
-      --row-gap:28px;
-      --bookshelf-width:690px;
+    main{max-width:1200px;margin:48px auto;padding:0 16px}
+    .page-title{font-weight:700;font-size:18px;margin-bottom:18px}
+
+    .two-col{
+      display:grid;
+      grid-template-columns: 64% 34%;
+      gap:28px;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box}
+    .projects-grid{display:flex;flex-direction:column;gap:18px}
+    .project-card{display:flex;flex-direction:row;gap:18px;align-items:center;border-radius:8px;overflow:hidden;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.03);padding:8px;transition:transform 180ms ease, box-shadow 180ms ease}
+    .project-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(16,24,40,0.12)}
+    .project-card img{width:220px;height:140px;object-fit:cover;flex-shrink:0;border-radius:6px;transition:transform 180ms ease,opacity 180ms ease}
+    .project-card:hover img{transform:scale(1.03);opacity:0.95}
+    .project-meta{padding:6px}
+    .project-title{font-weight:700;margin-bottom:6px}
+    .project-tagline{color:var(--muted);font-size:14px}
 
-    body{
-      background:var(--bg);
-      font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
+    .tools-col{display:flex;flex-direction:column;gap:16px}
+    .tool-header{font-weight:700;font-size:16px;margin-bottom:4px}
+    .tool-card{display:flex;gap:14px;align-items:flex-start;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,0,0,0.04);padding:12px;text-decoration:none;color:var(--text);transition:transform 160ms ease, box-shadow 160ms ease}
+    .tool-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(16,24,40,0.12)}
+    .tool-thumb{width:120px;height:90px;object-fit:cover;border-radius:6px;background:#e9edf6}
+    .tool-title{font-weight:700;margin-bottom:4px;font-size:15px}
+    .tool-sub{color:var(--muted);font-size:13px;line-height:1.3}
+
+    @media(max-width:900px){
+      .two-col{grid-template-columns:1fr}
+      .tool-thumb{width:100px;height:80px}
+      .project-card img{width:100%;height:180px}
     }
 
-    a{color:inherit;text-decoration:none;}
-
-    .page-top-border{
-      height:3px;
-      background:rgba(0,0,0,0.08);
-    }
-
-    header{
-      display:flex;
-      justify-content:center;
-      border-bottom:1px solid rgba(0,0,0,0.06);
-      background:rgba(244,245,247,0.96);
-      backdrop-filter:blur(10px);
-    }
-
-    .nav{
-      max-width: var(--max-width);
-      width:100%;
-      display:flex;
-      justify-content:flex-start;
-      padding:20px 16px;
-      gap: var(--nav-gap);
-      font-size:15px;
-      font-weight:600;
-      color:var(--muted);
-      margin:0 auto;
-    }
-
-    .nav a{
-      padding-bottom:2px;
-      border-bottom:2px solid transparent;
-      color:var(--muted);
-    }
-
-    .nav a.active{
-      color:var(--text);
-      border-bottom-color:var(--text);
-    }
-
-    main{
-      max-width:1120px;
-      margin:40px auto 60px;
-      padding:0 32px;
-    }
-
-    @media (max-width: 900px){
-      main{ padding:0 16px; }
-    }
-
+    /* === Staggered page-enter transitions === */
     .page-enter > * {
       opacity: 0;
       transform: translateY(6px);
@@ -98,206 +69,105 @@
     .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
     .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
 
-    .books-layout{
-      display:grid;
-      grid-template-columns:150px minmax(0,1fr);
-      column-gap:32px;
-      align-items:flex-start;
-    }
-
-    @media(max-width:750px){
-      .books-layout{grid-template-columns:1fr;}
-      .books-sidebar{ display:none; }
-    }
-
-    .books-sidebar{
-      color:#c4c6cc;
-      font-size:13px;
-      line-height:1.7;
-      opacity:0.9;
-    }
-
-    .books-main{ min-width:0; }
-
-    .books-grid-wrap{
-      max-width:var(--bookshelf-width);
-      margin-top:0;
-    }
-
-    .books-grid{
-      display:grid;
-      grid-template-columns:repeat(4, var(--book-width));
-      justify-content:space-between;
-      column-gap:var(--gap);
-      row-gap:var(--row-gap);
-    }
-
-    .book-card{
-      width:var(--book-width);
-      display:flex;
-      flex-direction:column;
-    }
-
-    .book-cover{
-      width:100%;
-      aspect-ratio:1 / 1.55;
-      border-radius:6px;
-      overflow:hidden;
-      background:#e7e8eb;
-      box-shadow:
-        0 6px 14px rgba(15,23,42,0.10),
-        0 1px 2px rgba(15,23,42,0.08);
-      transition:transform .15s ease, box-shadow .15s ease;
-    }
-
-    .book-cover img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    .book-card:hover .book-cover{
-      transform:translateY(-3px);
-      box-shadow:
-        0 10px 22px rgba(15,23,42,0.15),
-        0 1px 3px rgba(15,23,42,0.08);
-    }
-
-    .book-meta{
-      margin-top:5px;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .book-title{
-      font-size:11.2px;
-      font-weight:600;
-      line-height:1.3;
-      margin-bottom:1px;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-    }
-
-    .book-author{
-      font-size:9.4px;
-      color:var(--muted);
-      line-height:1.3;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-    }
-
-    @media(max-width:750px){
-      .books-grid-wrap{ max-width:100%; }
-      .books-grid{
-        grid-template-columns:repeat(3, var(--book-width));
-        justify-content:flex-start;
-      }
-    }
-
-    @media(max-width:590px){
-      .books-grid{
-        grid-template-columns:repeat(2, var(--book-width));
-        column-gap:18px;
-        row-gap:18px;
-      }
-    }
+    .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:0.95;z-index:40;}
+    .social-fixed a{color:var(--text);text-decoration:none}
+    .social-fixed a:hover{opacity:0.7}
   </style>
 </head>
-
 <body>
-
   <div class="page-top-border"></div>
-
   <header>
     <nav class="nav">
       <a href="/" data-spa>Index</a>
-      <a href="/portfolio" data-spa>Portfolio</a>
-      <a href="/bookshelf" class="active" data-spa>Bookshelf</a>
+      <a href="/portfolio" class="active" data-spa>Portfolio</a>
+      <a href="/bookshelf" data-spa>Bookshelf</a>
       <a href="/principles" data-spa>Principles</a>
     </nav>
   </header>
 
   <main id="app">
-    <section class="page-enter">
-      <div class="books-layout">
-
-        <aside class="books-sidebar"></aside>
-
-        <div class="books-main">
-          <div class="books-grid-wrap">
-            <div class="books-grid">
-
-              <article class="book-card">
-                <div class="book-cover">
-                  <img src="covers/superintelligence.jpg" alt="Superintelligence" />
-                </div>
-                <div class="book-meta">
-                  <div class="book-title">Superintelligence</div>
-                  <div class="book-author">Nick Bostrom</div>
-                </div>
-              </article>
-
-              <article class="book-card">
-                <div class="book-cover">
-                  <img src="covers/steve-jobs.jpg" alt="Steve Jobs" />
-                </div>
-                <div class="book-meta">
-                  <div class="book-title">Steve Jobs</div>
-                  <div class="book-author">Walter Isaacson</div>
-                </div>
-              </article>
-
-              <article class="book-card">
-                <div class="book-cover">
-                  <img src="covers/harry-potter-deathly-hallows.jpg" alt="Harry Potter and the Deathly Hallows" />
-                </div>
-                <div class="book-meta">
-                  <div class="book-title">Harry Potter and the Deathly Hallows</div>
-                  <div class="book-author">J.K. Rowling</div>
-                </div>
-              </article>
-
-              <article class="book-card">
-                <div class="book-cover">
-                  <img src="covers/american-kingpin.jpg" alt="American Kingpin" />
-                </div>
-                <div class="book-meta">
-                  <div class="book-title">American Kingpin</div>
-                  <div class="book-author">Nick Bilton</div>
-                </div>
-              </article>
-
-              <article class="book-card">
-                <div class="book-cover">
-                  <img src="covers/shoe-dog.jpg" alt="Shoe Dog" />
-                </div>
-                <div class="book-meta">
-                  <div class="book-title">Shoe Dog</div>
-                  <div class="book-author">Phil Knight</div>
-                </div>
-              </article>
-
-              <article class="book-card">
-                <div class="book-cover">
-                  <img src="covers/zero-to-one.jpg" alt="Zero to One" />
-                </div>
-                <div class="book-meta">
-                  <div class="book-title">Zero to One</div>
-                  <div class="book-author">Peter Thiel</div>
-                </div>
-              </article>
-
-            </div>
-          </div>
-        </div>
+    <div class="page-enter">
+      <div class="page-title" style="display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1200px; margin-bottom:18px;">
+        <span>Portfolio</span>
+        <span style="font-weight:700; font-size:16px;">Tools</span>
       </div>
-    </section>
+
+      <div class="two-col">
+
+        <div class="projects-grid">
+          <a href="/portfolio/specter/" class="project-card" target="_blank" rel="noopener">
+            <img src="/images/0.webp" alt="specter" />
+            <div class="project-meta">
+              <div class="project-title">Specter Talent</div>
+              <div class="project-tagline">Building the founder discovery engine powering modern startup scouting.</div>
+            </div>
+          </a>
+          
+          <a href="/portfolio/dunzo/" class="project-card">
+            <img src="/images/1.webp" alt="Dunzo : Increasing AOV" />
+            <div class="project-meta">
+              <div class="project-title">Dunzo: Increasing the Average Order Value</div>
+              <div class="project-tagline">The Tale of Maximising AOV</div>
+            </div>
+          </a>
+
+          <a href="/portfolio/jupiter/" class="project-card" target="_blank" rel="noopener">
+            <img src="/images/2.webp" alt="Jupiter App Gamification" />
+            <div class="project-meta">
+              <div class="project-title">Jupiter - App Gamification</div>
+              <div class="project-tagline">An attempt to incorporate game elements to Jupiter - a Neobank.</div>
+            </div>
+          </a>
+
+          <a href="/portfolio/swiggy/" class="project-card" target="_blank" rel="noopener">
+            <img src="/images/3.jpeg" alt="Swiggy" />
+            <div class="project-meta">
+              <div class="project-title">Swiggy - How to Tackle Multiple Orders?</div>
+              <div class="project-tagline">Solving Bulk Delivery - i.e Food orders from multiple restaurants at once.</div>
+            </div>
+          </a>
+
+        </div>
+
+        <div class="tools-col">
+
+          <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank" rel="noopener">
+            <img class="tool-thumb" src="/images/bitcoin.webp" alt="BTC Tool" />
+            <div>
+              <div class="tool-title">Monitoring Magic Internet Money</div>
+              <div class="tool-sub">Real-time BTC tools, charts, and utilities.</div>
+            </div>
+          </a>
+
+          <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank" rel="noopener">
+            <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS Icon" />
+            <div>
+              <div class="tool-title">DiscoveryOS</div>
+              <div class="tool-sub">Using Y combinator and Product Hunt APIs to track the next big thing!</div>
+            </div>
+          </a>
+
+          <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank" rel="noopener">
+            <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="Y Combinator Logo" />
+            <div>
+              <div class="tool-title">Y Combinator Bot</div>
+              <div class="tool-sub">Posting Twitter updates whenever a new startup hits the YC directory.</div>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
   </main>
+
+  <div class="social-fixed">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M4.98 3.5a2.5 2.5 0 11-.01 5.001A2.5 2.5 0 014.98 3.5zM3 8.98h4v12H3v-12zm7 0h3.8v1.64h.05c.53-1 1.84-2.06 3.8-2.06 4.06 0 4.8 2.67 4.8 6.14v6.28h-4v-5.56c0-1.33-.02-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95v5.66h-4v-12z"/>
+      </svg>
+    </a>
+  </div>
 
   <script src="/spa-nav.js"></script>
   <script>
