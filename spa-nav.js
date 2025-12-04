@@ -4,8 +4,7 @@ function runPageEnterAnimations() {
   var containers = document.querySelectorAll(".page-enter");
   containers.forEach(function (el) {
     el.classList.remove("page-enter-active");
-    // force reflow to restart animation
-    void el.offsetWidth;
+    void el.offsetWidth; // force reflow
     el.classList.add("page-enter-active");
   });
 }
@@ -31,7 +30,7 @@ async function loadPage(urlString, pushState = true) {
     });
 
     if (!response.ok) {
-      window.location.href = url.href; // fallback
+      window.location.href = url.href;
       return;
     }
 
@@ -44,7 +43,7 @@ async function loadPage(urlString, pushState = true) {
     const currentMain = document.querySelector("main#app");
 
     if (!newMain || !currentMain) {
-      window.location.href = url.href; // fallback
+      window.location.href = url.href;
       return;
     }
 
@@ -68,11 +67,10 @@ async function loadPage(urlString, pushState = true) {
     runPageEnterAnimations();
   } catch (err) {
     console.error("Error in loadPage:", err);
-    window.location.href = urlString; // fallback
+    window.location.href = urlString;
   }
 }
 
-// Intercept clicks on <a data-spa>
 document.addEventListener("click", function (event) {
   const link = event.target.closest("a[data-spa]");
   if (!link) return;
@@ -93,13 +91,12 @@ document.addEventListener("click", function (event) {
   loadPage(url.href);
 });
 
-// Handle browser back/forward
 window.addEventListener("popstate", function () {
   loadPage(window.location.href, false);
 });
 
-// Initial run on first load
 window.addEventListener("DOMContentLoaded", function () {
   setActiveNav(window.location.pathname);
-  runPageEnterAnimations();
+  // your inline scripts already handle first animation,
+  // this just makes sure SPA nav re-uses the same behaviour
 });
