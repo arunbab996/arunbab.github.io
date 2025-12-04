@@ -12,11 +12,12 @@
       --bg:#dbe2eb;
       --text:#111219;
       --muted:#5b6066;
-      --max-width:960px;
+      --shell-width:720px;      /* header/nav width – match other pages */
+      --content-width:960px;    /* wider content just for this page */
       --nav-gap:28px;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box}
+    *{margin:0;padding:0;box-sizing:border-box;}
 
     body{
       background:var(--bg);
@@ -29,7 +30,7 @@
       background:rgba(0,0,0,0.08);
     }
 
-    /* HEADER — same as other pages */
+    /* HEADER – full width, centered shell */
     header{
       width:100%;
       display:flex;
@@ -38,9 +39,9 @@
       background:transparent;
     }
 
-    /* NAV BAR — same structure as your other pages */
+    /* NAV – constrained to shell width (same as other pages) */
     .nav{
-      max-width:var(--max-width);
+      max-width:var(--shell-width);
       width:100%;
       display:flex;
       justify-content:flex-start;
@@ -58,21 +59,19 @@
       padding-bottom:2px;
       border-bottom:2px solid transparent;
     }
-
     .nav a:hover{
       color:var(--text);
       border-bottom-color:var(--text);
     }
-
     .nav a.active{
       color:var(--text);
       border-bottom-color:var(--text);
     }
 
-    /* MAIN CONTENT */
+    /* MAIN CONTENT – wider than header */
     main{
-      max-width:var(--max-width);
-      margin:48px auto;
+      max-width:var(--content-width);
+      margin:32px auto 48px;
       padding:0 16px;
     }
 
@@ -199,7 +198,7 @@
 <body>
   <div class="page-top-border"></div>
 
-  <!-- NAV IS IDENTICAL ACROSS PAGES -->
+  <!-- NAV – shared across pages -->
   <header>
     <nav class="nav">
       <a href="/" data-spa>Index</a>
@@ -231,7 +230,7 @@
             <img src="/images/1.webp" alt="Dunzo" />
             <div>
               <div class="project-title">Dunzo: Increasing the Average Order Value</div>
-              <div class="project-tagline">The Tale of Maximising AOV</div>
+              <div class="project-tagline">The tale of maximising average order value.</div>
             </div>
           </a>
 
@@ -268,7 +267,7 @@
             <img class="tool-thumb" src="/images/icons8-ghost.gif" alt="DiscoveryOS" />
             <div>
               <div class="tool-title">DiscoveryOS</div>
-              <div class="tool-sub">Using YC and PH APIs to track the next big thing.</div>
+              <div class="tool-sub">Using YC and Product Hunt APIs to track the next big thing.</div>
             </div>
           </a>
 
