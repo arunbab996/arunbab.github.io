@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
+  <style data-page-style>
     :root{--bg:#dbe2eb;--text:#111219;--muted:#5b6066;--max-width:640px;--nav-gap:28px}
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
@@ -49,6 +49,7 @@
       line-height:1.45;
     }
 
+    /* === Staggered page-enter transitions === */
     .page-enter > * {
       opacity: 0;
       transform: translateY(6px);
@@ -82,6 +83,7 @@
   </header>
 
   <main id="app">
+    <!-- page-enter wrapper around title + list -->
     <div class="page-enter">
       <div class="page-title">Principles</div>
 
