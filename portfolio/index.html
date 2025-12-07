@@ -9,7 +9,7 @@
 
   <style>
     :root{
-      --bg:#dbe2eb;      /* blue background */
+      --bg:#dbe2eb; 
       --text:#111219;
       --muted:#5b6066;
       --max-width:640px;
@@ -33,7 +33,6 @@
       display:flex;
       justify-content:center;
       border-bottom:1px solid rgba(0,0,0,0.06);
-      background:transparent;
       width:100%;
     }
 
@@ -91,13 +90,12 @@
       gap:18px;
       align-items:center;
       border-radius:8px;
-      overflow:hidden;
       text-decoration:none;
       color:var(--text);
       background:rgba(255,255,255,0.03);
       border:1px solid rgba(0,0,0,0.03);
       padding:8px;
-      transition:transform 180ms ease, box-shadow 180ms ease;
+      transition:transform .18s ease, box-shadow .18s ease;
     }
 
     .project-card:hover{
@@ -111,7 +109,7 @@
       object-fit:cover;
       border-radius:6px;
       flex-shrink:0;
-      transition:transform 180ms ease, opacity 180ms ease;
+      transition:transform .18s ease, opacity .18s ease;
     }
 
     .project-card:hover img{
@@ -123,8 +121,17 @@
     .project-title{ font-weight:700; margin-bottom:6px; }
     .project-tagline{ color:var(--muted); font-size:14px; }
 
-    .tools-col{ display:flex; flex-direction:column; gap:16px; }
-    .tool-header{ font-weight:700; font-size:16px; margin-bottom:4px; }
+    .tools-col{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .tool-header{
+      font-weight:700;
+      font-size:16px;
+      margin-bottom:4px;
+    }
 
     .tool-card{
       display:flex;
@@ -135,7 +142,7 @@
       padding:12px;
       text-decoration:none;
       color:var(--text);
-      transition:transform 160ms ease, box-shadow 160ms ease;
+      transition:transform .16s ease, box-shadow .16s ease;
     }
 
     .tool-card:hover{
@@ -148,17 +155,16 @@
       height:90px;
       object-fit:cover;
       border-radius:6px;
-      background:#e9edf6;
     }
 
     .tool-title{ font-weight:700; margin-bottom:4px; font-size:15px; }
     .tool-sub{ color:var(--muted); font-size:13px; line-height:1.3; }
 
-    /** ANIMATION **/
+    /* ANIMATION FIX */
     .page-enter > * {
       opacity:0;
       transform:translateY(6px);
-      transition:opacity 300ms ease-out, transform 300ms ease-out;
+      transition:opacity .3s ease-out, transform .3s ease-out;
     }
 
     .page-enter.page-enter-active > * {
@@ -168,8 +174,8 @@
 
     @media(max-width:900px){
       .two-col{grid-template-columns:1fr;}
-      .tool-thumb{width:100px;height:80px;}
       .project-card img{width:100%;height:180px;}
+      .tool-thumb{width:100px;height:80px;}
     }
   </style>
 </head>
@@ -200,7 +206,7 @@
         <div class="projects-grid">
 
           <a href="/portfolio/specter/" class="project-card">
-            <img src="/images/0.webp" alt="Specter Talent" />
+            <img src="/images/0.webp" width="220" height="140" alt="Specter Talent">
             <div class="project-meta">
               <div class="project-title">Specter Talent</div>
               <div class="project-tagline">Building the founder discovery engine powering modern startup scouting.</div>
@@ -208,7 +214,7 @@
           </a>
 
           <a href="/portfolio/dunzo/" class="project-card">
-            <img src="/images/1.webp" alt="Dunzo" />
+            <img src="/images/1.webp" width="220" height="140" alt="Dunzo">
             <div class="project-meta">
               <div class="project-title">Dunzo: Increasing the Average Order Value</div>
               <div class="project-tagline">The Tale of Maximising AOV</div>
@@ -216,7 +222,7 @@
           </a>
 
           <a href="/portfolio/jupiter/" class="project-card">
-            <img src="/images/2.webp" alt="Jupiter Gamification" />
+            <img src="/images/2.webp" width="220" height="140" alt="Jupiter Gamification">
             <div class="project-meta">
               <div class="project-title">Jupiter - App Gamification</div>
               <div class="project-tagline">An attempt to incorporate game elements to Jupiter - a Neobank.</div>
@@ -224,7 +230,7 @@
           </a>
 
           <a href="/portfolio/swiggy/" class="project-card">
-            <img src="/images/3.jpeg" alt="Swiggy" />
+            <img src="/images/3.jpeg" width="220" height="140" alt="Swiggy">
             <div class="project-meta">
               <div class="project-title">Swiggy - How to Tackle Multiple Orders?</div>
               <div class="project-tagline">Solving Bulk Delivery - i.e Food orders from multiple restaurants at once.</div>
@@ -238,7 +244,7 @@
           <div class="tool-header">Tools</div>
 
           <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank" rel="noopener">
-            <img class="tool-thumb" src="/images/bitcoin.webp" alt="BTC" />
+            <img class="tool-thumb" src="/images/bitcoin.webp" width="120" height="90" alt="BTC Tool">
             <div>
               <div class="tool-title">Monitoring Magic Internet Money</div>
               <div class="tool-sub">Real-time BTC tools, charts, and utilities.</div>
@@ -246,7 +252,7 @@
           </a>
 
           <a href="https://ycombinator-winter2026.vercel.app/" class="tool-card" target="_blank" rel="noopener">
-            <img class="tool-thumb" src="/images/DOS.png" alt="DiscoveryOS" />
+            <img class="tool-thumb" src="/images/DOS.png" width="120" height="90" alt="DiscoveryOS">
             <div>
               <div class="tool-title">DiscoveryOS</div>
               <div class="tool-sub">Market intelligence on emerging companies.</div>
@@ -254,7 +260,7 @@
           </a>
 
           <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank" rel="noopener">
-            <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="YC Bot" />
+            <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" width="120" height="90" alt="YC Bot">
             <div>
               <div class="tool-title">Y Combinator Bot</div>
               <div class="tool-sub">Posts updates whenever a new YC startup is listed.</div>
@@ -262,7 +268,7 @@
           </a>
 
           <a href="https://voyager-umber.vercel.app" class="tool-card" target="_blank" rel="noopener">
-            <img class="tool-thumb" src="/images/voya.png" alt="Voyager" />
+            <img class="tool-thumb" src="/images/voya.png" width="120" height="90" alt="Voyager">
             <div>
               <div class="tool-title">Voyager</div>
               <div class="tool-sub">Your AI Travel Concierge.</div>
@@ -276,7 +282,7 @@
     </div>
   </main>
 
-  <!-- FINAL FIXED ANIMATION SCRIPT -->
+  <!-- FINAL ANIMATION FIX -->
   <script>
     window.addEventListener('load', function () {
       requestAnimationFrame(() => {
