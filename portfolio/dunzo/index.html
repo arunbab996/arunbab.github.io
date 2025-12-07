@@ -11,8 +11,17 @@
       --text: #111827;
       --muted: #6b7280;
       --maxw: 720px;
+
+      /* Table theme (Linear-style) */
+      --table-bg: #ffffff;
+      --table-border: #e6edf3;
+      --table-header-bg: #f6f9fb;
+      --table-row-hover: rgba(11,99,214,0.03);
+      --table-radius: 10px;
+      --table-shadow: 0 6px 20px rgba(15,23,36,0.04);
     }
 
+    /* Page layout */
     body {
       margin: 0;
       padding: 40px 24px;
@@ -71,8 +80,20 @@
       color: #172031;
     }
 
-    ul { margin: 8px 0 14px 20px; color: #172031; }
+    /* LISTS: tightened, consistent spacing */
+    ul {
+      margin: 8px 0 14px 20px;
+      padding: 0;
+      color: #172031;
+      line-height: 1.5;            /* consistent line height inside bullets */
+    }
 
+    ul li {
+      margin: 6px 0;               /* consistent vertical gap between bullets */
+      padding: 0;
+    }
+
+    /* Figure cards (kept for visual examples) */
     figure.figure-card {
       background: #ffffff;
       border-radius: 8px;
@@ -112,39 +133,68 @@
       margin-top: 8px;
     }
 
+    /* Table wrapper and Linear-style table */
     .table-wrap {
-      overflow-x: auto;
-      border-radius: 6px;
+      margin: 12px 0 18px;
       display: flex;
       justify-content: center;
-      padding: 6px 0;
-      margin: 12px 0 18px;
+      overflow-x: auto;
+      padding: 8px; /* keeps table from touching viewport edges on small screens */
+    }
+
+    .table-card {
+      background: var(--table-bg);
+      border-radius: var(--table-radius);
+      box-shadow: var(--table-shadow);
+      border: 1px solid var(--table-border);
+      overflow: hidden;
+      min-width: 320px;
     }
 
     table {
       width: 100%;
-      max-width: 700px;
-      border-collapse: collapse;
-      background: #fff;
-    }
-
-    th, td {
-      border: 1px solid #e8ecf2;
-      padding: 10px;
-      text-align: left;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 15px;
       color: #172031;
     }
 
-    th {
-      background: #f8fafc;
-      color: #0f1724;
+    thead tr {
+      background: var(--table-header-bg);
     }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--table-border);
+    }
+
+    th {
+      font-weight: 600;
+      color: #0f1724;
+      font-size: 14px;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none; /* remove last row border to keep rounded corners clean */
+    }
+
+    .table-card table tr:hover {
+      background: var(--table-row-hover);
+    }
+
+    /* Rounded corners for the table block (clip the header and footer) */
+    .table-card thead th:first-child { border-top-left-radius: var(--table-radius); }
+    .table-card thead th:last-child { border-top-right-radius: var(--table-radius); }
+    /* (footer corners are not present because we removed bottom border on last row) */
 
     @media (max-width:520px) {
       :root { --maxw: 520px; }
       h1 { font-size: 24px; }
       p { font-size: 15px; line-height: 1.6; }
       .ui-pair img { width: 48%; }
+      th, td { padding: 10px; font-size: 14px; }
     }
   </style>
 </head>
@@ -250,19 +300,24 @@
       <p>Competitors already use a mix of bundled SKUs, high-visibility upsells, and smart recommendations. Dunzo can close the gap via better personalization + placement.</p>
 
       <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Company</th><th>Funding</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Swiggy Instamart</td><td>$3.6B</td></tr>
-            <tr><td>BigBasket</td><td>$1.3B</td></tr>
-            <tr><td>Blinkit</td><td>$1B</td></tr>
-            <tr><td>Zepto</td><td>$360M</td></tr>
-            <tr><td>Milkbasket</td><td>$38.5M</td></tr>
-            <tr><td>JioMart</td><td>Subsidiary of Reliance</td></tr>
-          </tbody>
-        </table>
+        <div class="table-card" role="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Funding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Swiggy Instamart</td><td>$3.6B</td></tr>
+              <tr><td>BigBasket</td><td>$1.3B</td></tr>
+              <tr><td>Blinkit</td><td>$1B</td></tr>
+              <tr><td>Zepto</td><td>$360M</td></tr>
+              <tr><td>Milkbasket</td><td>$38.5M</td></tr>
+              <tr><td>JioMart</td><td>Subsidiary of Reliance</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -271,17 +326,23 @@
       <p>Proposed Solution, Priority, AOV Impact are summarised below. Highest AOV lift comes from combining Item Prompts + Combos.</p>
 
       <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Proposed Solution</th><th>Priority</th><th>AOV Impact</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Reposition “+ Add More”</td><td>Medium</td><td>High</td></tr>
-            <tr><td>Item Prompts (Upsell)</td><td>High</td><td>High</td></tr>
-            <tr><td>Combos / Bundles</td><td>High</td><td>High</td></tr>
-            <tr><td>Post-Checkout Nudges</td><td>Low</td><td>Low</td></tr>
-          </tbody>
-        </table>
+        <div class="table-card" role="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Proposed Solution</th>
+                <th>Priority</th>
+                <th>AOV Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Reposition “+ Add More”</td><td>Medium</td><td>High</td></tr>
+              <tr><td>Item Prompts (Upsell)</td><td>High</td><td>High</td></tr>
+              <tr><td>Combos / Bundles</td><td>High</td><td>High</td></tr>
+              <tr><td>Post-Checkout Nudges</td><td>Low</td><td>Low</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -290,17 +351,22 @@
       <p>To measure impact on both behaviour and business outcomes:</p>
 
       <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Question</th><th>Metric</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Are users discovering features?</td><td>% users interacting with Add More / Combos</td></tr>
-            <tr><td>Are they converting?</td><td>Funnel progression (view → add → purchase)</td></tr>
-            <tr><td>Are they satisfied?</td><td>NPS, post-checkout feedback</td></tr>
-            <tr><td>Is AOV increasing?</td><td>AOV of exposed users vs control group</td></tr>
-          </tbody>
-        </table>
+        <div class="table-card" role="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Metric</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Are users discovering features?</td><td>% users interacting with Add More / Combos</td></tr>
+              <tr><td>Are they converting?</td><td>Funnel progression (view → add → purchase)</td></tr>
+              <tr><td>Are they satisfied?</td><td>NPS, post-checkout feedback</td></tr>
+              <tr><td>Is AOV increasing?</td><td>AOV of exposed users vs control group</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
