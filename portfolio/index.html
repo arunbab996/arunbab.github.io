@@ -28,7 +28,6 @@
       background:rgba(0,0,0,0.08);
     }
 
-    /* HEADER – same as home page */
     header{
       display:flex;
       justify-content:center;
@@ -67,7 +66,6 @@
       border-bottom-color:var(--text);
     }
 
-    /* CONTENT – original wide portfolio layout */
     main{
       max-width:1200px;
       margin:48px auto;
@@ -195,48 +193,9 @@
       .tool-thumb{width:100px;height:80px;}
       .project-card img{width:100%;height:180px;}
     }
-
-    /* Staggered page-enter transitions */
-    .page-enter > * {
-      opacity: 0;
-      transform: translateY(6px);
-      transition:
-        opacity 320ms ease-out,
-        transform 320ms ease-out;
-    }
-
-    .page-enter.page-enter-active > * {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .page-enter.page-enter-active > *:nth-child(1) { transition-delay: 0s; }
-    .page-enter.page-enter-active > *:nth-child(2) { transition-delay: 0.05s; }
-    .page-enter.page-enter-active > *:nth-child(3) { transition-delay: 0.10s; }
-    .page-enter.page-enter-active > *:nth-child(4) { transition-delay: 0.15s; }
-    .page-enter.page-enter-active > *:nth-child(5) { transition-delay: 0.20s; }
-
-    .social-fixed{
-      position:fixed;
-      bottom:28px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      gap:28px;
-      opacity:0.95;
-      z-index:40;
-    }
-
-    .social-fixed a{
-      color:var(--text);
-      text-decoration:none;
-    }
-
-    .social-fixed a:hover{
-      opacity:0.7;
-    }
   </style>
 </head>
+
 <body>
   <div class="page-top-border"></div>
 
@@ -250,7 +209,6 @@
   </header>
 
   <main id="app">
-    <!-- page-enter wrapper around title + layout -->
     <div class="page-enter">
 
       <div class="page-title" style="display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1200px; margin-bottom:18px;">
@@ -260,9 +218,10 @@
 
       <div class="two-col">
 
-        <!-- LEFT: PORTFOLIO PROJECTS -->
+        <!-- LEFT COLUMN — FIXED LINKS -->
         <div class="projects-grid">
-          <a href="/portfolio/specter/" class="project-card" target="_blank" rel="noopener">
+
+          <a href="/portfolio/specter/" class="project-card">
             <img src="/images/0.webp" alt="Specter Talent" />
             <div class="project-meta">
               <div class="project-title">Specter Talent</div>
@@ -271,7 +230,7 @@
               </div>
             </div>
           </a>
-          
+
           <a href="/portfolio/dunzo/" class="project-card">
             <img src="/images/1.webp" alt="Dunzo : Increasing AOV" />
             <div class="project-meta">
@@ -280,7 +239,7 @@
             </div>
           </a>
 
-          <a href="/portfolio/jupiter/" class="project-card" target="_blank" rel="noopener">
+          <a href="/portfolio/jupiter/" class="project-card">
             <img src="/images/2.webp" alt="Jupiter App Gamification" />
             <div class="project-meta">
               <div class="project-title">Jupiter - App Gamification</div>
@@ -290,7 +249,7 @@
             </div>
           </a>
 
-          <a href="/portfolio/swiggy/" class="project-card" target="_blank" rel="noopener">
+          <a href="/portfolio/swiggy/" class="project-card">
             <img src="/images/3.jpeg" alt="Swiggy" />
             <div class="project-meta">
               <div class="project-title">Swiggy - How to Tackle Multiple Orders?</div>
@@ -299,9 +258,10 @@
               </div>
             </div>
           </a>
+
         </div>
 
-        <!-- RIGHT: TOOLS -->
+        <!-- RIGHT COLUMN (unchanged) -->
         <div class="tools-col">
           <div class="tool-header">Tools</div>
 
@@ -317,26 +277,20 @@
             <img class="tool-thumb" src="/images/DOS.png" alt="DiscoveryOS Icon" />
             <div>
               <div class="tool-title">DiscoveryOS</div>
-              <div class="tool-sub">
-                Market intelligence on emerging companies.
-              </div>
+              <div class="tool-sub">Market intelligence on emerging companies.</div>
             </div>
           </a>
 
           <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank" rel="noopener">
-            <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="Y Combinator Logo" />
+            <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="YC Logo" />
             <div>
               <div class="tool-title">Y Combinator Bot</div>
-              <div class="tool-sub">
-                Posting Twitter updates whenever a new startup hits the YC directory.
-              </div>
+              <div class="tool-sub">Posts updates whenever a new YC startup is listed.</div>
             </div>
           </a>
 
-          <!-- NEW: VOYAGER -->
           <a href="https://voyager-umber.vercel.app" class="tool-card" target="_blank" rel="noopener">
-            <!-- save the screenshot as /images/voyager.webp (or adjust the path) -->
-            <img class="tool-thumb" src="/images/voya.png" alt="Voyager – AI Travel Concierge" />
+            <img class="tool-thumb" src="/images/voya.png" alt="Voyager" />
             <div>
               <div class="tool-title">Voyager</div>
               <div class="tool-sub">Your AI Travel Concierge.</div>
@@ -349,23 +303,7 @@
     </div>
   </main>
 
-  <div class="social-fixed">
-    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M4.98 3.5a2.5 2.5 0 11-.01 5.001A2.5 2.5 0 014.98 3.5zM3 8.98h4v12H3v-12zm7 0h3.8v1.64h.05c.53-1 1.84-2.06 3.8-2.06 4.06 0 4.8 2.67 4.8 6.14v6.28h-4v-5.56c0-1.33-.02-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95v5.66h-4v-12z"/>
-      </svg>
-    </a>
-  </div>
-
   <script src="/spa-nav.js"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', function () {
-      var containers = document.querySelectorAll('.page-enter');
-      containers.forEach(function (el) {
-        void el.offsetWidth;
-        el.classList.add('page-enter-active');
-      });
-    });
-  </script>
+
 </body>
 </html>
