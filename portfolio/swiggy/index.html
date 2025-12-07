@@ -37,45 +37,51 @@
       margin: 12px 0 4px 0;
     }
 
-    .subtitle {
-      font-size: 15px;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
-
     .hero {
       width: 100%;
       border-radius: 6px;
       margin-bottom: 28px;
-      display: block;
       overflow: hidden;
     }
     .hero img { width: 100%; height: auto; display:block; border-radius:6px; }
 
     h2 {
       font-size: 20px;
-      margin: 28px 0 10px 0;
+      margin: 28px 0 10px;
       font-weight: 600;
     }
 
     h3 {
       font-size: 16px;
-      margin: 12px 0 8px 0;
+      margin: 12px 0 8px;
     }
 
     p {
       font-size: 17px;
       line-height: 1.55;
-      margin: 0 0 14px 0;
+      margin: 0 0 14px;
       color: #172031;
     }
 
     ul { margin: 8px 0 14px 20px; line-height:1.5; color:#172031; }
     ul li { margin: 6px 0; }
 
+    /* Smaller images for sections 5 & 6 */
     .figure { margin: 18px 0; text-align:center; }
-    .figure img { max-width: 720px; width:100%; border-radius:8px; border:1px solid #eef2f7; display:block; margin:0 auto; }
-    figcaption { font-size:13px; color:var(--muted); margin-top:8px; }
+    .figure img {
+      max-width: 540px;   
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #eef2f7;
+      display: block;
+      margin: 0 auto;
+    }
+    figcaption {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-align: center;
+    }
 
     .table-wrap { margin: 12px 0 18px; display:flex; justify-content:center; overflow-x:auto; padding:6px 0; }
     .table-card { background:#fff; border-radius:10px; border:1px solid #e6edf3; box-shadow:0 6px 20px rgba(15,23,36,0.04); overflow:hidden; min-width:320px; }
@@ -100,19 +106,27 @@
 <body>
   <div class="container">
 
-    <!-- BACK BUTTON -->
+    <!-- BACK BUTTON (SAME TAB) -->
     <a class="back" href="/portfolio" target="_self">← Back</a>
 
-    <!-- TITLE -->
+    <!-- HARD OVERRIDE TO PREVENT GLOBAL JS FORCING _blank -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("a.back").forEach(a => {
+          a.removeAttribute("target");
+        });
+      });
+    </script>
+
     <h1>Swiggy Case Study: Enabling Multi-Restaurant Composite Delivery</h1>
 
     <!-- HERO -->
     <div class="hero">
-      <img src="/portfolio/swiggy/images/hero.png" alt="Swiggy hero" 
+      <img src="/portfolio/swiggy/images/hero.png" alt="Swiggy hero"
            onerror="this.onerror=null;this.src='/portfolio/swiggy/images/image1.png'">
     </div>
 
-    <!-- CONTENT (WORD FOR WORD FROM YOUR FILE) -->
+    <!-- CONTENT (WORD FOR WORD) -->
     <section>
       <h2>1. Product Background</h2>
       <p>Swiggy is India’s largest food delivery platform, with more than 2.7 lakh restaurants onboarded across 500+ cities. Its logistics network and fleet optimisation are among the best in the world. Swiggy built Instamart, Genie, and Dineout on top of this same logistics infrastructure.</p>
