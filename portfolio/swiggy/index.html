@@ -42,6 +42,7 @@
       border-radius: 6px;
       margin-bottom: 28px;
       overflow: hidden;
+      background-color: #eee; /* Placeholder */
     }
     .hero img { width: 100%; height: auto; display:block; border-radius:6px; }
 
@@ -94,6 +95,30 @@
 
     hr.sep { border:0; border-top:1px solid #eef2f7; margin:26px 0; }
 
+    /* --- ANIMATIONS --- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Initial state for animated elements */
+    .animate-entry {
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Stagger delays */
+    .delay-1 { animation-delay: 0.1s; } /* Title */
+    .delay-2 { animation-delay: 0.2s; } /* Hero */
+    .delay-3 { animation-delay: 0.3s; } /* Section 1 */
+    .delay-4 { animation-delay: 0.4s; } /* Rest of content */
+
     @media (max-width:520px){
       :root { --maxw:520px; }
       h1 { font-size:28px; }
@@ -106,10 +131,8 @@
 <body>
   <div class="container">
 
-    <!-- BACK BUTTON (SAME TAB) -->
     <a class="back" href="/portfolio" target="_self">← Back</a>
 
-    <!-- HARD OVERRIDE TO PREVENT GLOBAL JS FORCING _blank -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll("a.back").forEach(a => {
@@ -118,23 +141,24 @@
       });
     </script>
 
-    <h1>Swiggy Case Study: Enabling Multi-Restaurant Composite Delivery</h1>
+    <h1 class="animate-entry delay-1">Swiggy Case Study: Enabling Multi-Restaurant Composite Delivery</h1>
 
-    <!-- HERO -->
-    <div class="hero">
-      <img src="/portfolio/swiggy/images/hero.png" alt="Swiggy hero"
+    <div class="hero animate-entry delay-2">
+      <img src="/portfolio/swiggy/images/hero.png" 
+           alt="Swiggy hero"
+           fetchpriority="high"
+           decoding="async"
            onerror="this.onerror=null;this.src='/portfolio/swiggy/images/image1.png'">
     </div>
 
-    <!-- CONTENT (WORD FOR WORD) -->
-    <section>
+    <section class="animate-entry delay-3">
       <h2>1. Product Background</h2>
       <p>Swiggy is India’s largest food delivery platform, with more than 2.7 lakh restaurants onboarded across 500+ cities. Its logistics network and fleet optimisation are among the best in the world. Swiggy built Instamart, Genie, and Dineout on top of this same logistics infrastructure.</p>
       <p>Food delivery is a high-frequency business but also high-churn. Reducing friction and meeting strong user intent is critical for both revenue and retention.</p>
       <p>This case study focuses specifically on a behaviour observed in Tier-1 users: ordering multiple items from different restaurants in a single meal window.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>2. Problem Statement</h2>
       <p>Today, users cannot combine items from multiple restaurants into one order. They need to:</p>
 
@@ -155,7 +179,7 @@
       <p><strong>The opportunity:</strong> Let users build a composite order across restaurants and get a single delivery.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>3. User Personas</h2>
 
       <h3>Rahul — 29, Bengaluru</h3>
@@ -165,7 +189,7 @@
       <p>Lives with roommates. Group orders are frequent. They want different items from different restaurants.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>4. Insights</h2>
 
       <ul>
@@ -176,12 +200,12 @@
       </ul>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>5. Proposed Solution: Composite Food Cart</h2>
       <p>The idea: Allow users to add items from multiple restaurants into one composite cart as long as they meet certain radius, timing, and compatibility constraints.</p>
 
       <div class="figure">
-        <img src="/portfolio/swiggy/images/image1.png" alt="Composite cart mockup">
+        <img src="/portfolio/swiggy/images/image1.png" alt="Composite cart mockup" loading="lazy" decoding="async">
       </div>
       <figcaption>Mockup of multi-restaurant cart flow</figcaption>
 
@@ -196,7 +220,7 @@
       </ul>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>6. Operational Constraints</h2>
 
       <ul>
@@ -207,12 +231,12 @@
       </ul>
 
       <div class="figure">
-        <img src="/portfolio/swiggy/images/image2.png" alt="Delivery batching mockup">
+        <img src="/portfolio/swiggy/images/image2.png" alt="Delivery batching mockup" loading="lazy" decoding="async">
       </div>
       <figcaption>Batching and routing constraints</figcaption>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>7. Pricing Model</h2>
       <p>Composite delivery introduces new marginal costs on Swiggy’s logistics side. A simple, transparent model can solve this:</p>
 
@@ -237,7 +261,7 @@
       <p>High-intent users are comfortable paying +₹20 to +₹40 for convenience.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>8. Success Metrics</h2>
       <ul>
         <li>Conversion rate for multi-restaurant carts</li>
@@ -247,7 +271,7 @@
       </ul>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>9. Risks & Mitigations</h2>
 
       <ul>
@@ -258,7 +282,7 @@
       </ul>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>10. Final Recommendation</h2>
       <p>The Composite Cart unlocks a new behaviour for Swiggy: household-level ordering instead of individual ordering. This expands AOV, improves retention and increases Swiggy’s defensibility against competitors.</p>
       <p>Given India’s diverse food preferences, composite food ordering has very strong product-market fit potential in Tier-1 households.</p>
