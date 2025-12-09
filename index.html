@@ -8,20 +8,21 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
   <style data-page-style>
     /* --- 1. GLOBAL VARIABLES --- */
-    :root{ --bg:#dbe2eb; --text:#1a1818; --muted:#5c5a5a; --max-width:640px; --nav-gap:28px; }
+    :root{ --bg:#dbe2eb; --text:#151515; --muted:#555; --max-width:640px; --nav-gap:28px; }
     *{box-sizing:border-box;margin:0;padding:0}
     
-    /* Default Body Font (Inter) - Keeps footer/misc safe */
-    body{ background:var(--bg); font-family:'Inter', -apple-system, sans-serif; color:var(--text); -webkit-font-smoothing: antialiased; }
+    /* Default Body Font (DM Sans) */
+    body{ background:var(--bg); font-family:'DM Sans', sans-serif; color:var(--text); -webkit-font-smoothing: antialiased; }
     
-    /* --- 2. HEADER & NAV (UNTOUCHED) --- */
+    /* --- 2. HEADER & NAV (UNTOUCHED - Uses Inter) --- */
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
     header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
     
+    /* Locked to Inter */
     .nav{
       max-width: var(--max-width); width:100%; display:flex; justify-content:flex-start; 
       padding:20px 16px; gap: var(--nav-gap); margin: 0 auto;
@@ -34,66 +35,59 @@
     .nav a:hover{color:var(--text);}
     .nav a.active{color:var(--text); border-bottom-color:var(--text);}
     
-    /* --- 3. MAIN CONTENT (FRAUNCES / EDITORIAL) --- */
-    main{max-width:var(--max-width); margin:64px auto; padding:0 16px; padding-bottom: 120px; font-family: 'Fraunces', serif;}
+    /* --- 3. MAIN CONTENT --- */
+    main{max-width:var(--max-width); margin:64px auto; padding:0 16px; padding-bottom: 120px; }
     
-    /* Name: Italicized for a "Signature" feel */
+    /* Name: Bold, Tight, Geometric */
     .name {
-      font-weight: 600; 
-      font-style: italic;
-      font-size: 38px;
-      letter-spacing: -0.02em;
+      font-weight: 700; 
+      font-size: 36px;
+      letter-spacing: -0.03em;
       margin-bottom: 24px;
       color: #000;
-      /* Fraunces specific setting for "Softness" */
-      font-variation-settings: "SOFT" 50, "WONK" 1; 
     }
 
-    /* Description: Warm, readable serif */
+    /* Description: Clean and airy */
     .desc {
-      font-size: 21px; 
-      line-height: 1.55;
+      font-size: 22px;
+      line-height: 1.5;
       color: #222;
       max-width: 600px;
-      font-weight: 300; /* Lighter weight looks elegant in serif */
+      font-weight: 400;
+      letter-spacing: -0.01em;
     }
 
-    /* Highlight: Sans-serif contrast */
+    /* THE HERO HIGHLIGHT: Large Serif Italic */
     .desc span {
-      font-family: 'Inter', sans-serif; /* Mix font for contrast */
-      font-weight: 600;
-      font-size: 19px; /* Optical adjustment */
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-style: normal;
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 26px; /* Larger than surrounding text */
+      font-weight: 400;
       color: #111;
+      padding-right: 2px; /* Fix for italic overlap */
     }
 
     /* Secondary/Current text */
     .current {
       display: block;
-      margin-top: 40px;
+      margin-top: 36px;
       font-size: 19px;
       line-height: 1.6;
       max-width: 560px;
       color: #444;
-      font-weight: 300;
-      font-style: italic;
+      font-weight: 400;
     }
 
-    /* Links: Bold and non-italic for contrast */
     .current a {
       color: #000;
-      font-family: 'Inter', sans-serif;
       font-weight: 600;
-      font-style: normal;
-      font-size: 17px;
-      text-decoration: none;
-      border-bottom: 1px solid #000;
-      transition: opacity 0.2s;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(0,0,0,0.3);
+      transition: text-decoration-color 0.2s;
     }
     .current a:hover {
-      opacity: 0.6;
+      text-decoration-color: #000;
     }
 
     /* --- 4. FOOTER --- */
