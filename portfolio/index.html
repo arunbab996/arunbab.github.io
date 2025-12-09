@@ -8,7 +8,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    .social-fixed { display: none !important; }
+    .social-fixed, 
+    .footer, 
+    footer, 
+    .socials, 
+    .social-links { 
+      display: none !important; 
+    }
   </style>
 
   <style>
@@ -167,9 +173,7 @@
     .tool-title{ font-weight:700; margin-bottom:4px; font-size:15px; }
     .tool-sub{ color:var(--muted); font-size:13px; line-height:1.3; }
 
-    /* This CSS targets the CHILDREN of .page-enter.
-       They start at opacity 0 and fade to 1. 
-    */
+    /* Animation Styles */
     .page-enter > * {
       opacity:0;
       transform:translateY(6px);
@@ -193,15 +197,10 @@
       function reveal(){
         var el = document.querySelector('.page-enter');
         if(!el) return;
-        
-        // This makes the container take up space and be "visible" to the browser
         el.style.visibility = 'visible';
-        
-        // This adds the class that triggers the opacity fade-in on the children
         requestAnimationFrame(() => el.classList.add('page-enter-active'));
       }
 
-      // Run on standard load
       if(document.readyState === 'complete' || document.readyState === 'interactive'){
         reveal();
       } else {
@@ -209,7 +208,6 @@
         window.addEventListener('load', reveal);
       }
 
-      // Run when restoring from Back/Forward Cache
       window.addEventListener('pageshow', function(event) {
         if (event.persisted) {
           reveal();
