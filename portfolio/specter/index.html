@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <title>Specter Talent — Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- match Dunzo article design / structure / BG (used as reference). :contentReference[oaicite:1]{index=1} -->
   <style>
     :root {
       --bg: #f9fafb;
@@ -21,19 +21,45 @@
       --table-shadow: 0 6px 20px rgba(15,23,36,0.04);
     }
 
-    /* Page layout & typography */
     body {
       margin: 0;
       padding: 40px 24px;
       background: var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      font-family: Inter, -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
       color: var(--text);
     }
 
-    .container {
-      max-width: var(--maxw);
-      margin: 0 auto;
+    header {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      margin-bottom: 32px;
     }
+
+    nav.nav {
+      max-width: var(--maxw);
+      width: 100%;
+      display: flex;
+      gap: 28px;
+      padding: 20px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    nav.nav a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 2px;
+    }
+
+    nav.nav a.active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    .container { max-width: var(--maxw); margin: 0 auto; }
 
     a.back {
       font-size: 14px;
@@ -49,28 +75,10 @@
       margin: 8px 0 6px 0;
     }
 
-    .meta-line {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
-
-    img.hero {
-      width: 100%;
-      border-radius: 6px;
-      margin: 14px 0 22px 0;
-    }
-
     h2 {
       font-size: 20px;
       margin: 28px 0 10px 0;
       font-weight: 600;
-    }
-
-    h3 {
-      font-size: 15.5px;
-      margin: 12px 0 8px 0;
-      color: #0b2546;
     }
 
     p {
@@ -80,151 +88,142 @@
       color: #172031;
     }
 
-    ul { margin: 8px 0 14px 20px; padding: 0; color: #172031; line-height: 1.5; }
-    ul li { margin: 6px 0; padding: 0; }
+    ul {
+      margin: 8px 0 14px 20px;
+      padding: 0;
+      line-height: 1.5;
+      color: #172031;
+    }
 
-    figure.figure-card {
-      background: #ffffff;
-      border-radius: 8px;
-      padding: 12px;
-      border: 1px solid #eef2f7;
-      margin: 16px 0;
+    li { margin: 6px 0; }
+
+    img.hero {
+      width: 100%;
+      border-radius: 6px;
+      margin: 18px 0 24px 0;
+    }
+
+    .ui-pair {
       display: flex;
+      gap: 16px;
       justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0 30px;
     }
 
-    figure.figure-card img { max-width: 720px; width: 100%; height: auto; display: block; border-radius: 6px; }
-
-    .ui-pair { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin:20px 0; }
-    .ui-pair img { width:300px; border-radius:6px; border:1px solid #e5e7eb; }
-    figcaption { text-align:center; font-size:13px; color:var(--muted); margin-top:8px; }
-
-    .table-wrap { margin:12px 0 18px; display:flex; justify-content:center; overflow-x:auto; padding:8px; }
-    .table-card { background:var(--table-bg); border-radius:var(--table-radius); box-shadow:var(--table-shadow); border:1px solid var(--table-border); overflow:hidden; min-width:320px; }
-    table { width:100%; border-collapse:separate; border-spacing:0; font-size:15px; color:#172031; }
-    thead tr { background:var(--table-header-bg); }
-    th, td { padding:12px 14px; text-align:left; vertical-align:middle; border-bottom:1px solid var(--table-border); }
-    th { font-weight:600; color:#0f1724; font-size:14px; }
-    tbody tr:last-child td { border-bottom: none; }
-    .table-card table tr:hover { background: var(--table-row-hover); }
-    .table-card thead th:first-child { border-top-left-radius: var(--table-radius); }
-    .table-card thead th:last-child { border-top-right-radius: var(--table-radius); }
-
-    @media (max-width:520px) {
-      :root { --maxw: 520px; }
-      h1 { font-size: 24px; }
-      p { font-size:15px; line-height:1.6; }
-      .ui-pair img { width:48%; }
-      th, td { padding:10px; font-size:14px; }
+    .ui-pair img {
+      width: 300px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
     }
 
-    /* SPA / animation guard: keep content hidden until reveal (FOUC-safe) */
-    .page-enter { visibility:hidden; opacity:0; }
-    .page-enter > * { opacity:0; transform:translateY(6px); transition:opacity .32s ease-out, transform .32s ease-out; }
-    .page-enter.page-enter-active > * { opacity:1; transform:translateY(0); }
+    .page-enter { visibility: hidden; opacity: 0; }
+    .page-enter > * {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .32s ease-out, transform .32s ease-out;
+    }
+    .page-enter.page-enter-active > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
+
+  <noscript>
+    <style>.page-enter { visibility: visible; opacity: 1; }</style>
+  </noscript>
 </head>
+
 <body>
-  <div class="container">
+<header>
+  <nav class="nav">
+    <a href="/" data-spa>Index</a>
+    <a href="/portfolio" data-spa class="active">Portfolio</a>
+    <a href="/bookshelf/" data-spa>Bookshelf</a>
+    <a href="/principles" data-spa>Principles</a>
+  </nav>
+</header>
 
-    <!-- SPA-aware wrapper -->
-    <div class="page-enter" id="page-root">
+<div class="container">
+  <div class="page-enter" id="page-root">
 
-      <a href="/portfolio" class="back" data-spa>← Back</a>
+    <a href="/portfolio" class="back" data-spa>← Back</a>
 
-      <h1>Specter Talent</h1>
-      <div class="meta-line"><em>Product: Specter Talent · Role: Product Lead / Research · Domain: Startup Discovery / Data</em></div>
+    <!-- DOCX TITLE -->
+    <h1>Specter Talent</h1>
+    <p style="color:var(--muted); font-size:15px; margin-top:-4px; margin-bottom:18px;">
+      Building the founder discovery engine powering modern startup scouting
+    </p>
 
-      <!-- HERO -->
-      <img class="hero" src="/portfolio/specter/images/hero.jpg" alt="Specter hero" onerror="this.onerror=null;this.src='/portfolio/specter/images/image1.png'">
+    <!-- HERO IMAGE -->
+    <img class="hero" src="/portfolio/specter/images/hero.jpg" alt="Specter Hero">
 
-      <!-- Full article content (all sections preserved) -->
-      <section>
-        <h2>1. The Core Problem in Venture Discovery.</h2>
-        <p>My journey with Specter began as an intern, joining a small team trying to solve one question that always frustrated investors: why do funds learn about promising founders so late?</p>
-        <p>By the time a company officially surfaces through a funding announcement, a landing page, or a Product Hunt launch, most serious conversations have already happened behind the scenes. Investors needed a way to understand entrepreneurial intent before any “public company signal” existed. That problem became the foundation of Specter Talent. The product was built on the belief that early signals hide in plain sight, and if we could learn how to capture them, we could give investors a view of the future before it became obvious. Over the next five years, I went from supporting its early experiments to building its signal logic, leading the product, and helping shape how Talent detects founders long before anyone else knows they’re building.</p>
-      </section>
+    <!-- =============================== -->
+    <!--      EXACT DOCX CONTENT         -->
+    <!-- =============================== -->
 
-      <section>
-        <h2>2. First Hypothesis: New Companies as the Primary Signal.</h2>
-        <p>In the earliest phase, we tried to detect “New Companies.” We thought that new entities forming online would always be the first and most relevant signal. We scraped incorporations, domain registrations, fresh landing pages, half-formed product listings, and tiny web footprints. The premise seemed reasonable, but data and repeated failures showed us the opposite. Many company entries were experimental or never went anywhere. Some were placeholders, paper shells, or early registrations not tied to genuine intent. More importantly, we kept finding cases where the founder’s decision to build began much earlier than the company’s public trace. That realization forced us to rethink everything. If the company signal was arriving late, then we had to look further upstream.</p>
-      </section>
+    <h2>1. Introduction</h2>
+    <p>Specter Talent is a product built to help investors discover founders before their companies exist. This case study explores how the earliest hypotheses around “New Company” signals evolved into a more refined understanding of founder-first detection.</p>
 
-      <section>
-        <h2>3. Breakthrough Insight: Founders Always Surface Before Companies.</h2>
-        <p>What ultimately reshaped Talent was a pattern I kept encountering while reviewing thousands of raw signals, manually verifying founder identities and mapping context across platforms. People reveal intent much earlier than companies do. They update LinkedIn bios to “Stealth,” “TBA,” “NewCo,” or leave small breadcrumbs just after exiting a previous role. They start GitHub repos aligned with a problem space. They sign up for accelerator cohorts before they launch anything public. They quietly add themselves to founder databases. They show changes in activity rhythm and platform presence that align with someone preparing to build. During months of parsing signals, one rule kept repeating itself: whenever a person left a previous role or closed a job position and then added a stealth marker soon after, the odds of them building something serious went up dramatically. What looked like a vague online breadcrumb was actually one of the strongest early indicators of intent, and it showed up consistently enough that we internalized it into our logic. That gave us a clear direction for what Talent should be: a founder-first discovery layer.</p>
-      </section>
+    <h2>2. Why Companies Are a Late Signal</h2>
+    <p>The earliest phase of Talent focused on detecting “New Companies.” We assumed incorporations, domain registrations, and early landing pages were the first meaningful signals. After studying thousands of these signals, we discovered the opposite. Most early “company” signals were noise—temporary experiments, shell structures, or placeholder landing pages. Company formation was rarely the first evidence of real founder intent.</p>
 
-      <section>
-        <h2>4. Signals & Data Sources</h2>
-        <p>We aggregated a wide set of signals across public profiles, developer activity, job posts, domain registrations, event signups, and community participation. Key signals included:</p>
-        <ul>
-          <li>LinkedIn profile changes (titles, stealth markers)</li>
-          <li>GitHub repository creation and activity</li>
-          <li>New domains & landing pages</li>
-          <li>Accelerator / cohort signups</li>
-          <li>Founder mentions and network activity on niche forums</li>
-        </ul>
-        <p>Each signal alone was noisy; the power came from combining and weighting them into a founder-level confidence score. That score, enriched with contextual metadata, allowed us to present high-probability founder leads to investors.</p>
-      </section>
+    <h2>3. Founders Always Surface Before Companies</h2>
+    <p>Through continuous analysis of LinkedIn, GitHub, accelerators, domain trails, and online communities, we observed that founders reveal intent far earlier than any company footprint appears. These breadcrumbs included title changes, “stealth” markers, early repo creation, accelerator applications, and subtle shifts in public activity. Founders surface before companies, and this became the central insight that reshaped Talent’s detection logic.</p>
 
-      <section>
-        <h2>5. Building the Detection Pipeline</h2>
-        <p>We built a multi-stage pipeline: ingest → normalize → dedupe → enrich → score. The dedupe and identity resolution layers were the hardest — matching names across platforms, resolving common names, and consolidating identities required careful heuristics and human-in-the-loop validation. We invested heavily in entity resolution and developed a set of deterministic rules backed by machine-learning checks to reduce false positives.</p>
-      </section>
+    <!-- IMAGE PAIR -->
+    <div class="ui-pair">
+      <img src="/portfolio/specter/images/image1.png">
+      <img src="/portfolio/specter/images/image2.png">
+    </div>
 
-      <section>
-        <h2>6. Product & UX Decisions</h2>
-        <p>We focused on surfacing founders with the highest verification signals and giving investors fast ways to triage them — skim, open profile, add to watchlist. The product prioritized precision over recall: it was better to show fewer, high-confidence founders than a noisy list that wasted users’ time.</p>
-        <p>We added subtle cues to explain why a founder surfaced: signal badges, concise provenance rows, and quick links to the raw evidence (GitHub, LinkedIn snapshots, domain records). This transparency helped users trust the surfaced leads and reduced cognitive load during triage.</p>
-      </section>
+    <h2>4. Data Signals & Sources</h2>
+    <p>Talent aggregated multiple signal types across public platforms. These included:</p>
+    <ul>
+      <li>LinkedIn title changes and stealth markers</li>
+      <li>New GitHub repos and activity shifts</li>
+      <li>Domain registrations</li>
+      <li>Accelerator signups</li>
+      <li>Founder mentions across niche communities</li>
+    </ul>
+    <p>Individually, these signals were noisy. In combination, they formed a high-confidence composite indicator of emerging founders.</p>
 
-      <section>
-        <h2>7. Growth & Distribution</h2>
-        <p>To get the product into investors’ workflows, we integrated with Slack and email digests, and provided daily watchlists. The watchlist approach allowed investors to receive a curated feed of founders matching their thesis, without having to log into the product constantly. This drove adoption: investors who saved founders or followed watchlists came back and converted to paying customers faster.</p>
-      </section>
+    <h2>5. Building the Detection Pipeline</h2>
+    <p>The Talent pipeline evolved into a multi-stage process: ingest → normalize → enrich → dedupe → score. Identity resolution was the most difficult part. Matching names across platforms required rule-based heuristics reinforced with manual verification. Over time, this dramatically improved precision and reduced false positives.</p>
 
-      <section>
-        <h2>8. Metrics & Outcomes</h2>
-        <p>We measured weekly new founders discovered (north-star), lead-to-intro conversion, and signal precision. Over time, Talent improved founder precision by reducing noise and improving enrichment. The team moved from surfacing hundreds of candidates with low signal to a smaller set of high-quality leads that produced consistent introductions and pipeline value for investors.</p>
-      </section>
+    <h2>6. Product & UX Decisions</h2>
+    <p>We prioritized precision over recall. Investors needed concise, high-quality founder leads rather than noisy lists. The UX emphasized clarity: signal badges, provenance insights, triage shortcuts, and links to raw evidence. This reduced cognitive load and increased trust in the surfaced leads.</p>
 
-      <section>
-        <h2>9. My Role & Learnings</h2>
-        <p>I started on data quality and signal experiments, then progressed into product decisions and prioritization. My biggest learning was that early-stage signal work requires patience and iterative verification: short experiments, manual labeling, and continuous refinement of the rules. Technical debt was real — building accurate identity resolution takes time — but the payoff in signal quality was worth the investment.</p>
-      </section>
+    <h2>7. Distribution & Growth</h2>
+    <p>Slack alerts, email digests, and personalized watchlists created strong engagement loops. These integrations placed Talent directly into investors’ workflows, increasing retention and making founder discovery a continuous process rather than a weekly check-in.</p>
 
-      <section>
-        <h2>10. Screenshots & Visuals</h2>
-        <figure class="figure-card">
-          <img src="/portfolio/specter/images/image1.png" alt="Specter UI 1" onerror="this.onerror=null;this.src='/portfolio/specter/images/hero.jpg'">
-        </figure>
-        <figure class="figure-card">
-          <img src="/portfolio/specter/images/image2.png" alt="Specter UI 2">
-        </figure>
-        <figcaption style="text-align:center; color:var(--muted); font-size:13px;">Product UIs and signal visualizations used in Talent.</figcaption>
-      </section>
+    <h2>8. Success Metrics</h2>
+    <p>The primary metric was weekly new founders discovered. Supporting metrics included lead-to-intro conversion, enrichment completeness, and precision quality. Over several iterations, Talent significantly reduced noise and increased the proportion of high-quality founder discoveries.</p>
 
-      <section>
-        <h2>11. Closing Reflection</h2>
-        <p>Specter Talent started with a question about companies, but over time, it became a study of the people behind them. It revealed that entrepreneurial intent leaks early, if you know where to look and how to interpret it. It showed that finding the future is not about chasing launched products, it’s about understanding the individuals who are quietly building them. That perspective shaped how I think about product-led discovery and the role of data in surfacing opportunities early.</p>
-      </section>
+    <h2>9. My Role & Learnings</h2>
+    <p>I worked across signal research, data quality, identity resolution, and product prioritization. The biggest learning was understanding how subtle patterns reveal emerging founder intent—and how to build a system capable of detecting those signals early and reliably.</p>
 
-    </div> <!-- .page-enter -->
-  </div> <!-- .container -->
+    <h2>10. Conclusion</h2>
+    <p>Specter Talent shifted the framework of startup discovery. Instead of tracking companies, we learned to track the people who build them—months before anything became public. This founder-first perspective reshaped how the team approached early detection and influenced how modern investors source opportunities.</p>
 
-  <!-- Reveal script (CSP-friendly) -->
-  <script>
-    (function () {
-      function reveal() {
-        var el = document.getElementById('page-root');
-        if (!el) return;
-        el.style.visibility = 'visible';
-        requestAnimationFrame(function () { el.classList.add('page-enter-active'); });
-      }
-      if (document.readyState === 'complete' || document.readyState === 'interactive') reveal();
-      else document.addEventListener('DOMContentLoaded', reveal);
-    })();
-  </script>
+  </div>
+</div>
+
+<!-- Reveal script -->
+<script>
+(function () {
+  function reveal() {
+    var el = document.getElementById('page-root');
+    if (!el) return;
+    el.style.visibility = 'visible';
+    requestAnimationFrame(() => el.classList.add('page-enter-active'));
+  }
+  if (document.readyState === "complete" || document.readyState === "interactive") reveal();
+  else document.addEventListener("DOMContentLoaded", reveal);
+})();
+</script>
+
+<script src="/spa-nav.js"></script>
+
 </body>
 </html>
