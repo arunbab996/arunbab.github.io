@@ -6,38 +6,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style data-page-style>
+    /* --- 1. GLOBAL VARIABLES --- */
     :root{ --bg:#dbe2eb; --text:#33302E; --muted:#706A68; --max-width:640px; --nav-gap:28px; }
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
+    
+    /* --- 2. HEADER & NAV --- */
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
     header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
     .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
     .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent;}
     .nav a.active{color:var(--text);border-bottom-color:var(--text);}
-    main{max-width:var(--max-width);margin:48px auto;padding:0 16px;}
+    
+    /* --- 3. LAYOUT --- */
+    main{max-width:var(--max-width);margin:48px auto;padding:0 16px; padding-bottom: 120px;}
     .name{font-weight:700;font-size:18px;margin-bottom:12px;}
     .desc{font-family: Inter, Georgia, serif;font-style: normal;font-size:18px;line-height:1.7;color:var(--text);max-width:560px;}
     .current{display:block;margin-top:18px;font-size:18px;line-height:1.6;max-width:560px;}
 
-    /* === PURE CSS STAGGER ANIMATION === */
-    /* 1. Define the move */
+    /* --- 4. BULLETPROOF FOOTER --- */
+    .social-fixed {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 28px; opacity: 1; z-index: 40;
+    }
+    .social-fixed a { color: #000000 !important; text-decoration: none; display: flex; align-items: center; }
+    .social-fixed a:hover { opacity: 0.7; }
+
+    /* --- 5. THE "BYKAHLIL" STAGGER ANIMATION --- */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    /* 2. Apply it automatically to children */
-    .page-enter > * {
-      opacity: 0; /* Start hidden */
+    /* Apply this class to any container, and its children will stagger in */
+    .stagger-wrapper > * {
+      opacity: 0; /* Start invisible */
       animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
-
-    /* 3. Stagger delays (0.05s increments) */
-    .page-enter > *:nth-child(1) { animation-delay: 0.05s; }
-    .page-enter > *:nth-child(2) { animation-delay: 0.1s; }
-    .page-enter > *:nth-child(3) { animation-delay: 0.15s; }
-    .page-enter > *:nth-child(4) { animation-delay: 0.2s; }
+    /* The N+1 delay logic */
+    .stagger-wrapper > *:nth-child(1) { animation-delay: 0.05s; }
+    .stagger-wrapper > *:nth-child(2) { animation-delay: 0.1s; }
+    .stagger-wrapper > *:nth-child(3) { animation-delay: 0.15s; }
+    .stagger-wrapper > *:nth-child(4) { animation-delay: 0.2s; }
+    .stagger-wrapper > *:nth-child(5) { animation-delay: 0.25s; }
+    .stagger-wrapper > *:nth-child(6) { animation-delay: 0.3s; }
   </style>
 </head>
 
@@ -53,7 +66,7 @@
   </header>
 
   <main id="app">
-    <section id="index" class="page-enter">
+    <section id="index" class="stagger-wrapper">
       <div class="name">Arun Baburaj</div>
       <div class="desc">
         <span style="font-family:'Times New Roman', serif; font-style:italic;">Product Manager and Researcher</span>.
@@ -71,16 +84,10 @@
     </section>
   </main>
 
-  <div class="social-fixed" style="position:fixed; bottom:28px; left:50%; transform:translateX(-50%); display:flex; gap:28px; opacity:1; z-index:40;">
-    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn" style="color:#000000; text-decoration:none; display:flex; align-items:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
-    </a>
-    <a href="https://x.com/96Arun" target="_blank" aria-label="X" style="color:#000000; text-decoration:none; display:flex; align-items:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
-    </a>
-    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email" style="color:#000000; text-decoration:none; display:flex; align-items:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-    </a>
+  <div class="social-fixed">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg></a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg></a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
   </div>
 
   <script src="/spa-nav.js"></script>
