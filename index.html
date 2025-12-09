@@ -5,52 +5,96 @@
   <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap" rel="stylesheet">
 
   <style data-page-style>
     /* --- 1. GLOBAL VARIABLES --- */
-    :root{ --bg:#dbe2eb; --text:#33302E; --muted:#706A68; --max-width:640px; --nav-gap:28px; }
+    :root{ --bg:#dbe2eb; --text:#1C1C1E; --muted:#58585E; --max-width:640px; --nav-gap:28px; }
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
     
     /* --- 2. HEADER & NAV --- */
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
     header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
-    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
-    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent;}
-    .nav a.active{color:var(--text);border-bottom-color:var(--text);}
+    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:500;color:var(--muted);margin: 0 auto;}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent; transition: color 0.2s ease;}
+    .nav a:hover{color:var(--text);}
+    .nav a.active{color:var(--text);border-bottom-color:var(--text); font-weight: 600;}
     
-    /* --- 3. LAYOUT --- */
-    main{max-width:var(--max-width);margin:48px auto;padding:0 16px; padding-bottom: 120px;}
-    .name{font-weight:700;font-size:18px;margin-bottom:12px;}
-    .desc{font-family: Inter, Georgia, serif;font-style: normal;font-size:18px;line-height:1.7;color:var(--text);max-width:560px;}
-    .current{display:block;margin-top:18px;font-size:18px;line-height:1.6;max-width:560px;}
+    /* --- 3. LAYOUT & TYPOGRAPHY --- */
+    main{max-width:var(--max-width);margin:64px auto;padding:0 16px; padding-bottom: 120px;}
+    
+    /* The Name: Bigger, bolder, tighter tracking */
+    .name {
+      font-weight: 600;
+      font-size: 32px; /* Increased from 18px */
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    /* The Description: Larger, cleaner line-height */
+    .desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 21px; /* Increased from 18px */
+      line-height: 1.6;
+      color: var(--text);
+      max-width: 580px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    /* The "Cool" Serif Italic */
+    .desc span {
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-size: 23px; /* Slightly larger than sans-serif to optically match */
+      font-weight: 400;
+      color: #111; /* Slightly darker for emphasis */
+    }
+
+    /* Secondary/Current text */
+    .current {
+      display: block;
+      margin-top: 32px;
+      font-size: 19px;
+      line-height: 1.6;
+      max-width: 560px;
+      color: var(--muted); /* Softer contrast */
+    }
+
+    .current a {
+      color: var(--text);
+      text-decoration: underline;
+      text-decoration-color: rgba(0,0,0,0.2);
+      text-underline-offset: 3px;
+    }
+    .current a:hover {
+      text-decoration-color: var(--text);
+    }
 
     /* --- 4. BULLETPROOF FOOTER --- */
     .social-fixed {
       position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
       display: flex; gap: 28px; opacity: 1; z-index: 40;
     }
-    .social-fixed a { color: #000000 !important; text-decoration: none; display: flex; align-items: center; }
-    .social-fixed a:hover { opacity: 0.7; }
+    .social-fixed a { color: #1C1C1E !important; text-decoration: none; display: flex; align-items: center; transition: opacity 0.2s; }
+    .social-fixed a:hover { opacity: 0.6; }
 
-    /* --- 5. THE "BYKAHLIL" STAGGER ANIMATION --- */
+    /* --- 5. STAGGER ANIMATION --- */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    /* Apply this class to any container, and its children will stagger in */
     .stagger-wrapper > * {
-      opacity: 0; /* Start invisible */
-      animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 0;
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    /* The N+1 delay logic */
-    .stagger-wrapper > *:nth-child(1) { animation-delay: 0.05s; }
-    .stagger-wrapper > *:nth-child(2) { animation-delay: 0.1s; }
-    .stagger-wrapper > *:nth-child(3) { animation-delay: 0.15s; }
-    .stagger-wrapper > *:nth-child(4) { animation-delay: 0.2s; }
-    .stagger-wrapper > *:nth-child(5) { animation-delay: 0.25s; }
-    .stagger-wrapper > *:nth-child(6) { animation-delay: 0.3s; }
+    .stagger-wrapper > *:nth-child(1) { animation-delay: 0.1s; }
+    .stagger-wrapper > *:nth-child(2) { animation-delay: 0.2s; }
+    .stagger-wrapper > *:nth-child(3) { animation-delay: 0.3s; }
+    .stagger-wrapper > *:nth-child(4) { animation-delay: 0.4s; }
   </style>
 </head>
 
@@ -68,16 +112,16 @@
   <main id="app">
     <section id="index" class="stagger-wrapper">
       <div class="name">Arun Baburaj</div>
+      
       <div class="desc">
-        <span style="font-family:'Times New Roman', serif; font-style:italic;">Product Manager and Researcher</span>.
+        <span>Product Manager and Researcher</span>.
         Thinking about and designing tools for building software.
         Interested in consumer psychology, AI and Venture Capital.
       </div>
+
       <div class="current">
         I'm currently leading a product at
-        <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.
-      </div>
-      <div style="margin-top:20px; max-width:560px; font-size:18px; line-height:1.6;">
+        <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.<br>
         Previously built homehunter club – a rental platform for Gen-Z's using alternate data
         and acclr8 – Wellfound for Indian Startups.
       </div>
