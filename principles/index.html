@@ -25,14 +25,20 @@
     .principles-list strong{ display:block; margin-bottom:6px; font-weight:700; }
     .principles-list p{ margin:0; color:var(--muted); line-height:1.45; }
 
-    /* === STAGGER ANIMATION === */
-    .stagger-child > * { opacity: 0; transform: translateY(20px); transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
-    .stagger-child.active > * { opacity: 1; transform: translateY(0); }
-    .stagger-child.active > *:nth-child(1) { transition-delay: 0.05s; }
-    .stagger-child.active > *:nth-child(2) { transition-delay: 0.1s; }
-    .stagger-child.active > *:nth-child(3) { transition-delay: 0.15s; }
-    .stagger-child.active > *:nth-child(4) { transition-delay: 0.2s; }
-    .stagger-child.active > *:nth-child(5) { transition-delay: 0.25s; }
+    /* === PURE CSS STAGGER ANIMATION === */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .principles-list li {
+      opacity: 0;
+      animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .principles-list li:nth-child(1) { animation-delay: 0.05s; }
+    .principles-list li:nth-child(2) { animation-delay: 0.1s; }
+    .principles-list li:nth-child(3) { animation-delay: 0.15s; }
+    .principles-list li:nth-child(4) { animation-delay: 0.2s; }
+    .principles-list li:nth-child(5) { animation-delay: 0.25s; }
   </style>
 </head>
 
@@ -48,15 +54,16 @@
   </header>
 
   <main id="app">
-    <div class="page-title stagger-child active">Principles</div>
-
-    <ul class="principles-list stagger-child">
-      <li><div><strong>Bias toward shipping.</strong><p>If something can be shared in a week, don’t let it sit for a month. Small shipped projects beat big unfinished ideas.</p></div></li>
-      <li><div><strong>Start from the user, not the feature.</strong><p>Understand the person — their pain, workflow, and constraints — before designing product or recommending investments.</p></div></li>
-      <li><div><strong>Write to think.</strong><p>When confused, write. Clear writing forces clearer thinking and better decisions.</p></div></li>
-      <li><div><strong>Long-term games, long-term people.</strong><p>Careers compound. Prefer collaborators you can imagine working with for a decade.</p></div></li>
-      <li><div><strong>Data-informed, not data-paralysed.</strong><p>Numbers should sharpen judgement, not replace it; use qualitative feedback when sample sizes are small.</p></div></li>
-    </ul>
+    <div class="page-enter">
+      <div class="page-title">Principles</div>
+      <ul class="principles-list">
+        <li><div><strong>Bias toward shipping.</strong><p>If something can be shared in a week, don’t let it sit for a month. Small shipped projects beat big unfinished ideas.</p></div></li>
+        <li><div><strong>Start from the user, not the feature.</strong><p>Understand the person — their pain, workflow, and constraints — before designing product or recommending investments.</p></div></li>
+        <li><div><strong>Write to think.</strong><p>When confused, write. Clear writing forces clearer thinking and better decisions.</p></div></li>
+        <li><div><strong>Long-term games, long-term people.</strong><p>Careers compound. Prefer collaborators you can imagine working with for a decade.</p></div></li>
+        <li><div><strong>Data-informed, not data-paralysed.</strong><p>Numbers should sharpen judgement, not replace it; use qualitative feedback when sample sizes are small.</p></div></li>
+      </ul>
+    </div>
   </main>
 
   <div class="social-fixed" style="position:fixed; bottom:28px; left:50%; transform:translateX(-50%); display:flex; gap:28px; opacity:0.95; z-index:40;">
@@ -72,11 +79,5 @@
   </div>
 
   <script src="/spa-nav.js"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', function () {
-      var containers = document.querySelectorAll('.stagger-child');
-      containers.forEach(function (el) { void el.offsetWidth; el.classList.add('active'); });
-    });
-  </script>
 </body>
 </html>
