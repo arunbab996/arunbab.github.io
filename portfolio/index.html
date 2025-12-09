@@ -7,13 +7,16 @@
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Hide footer on this page -->
-  <style>.social-fixed { display: none !important; }</style>
+  <!-- HIDE FOOTER ON THIS PAGE ONLY -->
+  <style>
+    .social-fixed { display: none !important; }
+  </style>
 
   <!-- Prevent flash of unstyled content -->
-  <style>.page-enter { visibility: hidden; opacity: 0; }</style>
+  <style>
+    .page-enter { visibility: hidden; opacity: 0; }
+  </style>
 
-  <!-- FULL CSS FROM ORIGINAL FILE -->
   <style data-page-style>
     :root{
       --bg:#dbe2eb;
@@ -184,11 +187,10 @@
     }
   </style>
 
-  <!-- Page enter script -->
   <script>
     (function(){
       function reveal(){
-        const el = document.querySelector('.page-enter');
+        var el = document.querySelector('.page-enter');
         if(!el) return;
         el.style.visibility = 'visible';
         requestAnimationFrame(()=> el.classList.add('page-enter-active'));
@@ -201,6 +203,7 @@
       }
     })();
   </script>
+
 </head>
 
 <body>
@@ -215,15 +218,16 @@
     </nav>
   </header>
 
-  <!-- CORRECTED SPA STRUCTURE -->
   <main id="app">
     <div class="page-enter">
 
-      <div class="page-title"><span>Portfolio</span></div>
+      <div class="page-title">
+        <span>Portfolio</span>
+      </div>
 
       <div class="two-col">
 
-        <!-- LEFT Column — ALL your project cards preserved exactly -->
+        <!-- LEFT COLUMN -->
         <div class="projects-grid">
 
           <a href="/portfolio/specter/" class="project-card" data-spa>
@@ -260,7 +264,7 @@
 
         </div>
 
-        <!-- RIGHT Column — Tools -->
+        <!-- RIGHT COLUMN -->
         <div class="tools-col">
           <div class="tool-header">Tools</div>
 
