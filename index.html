@@ -8,11 +8,11 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
   <style data-page-style>
     /* --- 1. GLOBAL VARIABLES --- */
-    :root{ --bg:#dbe2eb; --text:#111; --muted:#444; --max-width:640px; --nav-gap:28px; }
+    :root{ --bg:#dbe2eb; --text:#1a1a1a; --muted:#555; --max-width:640px; --nav-gap:28px; }
     *{box-sizing:border-box;margin:0;padding:0}
     
     /* Default Body Font (Inter) - Keeps footer/misc safe */
@@ -34,59 +34,57 @@
     .nav a:hover{color:var(--text);}
     .nav a.active{color:var(--text); border-bottom-color:var(--text);}
     
-    /* --- 3. MAIN CONTENT (SPACE GROTESK) --- */
-    main{max-width:var(--max-width); margin:72px auto; padding:0 16px; padding-bottom: 120px; font-family: 'Space Grotesk', sans-serif;}
+    /* --- 3. MAIN CONTENT (TERMINAL STYLE) --- */
+    main{max-width:var(--max-width); margin:72px auto; padding:0 16px; padding-bottom: 120px; font-family: 'Space Mono', monospace;}
     
-    /* Name: Massive, tight, geometric */
+    /* Name: Bold, technical, precise */
     .name {
-      font-weight: 600; 
-      font-size: 42px; /* Increased scale for impact */
-      letter-spacing: -0.04em; /* Tight "poster" spacing */
-      line-height: 1.1;
-      margin-bottom: 32px;
+      font-weight: 700; 
+      font-size: 28px; /* Monospace takes up more width, so 28px feels huge */
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
       color: #000;
+      text-transform: uppercase; /* Adds to the technical ID card feel */
     }
 
-    /* Description: Modern, slightly thinner weight for contrast */
+    /* Description: Readable code style */
     .desc {
-      font-size: 22px; /* Large readable text */
-      line-height: 1.5;
+      font-size: 17px; 
+      line-height: 1.7;
       color: #222;
       max-width: 600px;
       font-weight: 400;
-      letter-spacing: -0.02em;
     }
 
-    /* Italic highlight */
+    /* Highlight: Italicized code comment style */
     .desc span {
-      font-family: 'Space Grotesk', sans-serif; /* Keep it mono-style sans */
       font-style: italic;
-      font-weight: 500;
-      background: rgba(0,0,0,0.05); /* Subtle highlight block */
-      padding: 0 4px;
-      border-radius: 4px;
+      color: #444;
+      font-weight: 400;
     }
 
     /* Secondary/Current text */
     .current {
       display: block;
       margin-top: 40px;
-      font-size: 18px;
+      font-size: 15px; /* Slightly smaller "meta data" size */
       line-height: 1.6;
       max-width: 560px;
       color: #555;
-      font-weight: 400;
     }
 
+    /* Links look like highlighted code */
     .current a {
       color: #000;
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: none;
-      border-bottom: 2px solid rgba(0,0,0,0.1);
-      transition: border-color 0.2s;
+      background: rgba(0,0,0,0.06); /* Subtle code highlight block */
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: background 0.2s;
     }
     .current a:hover {
-      border-bottom-color: #000;
+      background: rgba(0,0,0,0.12);
     }
 
     /* --- 4. FOOTER --- */
