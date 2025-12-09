@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Portfolio — Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
+  
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <style data-page-style>
-    /* GLOBAL & VARIABLES */
+    /* ORIGINAL STYLES from index (63).html */
     :root{ --bg:#dbe2eb; --text:#111219; --muted:#5b6066; --max-width: 900px; --nav-gap:28px; }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{ background:var(--bg); font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--text); }
+    
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
     header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);width:100%;}
+    
     .nav{ max-width: 640px; width:100%; display:flex; justify-content:flex-start; padding:20px 16px; gap:var(--nav-gap); font-size:15px; font-weight:600; color:var(--muted); margin:0 auto; }
     .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent;}
     .nav a.active{color:var(--text);border-bottom-color:var(--text);}
@@ -21,15 +24,21 @@
     /* LAYOUT & CARDS */
     main{ max-width: var(--max-width); margin: 48px auto; padding: 0 16px; padding-bottom: 120px; }
     .two-col{ display:grid; grid-template-columns: 62% 34%; justify-content: space-between; gap: 4%; }
+    
     .col-header { font-weight: 700; font-size: 18px; margin-bottom: 18px; color: var(--text); }
+    
     .projects-grid{display:flex;flex-direction:column;gap:14px;}
+    
     .project-card{ display:flex; align-items:center; gap:16px; text-decoration:none; color:var(--text); background:rgba(255,255,255,0.03); border:1px solid rgba(0,0,0,0.03); border-radius:8px; padding:10px; transition:transform .18s ease, box-shadow .18s ease; }
     .project-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(16,24,40,0.10);}
-    .project-card img{ width:150px; height:94px; object-fit:cover; border-radius:6px; transition:transform .18s ease, opacity .18s ease; }
+    
+    .project-card img{ width:150px; height:94px; object-fit:cover; border-radius:6px; transition:transform .18s ease, opacity .18s ease; background-color: #ccc; }
     .project-card:hover img{transform:scale(1.03);opacity:0.95;}
+    
     .project-meta{padding:4px;}
     .project-title{font-weight:700;font-size:16px;margin-bottom:4px;}
     .project-tagline{color:var(--muted);font-size:14px;line-height:1.4;}
+    
     .tools-col{display:flex;flex-direction:column;gap:16px;}
     .tool-card{ display:flex; gap:14px; border-radius:10px; background:rgba(255,255,255,0.03); border:1px solid rgba(0,0,0,0.04); padding:12px; text-decoration:none; color:var(--text); transition:transform .16s ease, box-shadow .16s ease; }
     .tool-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(16,24,40,0.12);}
@@ -37,12 +46,12 @@
     .tool-title{font-weight:700;margin-bottom:4px;font-size:15px;}
     .tool-sub{color:var(--muted);font-size:13px;line-height:1.3;}
 
-    /* BULLETPROOF FOOTER STYLES */
+    /* FOOTER */
     .social-fixed { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 28px; opacity: 1; z-index: 40; }
     .social-fixed a { color: #000000 !important; text-decoration: none; display: flex; align-items: center; }
     .social-fixed a:hover { opacity: 0.7; }
 
-    /* === STAGGER ANIMATION === */
+    /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -80,6 +89,15 @@
     <div class="two-col">
       <div class="projects-grid stagger-wrapper">
         <div class="col-header">Portfolio</div>
+        
+        <a href="/portfolio/mymind.html" class="project-card" data-spa>
+          <img src="/portfolio/mymind/images/hero.jpg" alt="mymind" onerror="this.src='https://placehold.co/150x94/ccc/999?text=mymind'">
+          <div class="project-meta">
+            <div class="project-title">My Favourite Product: mymind</div>
+            <div class="project-tagline">Why this AI-powered extension changed how I think and create.</div>
+          </div>
+        </a>
+
         <a href="/portfolio/specter/" class="project-card" data-spa>
           <img src="/images/0.webp" alt="Specter Talent">
           <div class="project-meta">
@@ -109,6 +127,7 @@
           </div>
         </a>
       </div>
+      
       <div class="tools-col stagger-wrapper">
         <div class="col-header">Tools</div>
         <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank">
