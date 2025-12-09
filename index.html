@@ -8,15 +8,15 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
 
   <style data-page-style>
     /* --- 1. GLOBAL VARIABLES --- */
-    :root{ --bg:#dbe2eb; --text:#151515; --muted:#555; --max-width:640px; --nav-gap:28px; }
+    :root{ --bg:#dbe2eb; --text:#111; --muted:#444; --max-width:640px; --nav-gap:28px; }
     *{box-sizing:border-box;margin:0;padding:0}
     
-    /* Default Body Font (DM Sans) */
-    body{ background:var(--bg); font-family:'DM Sans', sans-serif; color:var(--text); -webkit-font-smoothing: antialiased; }
+    /* Default Body Font (Libre Baskerville) - The "Article" feel */
+    body{ background:var(--bg); font-family:'Libre Baskerville', serif; color:var(--text); -webkit-font-smoothing: antialiased; }
     
     /* --- 2. HEADER & NAV (UNTOUCHED - Uses Inter) --- */
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
@@ -38,56 +38,59 @@
     /* --- 3. MAIN CONTENT --- */
     main{max-width:var(--max-width); margin:64px auto; padding:0 16px; padding-bottom: 120px; }
     
-    /* Name: Bold, Tight, Geometric */
+    /* Name: The "Masthead" Look */
     .name {
+      font-family: 'Playfair Display', serif;
       font-weight: 700; 
-      font-size: 36px;
-      letter-spacing: -0.03em;
-      margin-bottom: 24px;
+      font-style: italic; /* Classic New Yorker flair */
+      font-size: 44px; /* Large and elegant */
+      letter-spacing: -0.02em;
+      margin-bottom: 26px;
       color: #000;
     }
 
-    /* Description: Clean and airy */
+    /* Description: Literary and comfortable */
     .desc {
-      font-size: 22px;
-      line-height: 1.5;
-      color: #222;
+      font-size: 19px; /* Serifs need to be slightly smaller than sans to look right */
+      line-height: 1.8; /* Generous leading like a magazine */
+      color: #1a1a1a;
       max-width: 600px;
       font-weight: 400;
-      letter-spacing: -0.01em;
     }
 
-    /* THE HERO HIGHLIGHT: Large Serif Italic */
+    /* The Highlight: Distinctive Contrast */
     .desc span {
-      font-family: 'DM Serif Display', serif;
-      font-style: italic;
-      font-size: 26px; /* Larger than surrounding text */
-      font-weight: 400;
-      color: #111;
-      padding-right: 2px; /* Fix for italic overlap */
+      font-family: 'Playfair Display', serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 22px; /* Slight bump to stand out */
+      color: #000;
     }
 
     /* Secondary/Current text */
     .current {
       display: block;
-      margin-top: 36px;
-      font-size: 19px;
-      line-height: 1.6;
+      margin-top: 40px;
+      font-size: 17px;
+      line-height: 1.7;
       max-width: 560px;
-      color: #444;
-      font-weight: 400;
+      color: #333;
+      font-style: italic; /* Narrative voice */
     }
 
+    /* Links: Classic underline style */
     .current a {
       color: #000;
+      font-family: 'Inter', sans-serif; /* Contrast font for UI element */
       font-weight: 600;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-color: rgba(0,0,0,0.3);
-      transition: text-decoration-color 0.2s;
+      font-style: normal;
+      font-size: 15px;
+      text-decoration: none;
+      border-bottom: 1px solid #000;
+      transition: opacity 0.2s;
     }
     .current a:hover {
-      text-decoration-color: #000;
+      opacity: 0.6;
     }
 
     /* --- 4. FOOTER --- */
