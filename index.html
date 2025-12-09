@@ -31,24 +31,29 @@
     .page-enter > * {opacity: 0;transform: translateY(6px);transition:opacity 320ms ease-out,transform 320ms ease-out;}
     .page-enter.page-enter-active > * {opacity: 1;transform: translateY(0);}
 
-    /* FOOTER STYLES */
-    .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:1;z-index:40;}
+    /* THE FIX: 
+       1. 'display: none' by default. 
+       2. Only show it if the class '.show-footer' is added.
+    */
+    .social-fixed {
+      display: none; /* Hidden by default! */
+      position:fixed;
+      bottom:28px;
+      left:50%;
+      transform:translateX(-50%);
+      gap:28px;
+      opacity:1;
+      z-index:40;
+    }
+    
+    /* When we decide it's safe, we add this class to show it */
+    .social-fixed.show-footer {
+      display: flex;
+    }
+
     .social-fixed a{color:#000000 !important;text-decoration:none;}
     .social-fixed a:hover{opacity:0.7;}
-
-    /* --- THE FIX: Class to hide footer immediately --- */
-    html.hide-footer .social-fixed {
-      display: none !important;
-    }
   </style>
-
-  <script>
-    (function() {
-      if (window.location.href.includes('portfolio')) {
-        document.documentElement.classList.add('hide-footer');
-      }
-    })();
-  </script>
 </head>
 
 <body>
@@ -104,30 +109,34 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', function () {
-      // 1. Initial Animation
       var containers = document.querySelectorAll('.page-enter');
       containers.forEach(function (el) {
         void el.offsetWidth;
         el.classList.add('page-enter-active');
       });
 
-      // 2. Logic: Manage the 'hide-footer' class on navigation
-      function updateFooter() {
+      // LOGIC: Only show footer if we are NOT on portfolio
+      function checkFooterVisibility() {
+        const footer = document.querySelector('.social-fixed');
+        if (!footer) return;
+
         if (window.location.href.includes('portfolio')) {
-          document.documentElement.classList.add('hide-footer');
+          // Keep it hidden (remove the show class)
+          footer.classList.remove('show-footer');
         } else {
-          document.documentElement.classList.remove('hide-footer');
+          // We are safe, show it!
+          footer.classList.add('show-footer');
         }
       }
 
-      // Check on history changes (Back/Forward)
-      window.addEventListener('popstate', updateFooter);
+      // Run immediately
+      checkFooterVisibility();
 
-      // Check on clicks (Intercepting navigation)
-      document.body.addEventListener('click', function(e) {
-        // Run check slightly delayed to allow URL to update
-        setTimeout(updateFooter, 50);
+      // Run on navigation
+      document.body.addEventListener('click', function() {
+        setTimeout(checkFooterVisibility, 50);
       });
+      window.addEventListener('popstate', checkFooterVisibility);
     });
   </script>
 </body>
