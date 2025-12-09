@@ -59,6 +59,7 @@
       width: 100%;
       border-radius: 6px;
       margin: 14px 0 22px 0;
+      background-color: #eee; /* Placeholder color while loading */
     }
 
     h2 {
@@ -189,6 +190,30 @@
     .table-card thead th:last-child { border-top-right-radius: var(--table-radius); }
     /* (footer corners are not present because we removed bottom border on last row) */
 
+    /* --- ANIMATIONS --- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Initial state for animated elements */
+    .animate-entry {
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Stagger delays */
+    .delay-1 { animation-delay: 0.1s; } /* Title/Meta */
+    .delay-2 { animation-delay: 0.2s; } /* Hero */
+    .delay-3 { animation-delay: 0.3s; } /* Section 1 */
+    .delay-4 { animation-delay: 0.4s; } /* Section 2+ */
+
     @media (max-width:520px) {
       :root { --maxw: 520px; }
       h1 { font-size: 24px; }
@@ -203,20 +228,26 @@
 
     <a href="/portfolio" class="back">← Back</a>
 
-    <h1>Dunzo Daily – Increasing Average Order Value (AOV)</h1>
-    <div class="meta-line"><em>Type: Product Strategy / Growth · Domain: Hyperlocal Commerce, B2C</em></div>
+    <div class="animate-entry delay-1">
+      <h1>Dunzo Daily – Increasing Average Order Value (AOV)</h1>
+      <div class="meta-line"><em>Type: Product Strategy / Growth · Domain: Hyperlocal Commerce, B2C</em></div>
+    </div>
 
-    <!-- HERO (uses same src as your uploaded file) -->
-    <img class="hero" src="/portfolio/dunzo/images/hero.png" alt="Dunzo tile / hero image" onerror="this.onerror=null;this.src='/portfolio/dunzo/images/image1.png'">
+    <img class="hero animate-entry delay-2" 
+         src="/portfolio/dunzo/images/hero.png" 
+         alt="Dunzo tile / hero image" 
+         fetchpriority="high"
+         decoding="async"
+         onerror="this.onerror=null;this.src='/portfolio/dunzo/images/image1.png'">
 
-    <section>
+    <section class="animate-entry delay-3">
       <h2>1. Product Background</h2>
       <p>Dunzo Daily is Dunzo’s quick-commerce grocery delivery business, offering delivery of essentials—fresh produce, dairy, meat, packaged foods, and household items—typically under 19 minutes.</p>
       <p>For this case study, I focused exclusively on Dunzo Daily’s grocery delivery business, which operates on a dark-store model and competes directly with Instamart, Blinkit, Zepto and BigBasket Now.</p>
       <p>Given the high frequency and low margin nature of grocery delivery, the business heavily depends on improving basket economics. One of the most critical levers here is the Average Order Value (AOV), which directly impacts revenue per order and determines whether unit economics can be sustainable.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>2. Problem Statement</h2>
       <p>Every grocery order includes fixed costs—delivery, picking/packing, and payment gateway fees. When users place low-value or single-item orders, these costs cannot be recovered, pushing the business into negative contribution margins.</p>
       <p>To improve unit economics sustainably, Dunzo wanted to explore product-led interventions that increase AOV by 30–40%, specifically for high-potential user cohorts:</p>
@@ -227,7 +258,7 @@
       <p><strong>The goal:</strong> Increase average cart size and encourage high-value items per transaction without harming user experience or conversion.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>3. Understanding Unit Economics</h2>
       <p>Dunzo Daily completed ~55 lakh orders in June (year referenced). The business operated with a monthly burn of ₹176 Cr, driven by delivery cost, storage/handling/packaging and payment gateway charges.</p>
       <p><strong>AOV = Revenue / Number of Orders</strong></p>
@@ -238,7 +269,7 @@
       </ul>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>4. User Research & Personas</h2>
       <p><strong>Primary Segments</strong></p>
       <ul>
@@ -254,7 +285,7 @@
       <p>Product Designer, lives with flatmates. Shops impulsively, values speed and convenience.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>5. Key Insights</h2>
       <ul>
         <li>Users often forget essential items when directly jumping to checkout.</li>
@@ -264,14 +295,14 @@
       </ul>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>6. Solution Strategy</h2>
 
       <h3>1. Reposition “Add More” in Checkout (Medium Effort, High Impact)</h3>
       <p>By repositioning “+ Add More” prominently at the end of the Review Items list, it triggers a last-minute review of essentials, encourages cart top-ups and leverages the psychology of “I’m already paying for delivery; let me get everything in one go.” This reduces low-value orders and improves average basket size.</p>
 
       <figure class="figure-card">
-        <img src="/portfolio/dunzo/images/image1.png" alt="Reposition Add More mock" />
+        <img src="/portfolio/dunzo/images/image1.png" alt="Reposition Add More mock" loading="lazy" decoding="async" />
       </figure>
       <figcaption>Repositioning the “Add More” CTA in checkout to prompt top-ups.</figcaption>
 
@@ -279,7 +310,7 @@
       <p>Introduce intelligent “Customers Also Bought” recommendations across Checkout and Product category pages (e.g., Razor → Shaving cream, Pasta → Pasta sauce).</p>
 
       <figure class="figure-card">
-        <img src="/portfolio/dunzo/images/image2.png" alt="Item prompts mock" />
+        <img src="/portfolio/dunzo/images/image2.png" alt="Item prompts mock" loading="lazy" decoding="async" />
       </figure>
       <figcaption>Contextual item prompts on checkout and product pages to reduce decision effort.</figcaption>
 
@@ -287,7 +318,7 @@
       <p>Launch a dedicated Combos section with pre-curated bundles (Weekly vegetable packs, Breakfast kits, Cleaning essentials). Designed based on popular regional buying patterns and seasonal changes.</p>
 
       <figure class="figure-card">
-        <img src="/portfolio/dunzo/images/image3.png" alt="Combos mock" />
+        <img src="/portfolio/dunzo/images/image3.png" alt="Combos mock" loading="lazy" decoding="async" />
       </figure>
       <figcaption>Pre-curated bundles (Combos) for convenience and higher AOV.</figcaption>
 
@@ -295,7 +326,7 @@
       <p>After order placement, replace the idle delivery-tracking screen with “Popular purchases in your neighbourhood”, discovery nudges, and new/seasonal item suggestions to educate users for the next purchase.</p>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>7. Competitor Benchmarking</h2>
       <p>Competitors already use a mix of bundled SKUs, high-visibility upsells, and smart recommendations. Dunzo can close the gap via better personalization + placement.</p>
 
@@ -321,7 +352,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>8. Impact Estimation</h2>
       <p>Proposed Solution, Priority, AOV Impact are summarised below. Highest AOV lift comes from combining Item Prompts + Combos.</p>
 
@@ -346,7 +377,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>9. Success Metrics</h2>
       <p>To measure impact on both behaviour and business outcomes:</p>
 
@@ -370,7 +401,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>10. Final Recommendation</h2>
       <p>The most effective approach is a stacked strategy:</p>
 
