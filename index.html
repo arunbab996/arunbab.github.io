@@ -22,7 +22,7 @@
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
     header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
     
-    /* Locked to Inter */
+    /* Locked to Inter to match original design */
     .nav{
       max-width: var(--max-width); width:100%; display:flex; justify-content:flex-start; 
       padding:20px 16px; gap: var(--nav-gap); margin: 0 auto;
@@ -38,7 +38,7 @@
     /* --- 3. MAIN CONTENT --- */
     main{max-width:var(--max-width); margin:64px auto; padding:0 16px; padding-bottom: 120px; }
     
-    /* Name: Bold, Tight, Geometric (DM Sans) */
+    /* Name: Bold, Tight, Geometric */
     .name {
       font-weight: 700; 
       font-size: 38px;
@@ -79,10 +79,10 @@
       font-weight: 400;
     }
 
-    /* The Spacer you requested */
+    /* The Spacer for the line break */
     .spacer {
       display: block;
-      margin-bottom: 24px; /* Creates the distinct line break */
+      margin-bottom: 24px;
     }
 
     /* Links: Thick underline, high contrast */
@@ -96,6 +96,12 @@
     }
     .current a:hover {
       text-decoration-color: #000;
+    }
+    
+    /* Bold text in current section */
+    .current strong {
+      font-weight: 700;
+      color: #111;
     }
 
     /* --- 4. FOOTER --- */
@@ -140,9 +146,9 @@
       <div class="name">Arun Baburaj</div>
       
       <div class="desc">
-        <span>Product Manager and Researcher</span>.
-        Thinking about and designing tools for building software.
-        Interested in consumer psychology, AI and Venture Capital.
+        Product Manager, Researcher, and Generalist.
+        Building software at the intersection of 
+        <span>AI, Venture Capital, and Human Behavior.</span>
       </div>
 
       <div class="current">
@@ -151,8 +157,8 @@
           <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.
         </span>
 
-        Previously built homehunter club – a rental platform for Gen-Z's using alternate data
-        and acclr8 – Wellfound for Indian Startups.
+        Previously built <strong>Homehunter Club</strong> (rental intelligence for Gen-Z) 
+        and <strong>Acclr8</strong> (hiring infrastructure for Indian startups).
       </div>
     </section>
   </main>
