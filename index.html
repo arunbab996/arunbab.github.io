@@ -9,7 +9,7 @@
 
   <style data-page-style>
     :root{
-      --bg:#dbe2eb;        /* your restored blue background */
+      --bg:#dbe2eb;
       --text:#33302E;
       --muted:#706A68;
       --max-width:640px;
@@ -118,7 +118,7 @@
     }
 
     .social-fixed a{
-      color:#000000 !important;   /* BLACK ICONS */
+      color:#000000 !important;
       text-decoration:none;
     }
 
@@ -162,7 +162,6 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
   <div class="social-fixed">
     <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
@@ -184,13 +183,41 @@
   </div>
 
   <script src="/spa-nav.js"></script>
+
   <script>
     window.addEventListener('DOMContentLoaded', function () {
+      // 1. Initial Animation Code (Keep this)
       var containers = document.querySelectorAll('.page-enter');
       containers.forEach(function (el) {
         void el.offsetWidth;
         el.classList.add('page-enter-active');
       });
+
+      // 2. NEW: Footer Management
+      function checkFooterVisibility() {
+        const footer = document.querySelector('.social-fixed');
+        if (!footer) return;
+
+        // If URL contains 'portfolio', HIDE the footer
+        if (window.location.href.includes('portfolio')) {
+          footer.style.display = 'none';
+        } else {
+          // Otherwise, show it (restore flex)
+          footer.style.display = 'flex';
+        }
+      }
+
+      // Run immediately on load
+      checkFooterVisibility();
+
+      // Run every time the user clicks a link (since it's a Single Page App)
+      document.body.addEventListener('click', function() {
+        // We use a small timeout to let the URL update first
+        setTimeout(checkFooterVisibility, 100);
+      });
+      
+      // Also listen for browser Back/Forward buttons
+      window.addEventListener('popstate', checkFooterVisibility);
     });
   </script>
 
