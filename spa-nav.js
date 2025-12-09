@@ -1,26 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Highlight the correct tab on first load
+  // 1. Initial Load: Highlight tab & load books if on bookshelf
   updateActiveNav();
+  checkAndRenderBooks();
 
-  // 2. Intercept clicks
+  // 2. Intercept clicks (SPA Navigation)
   document.body.addEventListener("click", (e) => {
-    // Only target links with the data-spa attribute
     const link = e.target.closest("a[data-spa]");
-    
-    // Ignore if not an SPA link, or if holding Ctrl/Cmd (new tab)
     if (!link || e.ctrlKey || e.metaKey || e.shiftKey) return;
 
     e.preventDefault();
     const href = link.getAttribute("href");
 
-    // Don't reload if we are already on this page
     if (href === window.location.pathname) return;
 
-    // Execute the swap
     navigateTo(href);
   });
 
-  // 3. Handle Back Button (Reloads to ensure clean state)
+  // 3. Handle Back Button
   window.addEventListener("popstate", () => {
     window.location.reload();
   });
@@ -30,39 +26,34 @@ function navigateTo(url) {
   fetch(url)
     .then((response) => response.text())
     .then((html) => {
-      // Parse the new HTML
       const parser = new DOMParser();
       const newDoc = parser.parseFromString(html, "text/html");
 
-      // --- CRITICAL STEP: SWAP STYLES FIRST ---
-      // This prevents the "Home page looking broken" glitch.
-      // We take the CSS from the new page and overwrite the current page's CSS.
+      // --- A. SWAP STYLES (Prevents Layout Glitch) ---
       const newStyles = newDoc.querySelector("style[data-page-style]");
       const oldStyles = document.querySelector("style[data-page-style]");
-      
       if (newStyles && oldStyles) {
         oldStyles.textContent = newStyles.textContent;
       }
 
-      // --- SWAP CONTENT ---
-      // Replace the Main container
+      // --- B. SWAP CONTENT ---
       const newContent = newDoc.querySelector("main").innerHTML;
       document.querySelector("main").innerHTML = newContent;
 
       // Update Title
       document.title = newDoc.title;
 
-      // --- UPDATE STATE ---
+      // --- C. UPDATE STATE ---
       history.pushState({}, "", url);
       updateActiveNav();
       window.scrollTo(0, 0);
-      
-      // Note: Your CSS .stagger-wrapper animation will automatically 
-      // trigger here because the new DOM elements were just added.
+
+      // --- D. RENDER BOOKS (If navigated to Bookshelf) ---
+      checkAndRenderBooks();
     })
     .catch((err) => {
       console.error("SPA Navigation failed:", err);
-      window.location.href = url; // Fallback to normal reload
+      window.location.href = url; // Fallback
     });
 }
 
@@ -79,7 +70,6 @@ function updateActiveNav() {
       linkPath === locationPath ||
       (linkPath !== "" && linkPath !== "/" && locationPath.startsWith(linkPath));
 
-    // Safety: Don't highlight Home "/" on sub-pages
     if (link.getAttribute("href") === "/" && currentPath !== "/") {
       link.classList.remove("active");
     } else if (isActive) {
@@ -88,4 +78,60 @@ function updateActiveNav() {
       link.classList.remove("active");
     }
   });
+}
+
+// --- BOOKSHELF RENDERER ---
+function checkAndRenderBooks() {
+  const container = document.getElementById("books-container");
+  
+  // If no container, we aren't on the bookshelf page. Stop.
+  if (!container) return;
+
+  // 🔴 PASTE YOUR SPREADSHEET ID HERE 🔴
+  const sheetID = "1IY-ictcATAZNfcJajwkKCJlT7-b7SBwPl_q2RZ4ntCc"; 
+  const tabName = "Latest"; 
+  const endpoint = `https://opensheet.elk.sh/${sheetID}/${tabName}`;
+
+  fetch(endpoint)
+    .then(res => res.json())
+    .then(books => {
+      container.innerHTML = "";
+      
+      if (!Array.isArray(books)) {
+        console.error("Data error:", books);
+        container.innerHTML = "Error loading library.";
+        return;
+      }
+
+      books.forEach((book, index) => {
+        if (!book.title) return; // Skip empty rows
+
+        const article = document.createElement("article");
+        article.className = "book-card";
+        
+        // Stagger Animation Delay (0.05s per book)
+        article.style.animationDelay = `${0.05 * (index + 1)}s`;
+
+        // Optional: Check if book has a 'link' column in sheet
+        const hasLink = book.link && book.link.startsWith('http');
+        
+        // Build the HTML structure exactly matching your original design
+        article.innerHTML = `
+          ${hasLink ? `<a href="${book.link}" target="_blank" style="text-decoration:none; color:inherit;">` : ''}
+            <div class="book-cover">
+              <img src="${book.cover}" alt="${book.title}" loading="lazy">
+            </div>
+            <div class="book-meta">
+              <div class="book-title">${book.title}</div>
+              <div class="book-author">${book.author}</div>
+            </div>
+          ${hasLink ? `</a>` : ''}
+        `;
+        container.appendChild(article);
+      });
+    })
+    .catch(err => {
+      console.error("Fetch error:", err);
+      container.innerHTML = "Unable to load books.";
+    });
 }
