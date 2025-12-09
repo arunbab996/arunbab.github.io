@@ -1,15 +1,16 @@
-/**
- * Robust SPA nav with defensive fetch retries
- * - tries multiple URL variants if first fetch returns non-HTML / empty body
- * - imports style/link/script tags with data-page-style
- * - falls back to full navigation if all fails
- *
- * Drop-in replacement for your current spa-nav.js
- */
+// Updated spa-nav.js
+// - Fragment-first: prefer .page-enter in fetched doc
+// - Preloads images in fragment before swapping to avoid FOUC
+// - Injects page styles early
+// - Graceful fallback to full navigation only if necessary
+// Safe: no eval, CSP-friendly.
+
+/* original inspected file: :contentReference[oaicite:1]{index=1} */
+
 (function () {
   "use strict";
 
-  // ---------- Helpers ----------
+  // --- helpers ---
   function normalizePath(path) {
     if (!path) return "/";
     if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1);
@@ -35,31 +36,20 @@
     });
   }
 
-  // Remove and insert page-scoped styles/scripts
-  function replacePageAssets(parsedDoc) {
+  // Replace page styles marked with data-page-style
+  function replacePageStyles(doc) {
     var head = document.head;
-    // remove old assets
-    head.querySelectorAll("style[data-page-style], link[data-page-style], script[data-page-style]")
-      .forEach(function (el) { el.remove(); });
+    // remove old
+    head.querySelectorAll("style[data-page-style], link[data-page-style]").forEach(function (el) { el.remove(); });
 
-    // append new assets in order they appear
-    var newAssets = parsedDoc.querySelectorAll("style[data-page-style], link[data-page-style], script[data-page-style]");
-    newAssets.forEach(function (asset) {
-      if (asset.tagName.toLowerCase() === "script") {
-        // re-create script so it executes
-        var s = document.createElement("script");
-        Array.from(asset.attributes).forEach(function (attr) {
-          s.setAttribute(attr.name, attr.value);
-        });
-        s.textContent = asset.textContent;
-        head.appendChild(s);
-      } else {
-        head.appendChild(asset.cloneNode(true));
-      }
+    // append new styles *early* (we append before content swap)
+    var newStyles = doc.querySelectorAll("style[data-page-style], link[data-page-style]");
+    newStyles.forEach(function (el) {
+      head.appendChild(el.cloneNode(true));
     });
   }
 
-  // preload images within a node
+  // Preload images found within an element (returns a Promise)
   function preloadImagesWithin(node) {
     var imgs = Array.from(node.querySelectorAll("img")).map(function (img) { return img.getAttribute("src"); }).filter(Boolean);
     if (!imgs.length) return Promise.resolve();
@@ -68,7 +58,7 @@
         try {
           var i = new Image();
           i.onload = function () { resolve(); };
-          i.onerror = function () { resolve(); };
+          i.onerror = function () { resolve(); }; // ignore errors
           i.src = src;
         } catch (e) { resolve(); }
       });
@@ -76,215 +66,144 @@
     return Promise.all(loads);
   }
 
+  // Extract title safely from parsed doc
   function extractTitleFromDoc(doc) {
     var t = doc.querySelector("title");
     return t ? t.textContent : document.title;
   }
 
+  // Safe: remove <script> tags from fragment to avoid double execution
   function stripScripts(node) {
     node.querySelectorAll("script").forEach(function (s) { s.remove(); });
   }
 
-  // sanity-check whether fetched text looks like a usable HTML page
-  function looksLikeHtml(text) {
-    if (!text || text.trim().length === 0) return false;
-    var low = text.toLowerCase();
-    // quick checks: contains html/body/doctype or the critical fragment marker
-    return low.indexOf("<!doctype") !== -1 || low.indexOf("<html") !== -1 ||
-           low.indexOf("<body") !== -1 || low.indexOf("class=\"page-enter\"") !== -1 ||
-           low.indexOf("main id=\"app\"") !== -1;
-  }
-
-  // parse HTML text to document
-  function parseHtml(text) {
-    var parser = new DOMParser();
-    return parser.parseFromString(text, "text/html");
-  }
-
-  // Try fetching the URL and return parsed doc or null
-  async function tryFetchVariants(urls) {
-    for (var i = 0; i < urls.length; i++) {
-      var u = urls[i];
-      try {
-        var res = await fetch(u, { headers: { "X-Requested-With": "spa-nav" }, redirect: "follow", credentials: "include" });
-        // Accept non-ok only if it returns usable body; otherwise continue to next variant
-        var text = await res.text();
-        if (!looksLikeHtml(text)) {
-          // try next variant
-          continue;
-        }
-        // parsed doc
-        return parseHtml(text);
-      } catch (err) {
-        // network error -> try next variant
-        continue;
-      }
-    }
-    return null;
-  }
-
-  // Build candidate URL variants (ordered by preference)
-  function buildVariants(requestHref) {
-    try {
-      var base = new URL(requestHref, window.location.origin);
-      var pathname = base.pathname;
-      var variants = [];
-
-      // 1) exact href (as provided)
-      variants.push(base.href);
-
-      // 2) ensure trailing slash version
-      if (!pathname.endsWith("/")) {
-        variants.push(new URL(pathname + "/", window.location.origin).href);
-      } else {
-        // if already ended with slash, also try without
-        variants.push(new URL(pathname.slice(0, -1), window.location.origin).href);
-      }
-
-      // 3) append index.html
-      var idx = pathname.endsWith("/") ? pathname + "index.html" : pathname + "/index.html";
-      variants.push(new URL(idx, window.location.origin).href);
-
-      // 4) normalized pathname with index.html
-      variants.push(new URL(normalizePath(pathname) + "/index.html", window.location.origin).href);
-
-      // Deduplicate while preserving order
-      return variants.filter(function (v, i, arr) { return arr.indexOf(v) === i; });
-    } catch (e) {
-      return [requestHref];
-    }
-  }
-
-  // Extract fragment to inject: prefer .page-enter (non-empty), else main#app, else whole body inner
-  function findReplacementFragment(parsedDoc) {
-    var fragment = parsedDoc.querySelector(".page-enter");
-    if (fragment && fragment.innerHTML.trim().length > 0) return fragment;
-    var main = parsedDoc.querySelector("main#app") || parsedDoc.querySelector("main");
-    if (main && main.innerHTML.trim().length > 0) return main;
-    // last resort: body
-    var body = parsedDoc.querySelector("body");
-    return body || null;
-  }
-
-  // Core load
-  async function loadPage(href, pushState = true) {
+  // --- Core SPA load/replace logic ---
+  async function loadPage(urlString, pushState = true) {
     var url;
     try {
-      url = new URL(href, window.location.origin);
+      url = new URL(urlString, window.location.origin);
     } catch (e) {
-      window.location.href = href;
+      // invalid URL -> fallback
+      window.location.href = urlString;
       return;
     }
 
-    // Build candidate URLs
-    var variants = buildVariants(url.href);
-
-    // Try fetching variants until a valid HTML doc is returned
-    var parsedDoc = await tryFetchVariants(variants);
-    if (!parsedDoc) {
-      // fallback to full navigation
-      window.location.href = url.href;
-      return;
-    }
-
-    // Replace page assets (styles/scripts)
     try {
-      replacePageAssets(parsedDoc);
-    } catch (e) {
-      // if asset replacement fails, fallback to full nav
-      console.error("replacePageAssets failed", e);
-      window.location.href = url.href;
-      return;
+      var res = await fetch(url.pathname + url.search, { headers: { "X-Requested-With": "spa-nav" } });
+      if (!res.ok) {
+        window.location.href = url.href;
+        return;
+      }
+
+      var html = await res.text();
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(html, "text/html");
+
+      // Prefer fragment .page-enter if present
+      var fragment = doc.querySelector(".page-enter");
+      var newMain = doc.querySelector("main#app") || doc.querySelector("main");
+
+      if (!fragment && !newMain) {
+        // nothing we can extract safely -> full navigation
+        window.location.href = url.href;
+        return;
+      }
+
+      // Inject page styles first so CSS is available before content paint
+      replacePageStyles(doc);
+
+      // Choose replacement node: prefer fragment
+      var replacementNode = fragment || newMain;
+      // clone to avoid moving nodes out of parser doc
+      var safeClone = replacementNode.cloneNode(true);
+
+      // strip scripts from clone for safety and CSP compatibility
+      stripScripts(safeClone);
+
+      // Preload images inside the clone to avoid flashes/jank
+      await preloadImagesWithin(safeClone);
+
+      // Now perform the swap in a safe order:
+      var currentMain = document.querySelector("main#app") || document.querySelector("main");
+      if (!currentMain) {
+        // No main to replace on current page: fallback to full nav
+        window.location.href = url.href;
+        return;
+      }
+
+      // Hide current content to avoid flicker
+      currentMain.style.visibility = "hidden";
+      currentMain.classList.remove("page-enter-active");
+
+      // Wait a frame so hidden state paints
+      await new Promise(requestAnimationFrame);
+
+      // Replace content - if fragment was used, we replace the innerHTML of currentMain
+      // If the replacement is a full <main>, use its innerHTML as well.
+      currentMain.innerHTML = safeClone.innerHTML;
+
+      // Update title
+      var newTitle = extractTitleFromDoc(doc);
+      if (newTitle) {
+        try { document.title = newTitle; } catch (e) {}
+      }
+
+      // Update history
+      if (pushState) {
+        history.pushState({ path: url.pathname + url.search }, "", url.pathname + url.search);
+      }
+
+      // Reveal and animate
+      currentMain.style.visibility = "visible";
+      requestAnimationFrame(function () {
+        currentMain.classList.add("page-enter-active");
+      });
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: "auto" });
+
+      // Update nav and run animations (scoped to currentMain)
+      setActiveNav(url.pathname);
+      runPageEnterAnimations(currentMain);
+
+    } catch (err) {
+      // In case of any unexpected error, fallback to full navigation
+      console.error("spa-nav loadPage failed:", err);
+      try { window.location.href = url.href; } catch (e) { window.location.href = urlString; }
     }
-
-    // Choose fragment
-    var replacementNode = findReplacementFragment(parsedDoc);
-    if (!replacementNode) {
-      window.location.href = url.href;
-      return;
-    }
-
-    // Clone & sanitize
-    var safeClone = replacementNode.cloneNode(true);
-    stripScripts(safeClone);
-
-    // Preload images inside clone
-    try { await preloadImagesWithin(safeClone); } catch (e) {}
-
-    // Find current main
-    var currentMain = document.querySelector("main#app") || document.querySelector("main");
-    if (!currentMain) {
-      window.location.href = url.href;
-      return;
-    }
-
-    // Hide current to avoid flicker
-    currentMain.style.visibility = "hidden";
-    currentMain.classList.remove("page-enter-active");
-    await new Promise(requestAnimationFrame);
-
-    // Replace content
-    currentMain.innerHTML = safeClone.innerHTML;
-
-    // Update title
-    var newTitle = extractTitleFromDoc(parsedDoc);
-    if (newTitle) {
-      try { document.title = newTitle; } catch (e) {}
-    }
-
-    // History
-    if (pushState) {
-      history.pushState({ path: url.pathname + url.search }, "", url.pathname + url.search);
-    }
-
-    // Reveal & animate
-    currentMain.style.visibility = "visible";
-    requestAnimationFrame(function () { currentMain.classList.add("page-enter-active"); });
-
-    // Scroll top
-    window.scrollTo({ top: 0, behavior: "auto" });
-
-    // Update nav and animations
-    setActiveNav(url.pathname);
-    runPageEnterAnimations(currentMain);
   }
 
-  // Click delegation
+  // --- event delegation for clicks ---
   document.addEventListener("click", function (event) {
-    // find nearest anchor with data-spa
-    var link = event.target.closest("a");
+    var link = event.target.closest("a[data-spa]");
     if (!link) return;
 
-    // honor data-no-spa
-    if (link.hasAttribute("data-no-spa")) return;
-
-    // only intercept links explicitly marked with data-spa
-    if (!link.hasAttribute("data-spa")) return;
-
-    // modifier keys/new tab => let browser handle
+    // open in new tab / modifier keys => let browser handle
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
     var href = link.getAttribute("href");
     if (!href) return;
 
-    // external origin => let browser handle
+    // External links: let browser handle
     try {
       var u = new URL(href, window.location.origin);
       if (u.origin !== window.location.origin) return;
     } catch (e) {
+      // invalid URL -> do nothing
       return;
     }
 
-    // if same path+search => prevent default but noop
+    // If same path and same search, don't reload, but prevent default
     if (normalizePath(u.pathname) === normalizePath(window.location.pathname) && u.search === window.location.search) {
-      event.preventDefault(); return;
+      event.preventDefault();
+      return;
     }
 
     event.preventDefault();
     loadPage(href, true);
   });
 
-  // popstate
+  // Back/forward
   window.addEventListener("popstate", function () {
     loadPage(window.location.href, false);
   });
