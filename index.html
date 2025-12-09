@@ -31,12 +31,10 @@
     .page-enter > * {opacity: 0;transform: translateY(6px);transition:opacity 320ms ease-out,transform 320ms ease-out;}
     .page-enter.page-enter-active > * {opacity: 1;transform: translateY(0);}
 
-    /* THE FIX: 
-       1. 'display: none' by default. 
-       2. Only show it if the class '.show-footer' is added.
-    */
+    /* FOOTER STYLES */
+    /* 1. HIDDEN BY DEFAULT (Crucial for Refresh) */
     .social-fixed {
-      display: none; /* Hidden by default! */
+      display: none; 
       position:fixed;
       bottom:28px;
       left:50%;
@@ -46,7 +44,7 @@
       z-index:40;
     }
     
-    /* When we decide it's safe, we add this class to show it */
+    /* 2. Only visible when this class is added */
     .social-fixed.show-footer {
       display: flex;
     }
@@ -109,34 +107,52 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', function () {
+      // 1. Initial Reveal (Standard)
       var containers = document.querySelectorAll('.page-enter');
       containers.forEach(function (el) {
         void el.offsetWidth;
         el.classList.add('page-enter-active');
       });
 
-      // LOGIC: Only show footer if we are NOT on portfolio
+      // 2. Logic: The Footer Controller
       function checkFooterVisibility() {
         const footer = document.querySelector('.social-fixed');
         if (!footer) return;
 
+        // "White List" approach: Default is hidden. Only show if logic says so.
         if (window.location.href.includes('portfolio')) {
-          // Keep it hidden (remove the show class)
-          footer.classList.remove('show-footer');
+          footer.classList.remove('show-footer'); // Ensure it's off
         } else {
-          // We are safe, show it!
-          footer.classList.add('show-footer');
+          footer.classList.add('show-footer');    // Turn it on
         }
       }
 
-      // Run immediately
+      // Run on Load
       checkFooterVisibility();
 
-      // Run on navigation
-      document.body.addEventListener('click', function() {
-        setTimeout(checkFooterVisibility, 50);
-      });
+      // Run on Back/Forward buttons
       window.addEventListener('popstate', checkFooterVisibility);
+
+      // 3. THE INSTANT CLICK FIX
+      // Instead of waiting for the page to change, we detect the click immediately.
+      document.body.addEventListener('click', function(e) {
+        // Find the closest link (in case you clicked an icon inside a link)
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        const footer = document.querySelector('.social-fixed');
+
+        if (footer && href) {
+          if (href.includes('portfolio')) {
+            // If going to portfolio, KILL the footer instantly. Do not wait.
+            footer.classList.remove('show-footer');
+          } else {
+            // If going elsewhere, you can prep it to show (or let the next page handle it)
+            // But usually, we just let the logic handle "showing" on arrival.
+          }
+        }
+      });
     });
   </script>
 </body>
