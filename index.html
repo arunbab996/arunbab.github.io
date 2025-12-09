@@ -19,8 +19,24 @@
     .name{font-weight:700;font-size:18px;margin-bottom:12px;}
     .desc{font-family: Inter, Georgia, serif;font-style: normal;font-size:18px;line-height:1.7;color:var(--text);max-width:560px;}
     .current{display:block;margin-top:18px;font-size:18px;line-height:1.6;max-width:560px;}
-    .page-enter > * {opacity: 0;transform: translateY(6px);transition:opacity 320ms ease-out,transform 320ms ease-out;}
-    .page-enter.page-enter-active > * {opacity: 1;transform: translateY(0);}
+
+    /* === THE STAGGER ANIMATION === */
+    /* 1. Base State: Hidden and slightly down */
+    .stagger-child > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    /* 2. Active State: Visible and in place */
+    .stagger-child.active > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* 3. The Delays (N+1 by 0.05s) */
+    .stagger-child.active > *:nth-child(1) { transition-delay: 0.05s; }
+    .stagger-child.active > *:nth-child(2) { transition-delay: 0.1s; }
+    .stagger-child.active > *:nth-child(3) { transition-delay: 0.15s; }
+    .stagger-child.active > *:nth-child(4) { transition-delay: 0.2s; }
   </style>
 </head>
 
@@ -36,7 +52,7 @@
   </header>
 
   <main id="app">
-    <section id="index" class="page-enter">
+    <section id="index" class="stagger-child">
       <div class="name">Arun Baburaj</div>
       <div class="desc">
         <span style="font-family:'Times New Roman', serif; font-style:italic;">Product Manager and Researcher</span>.
@@ -69,8 +85,8 @@
   <script src="/spa-nav.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', function () {
-      var containers = document.querySelectorAll('.page-enter');
-      containers.forEach(function (el) { void el.offsetWidth; el.classList.add('page-enter-active'); });
+      var containers = document.querySelectorAll('.stagger-child');
+      containers.forEach(function (el) { void el.offsetWidth; el.classList.add('active'); });
     });
   </script>
 </body>
