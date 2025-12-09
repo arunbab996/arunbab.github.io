@@ -7,12 +7,10 @@
   <link rel="icon" href="/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- HIDE FOOTER ON THIS PAGE ONLY -->
   <style>
     .social-fixed { display: none !important; }
   </style>
 
-  <!-- Prevent flash of unstyled content -->
   <style>
     .page-enter { visibility: hidden; opacity: 0; }
   </style>
@@ -189,18 +187,29 @@
 
   <script>
     (function(){
+      // Function to reveal the page content
       function reveal(){
         var el = document.querySelector('.page-enter');
         if(!el) return;
         el.style.visibility = 'visible';
+        // Small delay to ensure the browser processes the visibility change before animating opacity
         requestAnimationFrame(()=> el.classList.add('page-enter-active'));
       }
+
+      // 1. Run on standard page load
       if(document.readyState === 'complete' || document.readyState === 'interactive'){
         reveal();
       } else {
         document.addEventListener('DOMContentLoaded', reveal);
         window.addEventListener('load', reveal);
       }
+
+      // 2. CRITICAL FIX: Run when the page is restored from the back-forward cache (bfcache)
+      window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+          reveal();
+        }
+      });
     })();
   </script>
 
@@ -227,7 +236,6 @@
 
       <div class="two-col">
 
-        <!-- LEFT COLUMN -->
         <div class="projects-grid">
 
           <a href="/portfolio/specter/" class="project-card" data-spa>
@@ -264,7 +272,6 @@
 
         </div>
 
-        <!-- RIGHT COLUMN -->
         <div class="tools-col">
           <div class="tool-header">Tools</div>
 
@@ -305,12 +312,6 @@
       </div>
     </div>
   </main>
-
-<script>
-  window.addEventListener("load", () => {
-    document.querySelector(".page-enter")?.classList.add("page-enter-active");
-  });
-</script>
 
 </body>
 </html>
