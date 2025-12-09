@@ -25,20 +25,25 @@
     .principles-list strong{ display:block; margin-bottom:6px; font-weight:700; }
     .principles-list p{ margin:0; color:var(--muted); line-height:1.45; }
 
-    /* === PURE CSS STAGGER ANIMATION === */
+    /* FOOTER STYLES */
+    .social-fixed { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 28px; opacity: 0.95; z-index: 40; }
+    .social-fixed a { color: var(--text); text-decoration: none; display: flex; align-items: center; }
+    .social-fixed a:hover { opacity: 0.7; }
+
+    /* === STAGGER ANIMATION === */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .principles-list li {
+    .stagger-wrapper > * {
       opacity: 0;
       animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
-    .principles-list li:nth-child(1) { animation-delay: 0.05s; }
-    .principles-list li:nth-child(2) { animation-delay: 0.1s; }
-    .principles-list li:nth-child(3) { animation-delay: 0.15s; }
-    .principles-list li:nth-child(4) { animation-delay: 0.2s; }
-    .principles-list li:nth-child(5) { animation-delay: 0.25s; }
+    .stagger-wrapper > *:nth-child(1) { animation-delay: 0.05s; }
+    .stagger-wrapper > *:nth-child(2) { animation-delay: 0.1s; }
+    .stagger-wrapper > *:nth-child(3) { animation-delay: 0.15s; }
+    .stagger-wrapper > *:nth-child(4) { animation-delay: 0.2s; }
+    .stagger-wrapper > *:nth-child(5) { animation-delay: 0.25s; }
   </style>
 </head>
 
@@ -54,7 +59,7 @@
   </header>
 
   <main id="app">
-    <div class="page-enter">
+    <div class="stagger-wrapper">
       <div class="page-title">Principles</div>
       <ul class="principles-list">
         <li><div><strong>Bias toward shipping.</strong><p>If something can be shared in a week, don’t let it sit for a month. Small shipped projects beat big unfinished ideas.</p></div></li>
@@ -66,16 +71,10 @@
     </div>
   </main>
 
-  <div class="social-fixed" style="position:fixed; bottom:28px; left:50%; transform:translateX(-50%); display:flex; gap:28px; opacity:0.95; z-index:40;">
-    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn" style="color:#111219; text-decoration:none; display:flex; align-items:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
-    </a>
-    <a href="https://x.com/96Arun" target="_blank" aria-label="X" style="color:#111219; text-decoration:none; display:flex; align-items:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
-    </a>
-    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email" style="color:#111219; text-decoration:none; display:flex; align-items:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-    </a>
+  <div class="social-fixed">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg></a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg></a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
   </div>
 
   <script src="/spa-nav.js"></script>
