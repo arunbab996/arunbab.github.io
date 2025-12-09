@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My Favourite Product: mymind — Arun Baburaj</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style data-page-style>
+    /* CORE VARIABLES & RESET */
+    :root {
+      --bg: #f9fafb;
+      --text: #111827;
+      --muted: #6b7280;
+      --maxw: 720px;
+    }
+    body {
+      margin: 0;
+      padding: 40px 24px;
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: var(--maxw); margin: 0 auto; padding-bottom: 80px; }
+
+    /* TYPOGRAPHY */
+    a.back {
+      font-size: 14px;
+      color: #9ca3af;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    a.back:hover { color: var(--text); }
+
+    h1 { font-size: 32px; font-weight: 700; margin: 12px 0 6px 0; letter-spacing: -0.02em; }
+    .meta-line { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+
+    h2 { font-size: 22px; margin: 32px 0 12px 0; font-weight: 600; letter-spacing: -0.01em; }
+    h3 { font-size: 18px; margin: 20px 0 8px 0; font-weight: 600; }
+    
+    p { font-size: 17px; margin: 0 0 16px 0; color: #374151; }
+    
+    /* LISTS */
+    ul { margin: 8px 0 20px 20px; padding: 0; color: #374151; }
+    ul li { margin: 8px 0; padding-left: 4px; }
+
+    /* IMAGES */
+    img.hero {
+      width: 100%;
+      border-radius: 8px;
+      margin: 8px 0 28px 0;
+      background-color: #eee;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    /* QUOTE HIGHLIGHT */
+    blockquote {
+      border-left: 3px solid #e5e7eb;
+      margin: 24px 0;
+      padding-left: 20px;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    /* ANIMATIONS (The "Fade Up" Effect) */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-entry {
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    @media (max-width:520px) {
+      h1 { font-size: 28px; }
+      p { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <a href="/portfolio" class="back" data-spa>← Back</a>
+
+    <div class="animate-entry delay-1">
+      <h1>My Favourite Product: mymind</h1>
+      <div class="meta-line">Product Review · Domain: Knowledge Management, Design</div>
+    </div>
+
+    <img class="hero animate-entry delay-2" 
+         src="/portfolio/mymind/images/hero.jpg" 
+         alt="mymind interface" 
+         fetchpriority="high"
+         decoding="async"
+         onerror="this.onerror=null;this.style.backgroundColor='#f0f0f0'">
+
+    <section class="animate-entry delay-3">
+      [cite_start]<p>If I had to pick one product that truly changed the way I think, create, and organise my life, it would be <strong>mymind</strong>[cite: 1, 2].</p>
+      [cite_start]<p>I use it constantly, and over time it has become more than just a tool—it’s a quiet space where I store ideas, inspiration, and thoughts without any pressure to organise them[cite: 3]. [cite_start]Most tools demand attention. mymind, on the other hand, gives me peace[cite: 4].</p>
+    </section>
+
+    <section class="animate-entry delay-4">
+      <h2>Why mymind feels different to me</h2>
+      [cite_start]<p>Every productivity or note-taking app I’ve tried eventually becomes another system I need to maintain—naming files, managing folders, fixing tags, reorganising things when it all gets messy[cite: 6].</p>
+      [cite_start]<p>mymind is the first product that removed that burden completely[cite: 7]. [cite_start]I can save anything—an interesting article, a quote, an image that sparks an idea—and walk away[cite: 8].</p>
+      <p>The product takes care of everything behind the scenes. No structure, no rules, no dashboards. [cite_start]Just my mind, exactly as it is[cite: 9, 10]. That’s the part that hooked me. [cite_start]It doesn’t ask me to think more; it lets me think less[cite: 11].</p>
+
+      <h2>A design philosophy I deeply admire</h2>
+      <p>The interface is so intentionally simple that it almost forces focus. [cite_start]There is nothing extra[cite: 13]. [cite_start]No clutter, no unnecessary menus, no complex features competing for attention[cite: 14].</p>
+      [cite_start]<p>It feels like stepping into a clean room where my thoughts have space to breathe[cite: 15]. I love products that show restraint, and mymind is built on that principle. Every element feels considered. [cite_start]It’s minimal without being empty, and functional without being loud[cite: 16, 17].</p>
+
+      <h2>Intelligence that quietly works for me</h2>
+      [cite_start]<p>What I also appreciate is how smart it is without ever feeling “techy” [cite: 19][cite_start]. mymind recognises objects in images, enriches links, extracts text, and makes everything searchable, automatically[cite: 20].</p>
+      <p>There’s no setup. No onboarding guide. No expectations from me. [cite_start]It just works[cite: 21]. [cite_start]It’s the kind of invisible intelligence I believe more products should aim for—powerful, but completely unobtrusive[cite: 22].</p>
+
+      <h2>It’s a product that understands emotion</h2>
+      [cite_start]<p>Beyond the functionality, mymind has a certain calmness to it[cite: 24]. [cite_start]The design, the tone, the colours—all of it creates a sense of personal space[cite: 25]. [cite_start]It doesn’t feel like a work tool; it feels like a place where my ideas can live without judgment[cite: 26].</p>
+      [cite_start]<p>This taught me something important: <strong>Great products don’t just solve problems—they change how you feel</strong>[cite: 27]. [cite_start]That emotional layer matters, and mymind embraces it beautifully[cite: 28].</p>
+
+      <h2>A bold choice in a world chasing collaboration</h2>
+      <p>What I respect the most is that mymind is unapologetically personal. [cite_start]It’s not trying to be a team workspace[cite: 30]. It’s not trying to replace Slack or Notion. [cite_start]It knows exactly who it’s for—people who want a private thinking tool[cite: 31].</p>
+      [cite_start]<p>There are no social app elements incorporated into this peaceful app[cite: 32]. [cite_start]That clarity of purpose is rare, and it’s something I aspire to bring into my own product work[cite: 33].</p>
+
+      <h2>How mymind has shaped the way I think about products</h2>
+      [cite_start]<p>Using mymind has influenced my product philosophy in many ways[cite: 35]:</p>
+      <ul>
+        [cite_start]<li>Keep complexity out of the user’s way[cite: 36].</li>
+        [cite_start]<li>Don’t overbuild—restrained products often become the strongest[cite: 37].</li>
+        [cite_start]<li>Focus on solving the emotional and cognitive problems, not just the functional ones[cite: 38].</li>
+        [cite_start]<li>Build with a point of view and stick to it[cite: 39].</li>
+        [cite_start]<li>Create an experience that feels effortless[cite: 40].</li>
+      </ul>
+      
+      <blockquote>
+        [cite_start]To me, mymind is a reminder that the best products disappear into your life—they don’t demand attention, they quietly enhance it[cite: 41].
+      </blockquote>
+
+      [cite_start]<p>It’s a product I genuinely love, and one that continues to inspire how I think about building meaningful, human-centric tools[cite: 42].</p>
+    </section>
+
+  </div>
+</body>
+</html>
