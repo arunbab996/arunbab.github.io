@@ -1,36 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    document.documentElement.style.opacity = '0';
-    document.documentElement.style.visibility = 'hidden';
-    document.documentElement.style.transition = 'opacity 0.15s ease-out';
-
-    document.addEventListener("DOMContentLoaded", () => {
-      requestAnimationFrame(() => {
-        document.documentElement.style.visibility = 'visible';
-        document.documentElement.style.opacity = '1';
-      });
-      document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-          const target = this.getAttribute('href');
-          const isExternal = this.getAttribute('target') === '_blank';
-          if (target && !target.startsWith('#') && !target.startsWith('mailto:') && !isExternal) {
-            e.preventDefault();
-            document.documentElement.style.opacity = '0';
-            setTimeout(() => { window.location.href = target; }, 150);
-          }
-        });
-      });
-    });
-    window.addEventListener("pageshow", (event) => {
-      if (event.persisted) {
-        document.documentElement.style.opacity = '1';
-        document.documentElement.style.visibility = 'visible';
-      }
-    });
-  </script>
-
   <meta charset="UTF-8" />
   <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
