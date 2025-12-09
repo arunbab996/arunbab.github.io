@@ -51,6 +51,7 @@
       margin-bottom: 28px;
       display: block;
       overflow: hidden;
+      background-color: #eee; /* Placeholder */
     }
     .hero img { width: 100%; height: auto; display:block; border-radius:6px; }
 
@@ -90,6 +91,30 @@
 
     hr.sep { border:0; border-top:1px solid #eef2f7; margin:26px 0; }
 
+    /* --- ANIMATIONS --- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Initial state for animated elements */
+    .animate-entry {
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Stagger delays */
+    .delay-1 { animation-delay: 0.1s; } /* Title */
+    .delay-2 { animation-delay: 0.2s; } /* Hero */
+    .delay-3 { animation-delay: 0.3s; } /* Section 1 */
+    .delay-4 { animation-delay: 0.4s; } /* Rest of content */
+
     @media (max-width:520px){
       :root { --maxw:520px; }
       h1 { font-size:28px; }
@@ -102,13 +127,17 @@
   <div class="container">
     <a class="back" href="/portfolio" target="_self">← Back</a>
 
-    <h1>Jupiter — Gamification PRD</h1>
+    <h1 class="animate-entry delay-1">Jupiter — Gamification PRD</h1>
 
-    <section class="hero" aria-hidden="false">
-      <img src="/portfolio/jupiter/images/hero.png" alt="Jupiter hero" onerror="this.onerror=null;this.src='/portfolio/jupiter/images/image1.png'">
+    <section class="hero animate-entry delay-2" aria-hidden="false">
+      <img src="/portfolio/jupiter/images/hero.png" 
+           alt="Jupiter hero" 
+           fetchpriority="high"
+           decoding="async"
+           onerror="this.onerror=null;this.src='/portfolio/jupiter/images/image1.png'">
     </section>
 
-    <section>
+    <section class="animate-entry delay-3">
       <h2>1. Strategic Context</h2>
       <p>Jupiter’s long-term strategic moat cannot be built on payments, which are fully commoditised, nor on banking rails, which are standardised. The real moat lies in habit formation: creating a financial behaviour ecosystem where users repeatedly return, not because they must, but because the system makes managing money feel rewarding, clarifying, and emotionally reinforcing.</p>
       <p>Budgeting should be that anchor habit, but current user behaviour demonstrates the opposite pattern: strong initial intent → rapid decay → long-term disengagement.</p>
@@ -126,9 +155,9 @@
       <p>The proposed Gamification Layer enables this by aligning product mechanics with human behavioural architecture.</p>
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>2. Problem Statement - The Behavioural Gap</h2>
       <p>The problem is not that users “don’t budget.” The problem is that Jupiter’s current structure asks users to do the hard part of budgeting—interpretation and discipline—without providing the emotional scaffolding required to sustain it.</p>
 
@@ -152,17 +181,17 @@
       <p>The user is left floating in ambiguity. To correct behaviour, the system must provide fast, emotionally salient, and identity-building feedback.</p>
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>3. Product Vision</h2>
       <p>Build a behaviour-shaping financial layer that translates raw spending into emotionally resonant insights, action-ready triggers, and weekly progress loops - enabling young Indians to internalize financial discipline as part of their identity.</p>
       <p>This is not “gamification” in the entertainment sense. This is behavioural infrastructure, similar to what Duolingo did for learning or Strava did for fitness.</p>
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>4. Proposed Solution - The Behaviour Architecture</h2>
       <p>The solution consists of four interlocking systems, each reinforcing the others. Each is described deeply but clearly, ensuring the narrative remains digestible.</p>
 
@@ -183,25 +212,25 @@
       <p>Humans repeat behaviours that generate emotional closure. This layer uses confetti micro-interactions, haptic taps, expressive emojis, warm conversational tone, and weekly progress cards. Even small wins matter: “You stayed within budget despite a higher spend on Saturday - impressive discipline!”</p>
 
       <div class="figure" aria-hidden="false">
-        <img src="/portfolio/jupiter/images/image1.png" alt="Challenge mockup (image1)">
+        <img src="/portfolio/jupiter/images/image1.png" alt="Challenge mockup (image1)" loading="lazy" decoding="async">
       </div>
       <figcaption>Mockup: Weekly challenge UI.</figcaption>
 
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>Wireframe</h2>
       <div class="figure">
-        <img src="/portfolio/jupiter/images/image2.png" alt="Wireframe (image2)">
+        <img src="/portfolio/jupiter/images/image2.png" alt="Wireframe (image2)" loading="lazy" decoding="async">
       </div>
       <figcaption>Wireframe for the Gamification layer.</figcaption>
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>5. Technical Architecture</h2>
       <h3>5.1 Key Services</h3>
       <p>Insights Service: data ingestion → categorisation → weekly delta computation</p>
@@ -222,9 +251,9 @@
       <p>High reliability for weekly evaluation (cron + queue backup)</p>
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>6. Measurement Framework</h2>
       <ul>
         <li>Awareness: Users who view Insights weekly → indicates meaningful narrative pull.</li>
@@ -236,9 +265,9 @@
       <p>We measure causally: Does viewing insights → increase challenge adoption? Does challenge adoption → reduce overspend? Does reduced overspend → increase NPS or retention?</p>
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>7. Risks & Tradeoffs</h2>
       <p>Risk: Over-Nudging → Fatigue. Mitigation: 2/week limit, personalised nudge timing.</p>
       <p>Risk: Benchmarking → Shame. Mitigation: strictly positive framing; percentile bands only.</p>
@@ -247,9 +276,9 @@
       <p>Tradeoff: Personalisation Depth vs Cognitive Simplicity. We choose simplicity-first for V1 to build habit before complexity.</p>
     </section>
 
-    <hr class="sep">
+    <hr class="sep animate-entry delay-4">
 
-    <section>
+    <section class="animate-entry delay-4">
       <h2>8. Rollout Plan</h2>
       <p>Internal Dogfood: Validate tone, emotionality, narrative coherence</p>
       <p>Bangalore Android (40%): High UPI density + budget usage</p>
