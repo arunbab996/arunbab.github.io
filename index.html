@@ -15,117 +15,40 @@
       --max-width:640px;
       --nav-gap:28px;
     }
-
     *{box-sizing:border-box;margin:0;padding:0}
-
-    body{
-      background:var(--bg);
-      font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      color:var(--text);
-    }
-
-    .page-top-border{
-      height:3px;
-      background:rgba(0,0,0,0.08);
-    }
-
-    header{
-      display:flex;
-      justify-content:center;
-      border-bottom:1px solid rgba(0,0,0,0.06);
-      background:transparent;
-      width:100%;
-    }
-
-    .nav{
-      max-width: var(--max-width);
-      width:100%;
-      display:flex;
-      justify-content:flex-start;
-      padding:20px 16px;
-      gap: var(--nav-gap);
-      font-size:15px;
-      font-weight:600;
-      color:var(--muted);
-      margin: 0 auto;
-    }
-
-    .nav a{
-      color:var(--muted);
-      text-decoration:none;
-      padding-bottom:2px;
-      border-bottom:2px solid transparent;
-    }
-
-    .nav a.active{
-      color:var(--text);
-      border-bottom-color:var(--text);
-    }
-
-    main{
-      max-width:var(--max-width);
-      margin:48px auto;
-      padding:0 16px;
-    }
-
-    .name{
-      font-weight:700;
-      font-size:18px;
-      margin-bottom:12px;
-    }
-
-    .desc{
-      font-family: Inter, Georgia, serif;
-      font-style: normal;
-      font-size:18px;
-      line-height:1.7;
-      color:var(--text);
-      max-width:560px;
-    }
-
-    .current{
-      display:block;
-      margin-top:18px;
-      font-size:18px;
-      line-height:1.6;
-      max-width:560px;
-    }
+    body{background:var(--bg);font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);}
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
+    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);background:transparent;width:100%;}
+    .nav{max-width: var(--max-width);width:100%;display:flex;justify-content:flex-start;padding:20px 16px;gap: var(--nav-gap);font-size:15px;font-weight:600;color:var(--muted);margin: 0 auto;}
+    .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent;}
+    .nav a.active{color:var(--text);border-bottom-color:var(--text);}
+    main{max-width:var(--max-width);margin:48px auto;padding:0 16px;}
+    .name{font-weight:700;font-size:18px;margin-bottom:12px;}
+    .desc{font-family: Inter, Georgia, serif;font-style: normal;font-size:18px;line-height:1.7;color:var(--text);max-width:560px;}
+    .current{display:block;margin-top:18px;font-size:18px;line-height:1.6;max-width:560px;}
 
     /* Animation */
-    .page-enter > * {
-      opacity: 0;
-      transform: translateY(6px);
-      transition:
-        opacity 320ms ease-out,
-        transform 320ms ease-out;
-    }
+    .page-enter > * {opacity: 0;transform: translateY(6px);transition:opacity 320ms ease-out,transform 320ms ease-out;}
+    .page-enter.page-enter-active > * {opacity: 1;transform: translateY(0);}
 
-    .page-enter.page-enter-active > * {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* FOOTER STYLES */
+    .social-fixed{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:28px;opacity:1;z-index:40;}
+    .social-fixed a{color:#000000 !important;text-decoration:none;}
+    .social-fixed a:hover{opacity:0.7;}
 
-    /* FOOTER (with BLACK icons) */
-    .social-fixed{
-      position:fixed;
-      bottom:28px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      gap:28px;
-      opacity:1;
-      z-index:40;
-    }
-
-    .social-fixed a{
-      color:#000000 !important;
-      text-decoration:none;
-    }
-
-    .social-fixed a:hover{
-      opacity:0.7;
+    /* --- THE FIX: Class to hide footer immediately --- */
+    html.hide-footer .social-fixed {
+      display: none !important;
     }
   </style>
+
+  <script>
+    (function() {
+      if (window.location.href.includes('portfolio')) {
+        document.documentElement.classList.add('hide-footer');
+      }
+    })();
+  </script>
 </head>
 
 <body>
@@ -143,18 +66,15 @@
   <main id="app">
     <section id="index" class="page-enter">
       <div class="name">Arun Baburaj</div>
-
       <div class="desc">
         <span style="font-family:'Times New Roman', serif; font-style:italic;">Product Manager and Researcher</span>.
         Thinking about and designing tools for building software.
         Interested in consumer psychology, AI and Venture Capital.
       </div>
-
       <div class="current">
         I'm currently leading a product at
         <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.
       </div>
-
       <div style="margin-top:20px; max-width:560px; font-size:18px; line-height:1.6;">
         Previously built homehunter club – a rental platform for Gen-Z's using alternate data
         and acclr8 – Wellfound for Indian Startups.
@@ -168,13 +88,11 @@
         <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/>
       </svg>
     </a>
-
     <a href="https://x.com/96Arun" target="_blank" aria-label="X">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
         <path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/>
       </svg>
     </a>
-
     <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
         <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
@@ -186,40 +104,31 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', function () {
-      // 1. Initial Animation Code (Keep this)
+      // 1. Initial Animation
       var containers = document.querySelectorAll('.page-enter');
       containers.forEach(function (el) {
         void el.offsetWidth;
         el.classList.add('page-enter-active');
       });
 
-      // 2. NEW: Footer Management
-      function checkFooterVisibility() {
-        const footer = document.querySelector('.social-fixed');
-        if (!footer) return;
-
-        // If URL contains 'portfolio', HIDE the footer
+      // 2. Logic: Manage the 'hide-footer' class on navigation
+      function updateFooter() {
         if (window.location.href.includes('portfolio')) {
-          footer.style.display = 'none';
+          document.documentElement.classList.add('hide-footer');
         } else {
-          // Otherwise, show it (restore flex)
-          footer.style.display = 'flex';
+          document.documentElement.classList.remove('hide-footer');
         }
       }
 
-      // Run immediately on load
-      checkFooterVisibility();
+      // Check on history changes (Back/Forward)
+      window.addEventListener('popstate', updateFooter);
 
-      // Run every time the user clicks a link (since it's a Single Page App)
-      document.body.addEventListener('click', function() {
-        // We use a small timeout to let the URL update first
-        setTimeout(checkFooterVisibility, 100);
+      // Check on clicks (Intercepting navigation)
+      document.body.addEventListener('click', function(e) {
+        // Run check slightly delayed to allow URL to update
+        setTimeout(updateFooter, 50);
       });
-      
-      // Also listen for browser Back/Forward buttons
-      window.addEventListener('popstate', checkFooterVisibility);
     });
   </script>
-
 </body>
 </html>
