@@ -8,16 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    .social-fixed, 
-    .footer, 
-    footer, 
-    .socials, 
-    .social-links { 
-      display: none !important; 
-    }
-  </style>
-
-  <style>
     .page-enter { visibility: hidden; }
   </style>
 
@@ -199,6 +189,37 @@
         if(!el) return;
         el.style.visibility = 'visible';
         requestAnimationFrame(() => el.classList.add('page-enter-active'));
+        
+        // --- NEW: FORCE REMOVE SOCIAL FOOTER ---
+        // This runs immediately when the page is revealing to ensure no blink.
+        removeExternalSocials();
+      }
+
+      function removeExternalSocials() {
+        // Find links that look like social media (twitter, linkedin, mailto)
+        const socialLinks = document.querySelectorAll('a[href*="linkedin.com"], a[href*="x.com"], a[href*="twitter.com"], a[href^="mailto:"]');
+        const main = document.querySelector('main');
+        
+        socialLinks.forEach(link => {
+          // SAFEGUARD: Only remove if they are NOT inside our main content
+          // This protects your "Y Combinator Bot" link in the main area.
+          if (main && !main.contains(link)) {
+             // Try to find the wrapper (div or footer) and remove that
+             const wrapper = link.closest('.social-fixed') || link.closest('footer') || link.closest('div[style*="fixed"]');
+             if (wrapper) {
+               wrapper.remove();
+             } else {
+               // Fallback: just remove the link itself
+               link.remove();
+             }
+          }
+        });
+        
+        // Also try to remove common footer classes directly just in case
+        const commonFooters = document.querySelectorAll('.social-fixed, footer, .footer');
+        commonFooters.forEach(el => {
+            if (main && !main.contains(el)) el.remove();
+        });
       }
 
       if(document.readyState === 'complete' || document.readyState === 'interactive'){
@@ -213,6 +234,10 @@
           reveal();
         }
       });
+      
+      // Run the cleanup one extra time a bit later, in case the footer is injected by a slow script
+      setTimeout(removeExternalSocials, 500);
+      
     })();
   </script>
 
