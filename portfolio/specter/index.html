@@ -4,79 +4,225 @@
   <meta charset="utf-8" />
   <title>Specter Talent</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Anti-FOUC: hide page content until we explicitly reveal it -->
-  <style>
-    .page-enter { visibility: hidden; opacity: 0; }
-    /* Minimal safe page styles kept inline so basic layout shows reliably */
-    :root { --bg:#f9fafb; --text:#111827; --muted:#6b7280; --maxw:720px; }
-    body { margin:0; padding:40px 24px; background:var(--bg); font-family: Inter, -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; color:var(--text); }
-    .container { max-width:var(--maxw); margin:0 auto; }
-    a.back { font-size:14px; color:#9ca3af; text-decoration:none; }
-    h1{ font-size:32px; font-weight:600; margin:12px 0 4px; }
-    .subtitle{ font-size:15px; color:var(--muted); margin-bottom:24px; }
-    img.hero{ width:100%; border-radius:6px; margin-bottom:28px; display:block; }
-    h2{ font-size:20px; margin:32px 0 10px; font-weight:600; }
-    p{ font-size:17px; line-height:1.55; margin:0 0 16px; }
-    .ui-pair{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin:20px 0; }
-    .ui-pair img{ width:300px; border-radius:6px; border:1px solid #e5e7eb; display:block; }
-    figure figcaption{ text-align:center; font-size:13px; color:var(--muted); margin-top:8px; }
-    /* page-enter animation (triggered by JS) */
-    .page-enter > * { opacity:0; transform:translateY(6px); transition:opacity .32s ease-out, transform .32s ease-out; }
-    .page-enter.page-enter-active > * { opacity:1; transform:translateY(0); }
+  <!-- Use the same global page-style block as the root index so the article never loads unstyled. -->
+  <style data-page-style>
+    :root{
+      --bg:#dbe2eb;        /* your restored blue background */
+      --text:#33302E;
+      --muted:#706A68;
+      --max-width:640px;
+      --nav-gap:28px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      background:var(--bg);
+      font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color:var(--text);
+    }
+
+    .page-top-border{
+      height:3px;
+      background:rgba(0,0,0,0.08);
+    }
+
+    header{
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      background:transparent;
+      width:100%;
+    }
+
+    .nav{
+      max-width: var(--max-width);
+      width:100%;
+      display:flex;
+      justify-content:flex-start;
+      padding:20px 16px;
+      gap: var(--nav-gap);
+      font-size:15px;
+      font-weight:600;
+      color:var(--muted);
+      margin: 0 auto;
+    }
+
+    .nav a{
+      color:var(--muted);
+      text-decoration:none;
+      padding-bottom:2px;
+      border-bottom:2px solid transparent;
+    }
+
+    .nav a.active{
+      color:var(--text);
+      border-bottom-color:var(--text);
+    }
+
+    main{
+      max-width:var(--max-width);
+      margin:48px auto;
+      padding:0 16px;
+    }
+
+    .name{
+      font-weight:700;
+      font-size:18px;
+      margin-bottom:12px;
+    }
+
+    .desc{
+      font-family: Inter, Georgia, serif;
+      font-style: normal;
+      font-size:18px;
+      line-height:1.7;
+      color:var(--text);
+      max-width:560px;
+    }
+
+    .current{
+      display:block;
+      margin-top:18px;
+      font-size:18px;
+      line-height:1.6;
+      max-width:560px;
+    }
+
+    /* Article specific layout */
+    .article-container{ max-width:860px; margin:32px auto; padding:0 16px; }
+    .back{ display:inline-block; margin-bottom:12px; color:var(--muted); text-decoration:none; }
+    h1.article-title{ font-size:32px; margin:6px 0 10px; font-weight:700; }
+    .subtitle{ color:var(--muted); margin-bottom:18px; font-size:15px; }
+
+    img.hero{ width:100%; border-radius:6px; display:block; margin:18px 0 28px; }
+
+    h2{ font-size:20px; margin:28px 0 8px; font-weight:700; }
+    p{ font-size:16px; line-height:1.6; margin:0 0 14px; color:var(--text); }
+
+    .ui-pair{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:18px 0; }
+    .ui-pair img{ width:320px; border-radius:6px; border:1px solid rgba(0,0,0,0.04); display:block; }
+
+    /* page-enter animations (revealed by JS) */
+    .page-enter > * {
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity 320ms ease-out,
+        transform 320ms ease-out;
+    }
+
+    .page-enter.page-enter-active > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer (same as root) */
+    .social-fixed{
+      position:fixed;
+      bottom:28px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:28px;
+      opacity:1;
+      z-index:40;
+    }
+
+    .social-fixed a{
+      color:#000000 !important;
+      text-decoration:none;
+    }
+    .social-fixed a:hover{ opacity:0.7; }
   </style>
 
+  <!-- Prevent FOUC if JS disabled, show content -->
   <noscript>
-    <style>.page-enter{ visibility: visible; opacity:1; }</style>
+    <style>.page-enter{ visibility:visible; opacity:1; }</style>
   </noscript>
+
+  <!-- Minimal inline guard to hide the fragment until reveal (very small, CSP-safe) -->
+  <style>
+    .page-enter { visibility: hidden; opacity: 0; }
+  </style>
 </head>
+
 <body>
+  <div class="page-top-border"></div>
 
-  <!-- IMPORTANT: SPA expects exactly one .page-enter wrapper per page -->
-  <div class="page-enter" id="page-root">
-    <div class="container">
+  <!-- Header / nav (kept so direct loads look identical to SPA loads) -->
+  <header>
+    <nav class="nav">
+      <a href="/" data-spa>Index</a>
+      <a href="/portfolio" data-spa class="active">Portfolio</a>
+      <a href="/bookshelf/" data-spa>Bookshelf</a>
+      <a href="/principles" data-spa>Principles</a>
+    </nav>
+  </header>
 
-      <!-- Back link converted to SPA-friendly (data-spa) -->
-      <a href="/portfolio" class="back" data-spa>← Back</a>
+  <!-- IMPORTANT: SPA extracts the .page-enter block; keep a single one -->
+  <main id="app">
+    <div class="page-enter">
+      <div class="article-container">
+        <a href="/portfolio" class="back" data-spa>← Back</a>
 
-      <h1>Specter Talent</h1>
-      <div class="subtitle">Building the founder discovery engine powering modern startup scouting</div>
+        <h1 class="article-title">Specter Talent</h1>
+        <div class="subtitle">Building the founder discovery engine powering modern startup scouting</div>
 
-      <img class="hero" src="/portfolio/specter/images/hero.jpg" alt="Specter Talent hero" width="1200" height="600">
+        <!-- hero image (use your actual path) -->
+        <img class="hero" src="/portfolio/specter/images/hero.jpg" alt="Specter hero" width="1200" height="600">
 
-      <h2>1. The Core Problem in Venture Discovery.</h2>
-      <p>My journey with Specter began as an intern, joining a small team trying to solve one question that always frustrated investors: why do funds learn about promising founders so late?</p>
+        <h2>1. The Core Problem in Venture Discovery.</h2>
+        <p>My journey with Specter began as an intern, joining a small team trying to solve one question that always frustrated investors: why do funds learn about promising founders so late?</p>
 
-      <!-- rest of content unchanged -->
-      <!-- ... keep the rest of your article markup here ... -->
+        <p>By the time a company officially surfaces through a funding announcement, a landing page, or a Product Hunt launch, most serious conversations have already happened behind the scenes. Investors needed a way to understand entrepreneurial intent before any “public company signal” existed. That problem became the foundation of Specter Talent...</p>
 
-      <figure>
-        <div class="ui-pair">
-          <img src="/portfolio/specter/images/image1.png" alt="">
-          <img src="/portfolio/specter/images/image2.png" alt="">
-        </div>
-        <figcaption>Old UI (left) and New UI (right) for Specter Talent.</figcaption>
-      </figure>
+        <!-- screenshots block -->
+        <figure>
+          <div class="ui-pair">
+            <img src="/portfolio/specter/images/image1.png" alt="Old UI">
+            <img src="/portfolio/specter/images/image2.png" alt="New UI">
+          </div>
+          <figcaption style="text-align:center; color:var(--muted); font-size:13px;">Old UI (left) and New UI (right) for Specter Talent.</figcaption>
+        </figure>
 
-      <!-- closing paragraphs ... -->
+        <h2>Closing Reflection</h2>
+        <p>Specter Talent started with a question about companies, but over time, it became a study of the people behind them. It revealed that entrepreneurial intent leaks early, if you know where to look and how to interpret it.</p>
+
+      </div>
     </div>
+  </main>
+
+  <!-- Footer (kept consistent) -->
+  <div class="social-fixed">
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
+    </a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
+    </a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
   </div>
 
-  <!-- Reveal script: no eval, tiny and CSP-friendly -->
-  <script>
-  (function () {
-    function reveal() {
-      var el = document.getElementById('page-root');
-      if (!el) return;
-      el.style.visibility = 'visible';
-      requestAnimationFrame(function () {
-        el.classList.add('page-enter-active');
-      });
-    }
-    if (document.readyState === 'complete' || document.readyState === 'interactive') reveal();
-    else document.addEventListener('DOMContentLoaded', reveal);
-  })();
-  </script>
+  <script src="/spa-nav.js"></script>
 
+  <!-- Reveal the page-enter safely (CSP-friendly) -->
+  <script>
+    (function () {
+      function reveal() {
+        var el = document.querySelector('.page-enter');
+        if (!el) return;
+        el.style.visibility = 'visible';
+        requestAnimationFrame(function () { el.classList.add('page-enter-active'); });
+      }
+      if (document.readyState === 'complete' || document.readyState === 'interactive') reveal();
+      else document.addEventListener('DOMContentLoaded', reveal);
+    })();
+  </script>
 </body>
 </html>
