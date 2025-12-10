@@ -2,31 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Portfolio — Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <style data-page-style>
-    /* ORIGINAL STYLES (Blue/Grey Theme) */
+    /* --- FIX: FORCE HEADER VISIBILITY --- */
+    /* We use !important here to ensure the header reappears when coming back from an article */
+    header { display: flex !important; }
+    .nav { display: flex !important; }
+    .page-top-border { display: block !important; }
+
+    /* ORIGINAL STYLES */
     :root{ --bg:#dbe2eb; --text:#111219; --muted:#5b6066; --max-width: 900px; --nav-gap:28px; }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{ background:var(--bg); font-family:Inter,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--text); }
     
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
-    header{display:flex;justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);width:100%;}
+    header{justify-content:center;border-bottom:1px solid rgba(0,0,0,0.06);width:100%;}
     
-    .nav{ max-width: 640px; width:100%; display:flex; justify-content:flex-start; padding:20px 16px; gap:var(--nav-gap); font-size:15px; font-weight:600; color:var(--muted); margin:0 auto; }
+    .nav{ max-width: 640px; width:100%; justify-content:flex-start; padding:20px 16px; gap:var(--nav-gap); font-size:15px; font-weight:600; color:var(--muted); margin:0 auto; }
     .nav a{color:var(--muted);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent;}
     .nav a.active{color:var(--text);border-bottom-color:var(--text);}
     
-    /* LAYOUT & CARDS */
     main{ max-width: var(--max-width); margin: 48px auto; padding: 0 16px; padding-bottom: 120px; }
     .two-col{ display:grid; grid-template-columns: 62% 34%; justify-content: space-between; gap: 4%; }
     
     .col-header { font-weight: 700; font-size: 18px; margin-bottom: 18px; color: var(--text); }
-    
     .projects-grid{display:flex;flex-direction:column;gap:14px;}
     
     .project-card{ display:flex; align-items:center; gap:16px; text-decoration:none; color:var(--text); background:rgba(255,255,255,0.03); border:1px solid rgba(0,0,0,0.03); border-radius:8px; padding:10px; transition:transform .18s ease, box-shadow .18s ease; }
@@ -46,20 +50,15 @@
     .tool-title{font-weight:700;margin-bottom:4px;font-size:15px;}
     .tool-sub{color:var(--muted);font-size:13px;line-height:1.3;}
 
-    /* FOOTER */
     .social-fixed { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 28px; opacity: 1; z-index: 40; }
     .social-fixed a { color: #000000 !important; text-decoration: none; display: flex; align-items: center; }
     .social-fixed a:hover { opacity: 0.7; }
 
-    /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .stagger-wrapper > * {
-      opacity: 0; 
-      animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    }
+    .stagger-wrapper > * { opacity: 0; animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
     .stagger-wrapper > *:nth-child(1) { animation-delay: 0.05s; }
     .stagger-wrapper > *:nth-child(2) { animation-delay: 0.1s; }
     .stagger-wrapper > *:nth-child(3) { animation-delay: 0.15s; }
@@ -98,6 +97,7 @@
             <div class="project-tagline">Why this AI-powered extension changed how I think and create.</div>
           </div>
         </a>
+
         <a href="/portfolio/specter/" class="project-card" data-spa>
           <img src="/images/0.webp" alt="Specter Talent">
           <div class="project-meta">
