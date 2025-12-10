@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
-    /* --- HIDE SPA LEFTOVERS --- */
-    /* This kills the "Ghost Menu" from the previous page */
+    /* --- CRITICAL FIX: HIDE GHOST NAV --- */
+    /* This hides the "Index Portfolio..." menu from the previous page */
     header, .nav, .page-top-border { display: none !important; }
 
     /* --- VARIABLES --- */
@@ -31,14 +31,14 @@
       -webkit-font-smoothing: antialiased;
     }
     
-    /* Main Container (ID="app" is crucial for SPA) */
+    /* Main Container (Must match ID="app" for SPA to work) */
     main.container { 
       max-width: var(--maxw); 
       margin: 0 auto; 
       padding: 60px 24px 80px; 
     }
 
-    /* --- NAV --- */
+    /* --- NAVIGATION --- */
     a.back {
       font-size: 14px;
       font-weight: 600;
