@@ -2,32 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Favourite Product: mymind — Arun Baburaj</title>
+  <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
-    /* --- VARIABLES (Matches Dunzo/Specter Theme) --- */
+    /* --- VARIABLES --- */
     :root {
-      --bg: #ffffff; /* Clean white background for case studies */
+      --bg: #ffffff; 
       --text: #111219;
       --muted: #5b6066;
-      --maxw: 680px; /* Optimal reading width */
+      --maxw: 680px; 
     }
     
     body {
       margin: 0;
-      padding: 60px 24px;
+      padding: 0; /* Reset padding, handled by main */
       background: var(--bg);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color: var(--text);
-      line-height: 1.65; /* Good readability */
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
     
-    .container { max-width: var(--maxw); margin: 0 auto; padding-bottom: 80px; }
+    /* Changed class to target the MAIN tag for SPA compatibility */
+    main.container { 
+      max-width: var(--maxw); 
+      margin: 0 auto; 
+      padding: 60px 24px 80px; 
+    }
 
     /* --- NAV --- */
     a.back {
@@ -108,7 +113,8 @@
   </style>
 </head>
 <body>
-  <div class="container">
+
+  <main class="container" id="app">
 
     <a href="/portfolio" class="back" data-spa>← Back</a>
 
@@ -166,7 +172,7 @@
       <p>It’s a product I genuinely love, and one that continues to inspire how I think about building meaningful, human-centric tools.</p>
     </section>
 
-  </div>
+  </main>
 
   <script src="/spa-nav.js"></script>
 </body>
