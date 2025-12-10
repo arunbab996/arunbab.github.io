@@ -9,9 +9,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
-    /* --- FIX 1: HIDE THE GHOST HEADER --- */
-    /* Since this page doesn't have nav styles, we hide the nav from the previous page */
-    header, .nav, .page-top-border { display: none !important; }
+    /* --- FIX: HIDE GLOBAL ELEMENTS --- */
+    /* This hides the Header, Nav, AND Footer from the previous page */
+    header, .nav, .page-top-border, .social-fixed { display: none !important; }
 
     /* --- VARIABLES --- */
     :root {
@@ -31,7 +31,7 @@
       -webkit-font-smoothing: antialiased;
     }
     
-    /* FIX 2: MATCH THE CONTAINER ID FOR SMOOTH SWAP */
+    /* Main Container */
     main#app { 
       max-width: var(--maxw); 
       margin: 0 auto; 
