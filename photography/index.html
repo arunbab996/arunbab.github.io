@@ -77,7 +77,7 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      padding-bottom: 70px; /* Balanced padding */
+      padding-bottom: 60px; 
       position: relative;
     }
 
@@ -93,10 +93,8 @@
     }
 
     .photo-frame img {
-      /* THE FIX: 220px gives perfect breathing room for Header + Footer 
-         while keeping the image large and impressive.
-      */
-      max-height: calc(100vh - 220px);
+      /* Adjusted to make room for 2 lines of text below */
+      max-height: calc(100vh - 260px);
       max-width: 90vw;
       object-fit: contain; 
       border-radius: 4px;
@@ -135,15 +133,15 @@
 
     .show-caption { opacity: 1 !important; }
 
-    /* === HINT === */
+    /* === HINT (FIXED) === */
     .caption-hint {
-      position: absolute;
-      bottom: 100px; 
-      font-size: 12px;
-      color: var(--muted);
-      opacity: 0.5;
-      pointer-events: none; 
+      /* Changed from Absolute to Relative so it stacks nicely */
+      margin-top: 8px; 
+      font-size: 11px;
+      color: #999; /* Lighter color so it fights less with location */
+      opacity: 0.6;
       transition: opacity 0.3s ease;
+      pointer-events: none; 
     }
 
     .social-fixed{
@@ -228,9 +226,11 @@
         Tokyo, Japan
       </div>
 
+      <div id="instruction-hint" class="caption-hint">
+        (Click anywhere to view next)
+      </div>
+
     </div>
-    
-    <div id="instruction-hint" class="caption-hint">Click anywhere to view next</div>
   </main>
 
   <div class="social-fixed">
