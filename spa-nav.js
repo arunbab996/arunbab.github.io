@@ -24,7 +24,26 @@
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
 
-      // 🔒 NEVER touch <head>
+      /* ===============================
+         1. SWAP PAGE-SPECIFIC STYLES
+         =============================== */
+
+      // Remove old page styles
+      document
+        .querySelectorAll("style[data-page-style]")
+        .forEach(s => s.remove());
+
+      // Inject new page styles
+      doc
+        .querySelectorAll("style[data-page-style]")
+        .forEach(style => {
+          document.head.appendChild(style.cloneNode(true));
+        });
+
+      /* ===============================
+         2. SWAP MAIN CONTENT ONLY
+         =============================== */
+
       const newMain = doc.querySelector("main");
       const currentMain = document.querySelector("main");
 
@@ -35,7 +54,10 @@
 
       currentMain.replaceWith(newMain);
 
-      // Update active nav
+      /* ===============================
+         3. UPDATE ACTIVE NAV STATE
+         =============================== */
+
       document.querySelectorAll(".nav a").forEach(a => {
         const href = a.getAttribute("href");
         a.classList.toggle("active", href === url);
@@ -50,7 +72,10 @@
     unlock();
   }
 
-  // Intercept SPA links
+  /* ===============================
+     LINK INTERCEPTION
+     =============================== */
+
   document.addEventListener("click", e => {
     const link = e.target.closest("a[data-spa]");
     if (!link) return;
@@ -62,11 +87,17 @@
     navigate(url);
   });
 
-  // Back / forward support
+  /* ===============================
+     BACK / FORWARD SUPPORT
+     =============================== */
+
   window.addEventListener("popstate", () => {
     navigate(location.pathname, false);
   });
 
-  // Initial ready
+  /* ===============================
+     INITIAL READY
+     =============================== */
+
   document.documentElement.classList.add(READY_CLASS);
 })();
