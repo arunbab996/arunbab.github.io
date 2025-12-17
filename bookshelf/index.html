@@ -80,7 +80,6 @@
       row-gap:var(--row-gap);
     }
 
-    /* ANIMATION */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -102,7 +101,7 @@
       background:#e7e8eb;
       box-shadow:0 6px 14px rgba(15,23,42,0.10);
       transition: transform 0.18s ease;
-      position: relative; /* For broken image fallback */
+      position: relative;
     }
     
     .book-card:hover .book-cover {
@@ -168,83 +167,79 @@
       <div class="books-loading">Loading library…</div>
     </div>
 
+    <script>
+      window.initBookshelf = function() {
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1IY-ictcATAZNfcJajwkKCJlT7-b7SBwPl_q2RZ4ntCc/export?format=csv&gid=861814196';
+        const CACHE_KEY = 'arun_books_v1';
+        const container = document.getElementById('books-container');
+
+        // Render Function
+        function render(csvData) {
+          const rows = csvData.split(/\r?\n/);
+          if(rows.length > 1) container.innerHTML = '';
+
+          const cleanRows = rows.filter(r => r.trim().length > 0);
+          
+          cleanRows.slice(1).forEach((row, index) => {
+            // Updated Regex to handle quoted CSV fields correctly
+            const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/; 
+            const cols = row.split(regex).map(c => c.replace(/^"|"$/g, '').trim());
+
+            const title = cols[0]; 
+            const author = cols[1];
+            const cover = cols[2];
+
+            if (!title) return;
+
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.style.animationDelay = (index * 0.05) + 's';
+
+            // Safe fallback image logic inside the HTML string
+            card.innerHTML = `
+              <div class="book-cover">
+                <img 
+                  src="${cover || ''}" 
+                  alt="${title}" 
+                  loading="lazy"
+                  onerror="this.onerror=null;this.src='https://placehold.co/100x155/e7e8eb/a3a3a3?text=No+Cover'"
+                >
+              </div>
+              <div class="book-title">${title}</div>
+              <div class="book-author">${author || ''}</div>
+            `;
+            container.appendChild(card);
+          });
+        }
+
+        // 1. Instant Load from Cache
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        if (cachedData) render(cachedData);
+
+        // 2. Fetch Fresh Data
+        fetch(SHEET_URL)
+          .then(res => {
+            if (!res.ok) throw new Error('Fetch failed');
+            return res.text();
+          })
+          .then(csv => {
+            if (csv !== cachedData) {
+              localStorage.setItem(CACHE_KEY, csv);
+              render(csv);
+            }
+          })
+          .catch(err => {
+            if (!cachedData) {
+              container.innerHTML = '<div class="books-loading">Failed to load library.</div>';
+            }
+          });
+      };
+    </script>
+
     <img 
       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
       style="display:none;" 
-      onload="
-        (function() {
-          const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1IY-ictcATAZNfcJajwkKCJlT7-b7SBwPl_q2RZ4ntCc/export?format=csv&gid=861814196';
-          const CACHE_KEY = 'arun_books_v1';
-          const container = document.getElementById('books-container');
-
-          // --- RENDER FUNCTION ---
-          window.renderBooks = function(csvData) {
-            const rows = csvData.split(/\r?\n/);
-            
-            if(rows.length > 1) container.innerHTML = '';
-
-            const cleanRows = rows.filter(r => r.trim().length > 0);
-            
-            cleanRows.slice(1).forEach((row, index) => {
-              // FIX: Correctly split CSVs that use Double Quotes for commas
-              const cols = row.split(/,(?=(?:(?:[^' + '\x22' + ']*' + '\x22' + '){2})*[^' + '\x22' + ']*$)/);
-
-              // Remove quotes from the result
-              const cleanCols = cols.map(c => c.replace(/^[\x22']|[\x22']$/g, '').trim());
-
-              const title = cleanCols[0]; 
-              const author = cleanCols[1];
-              const cover = cleanCols[2];
-
-              // Basic validation
-              if (!title) return;
-
-              const card = document.createElement('div');
-              card.className = 'book-card';
-              card.style.animationDelay = (index * 0.05) + 's';
-
-              // Added 'onerror' to swap broken images with a neat placeholder
-              card.innerHTML = `
-                <div class='book-cover'>
-                  <img 
-                    src='${cover || ''}' 
-                    alt='${title}' 
-                    loading='lazy'
-                    onerror='this.onerror=null;this.src=\"https://placehold.co/100x155/e7e8eb/a3a3a3?text=No+Cover\"'
-                  >
-                </div>
-                <div class='book-title'>${title}</div>
-                <div class='book-author'>${author || ''}</div>
-              `;
-              container.appendChild(card);
-            });
-          };
-
-          // --- INSTANT LOAD ---
-          const cachedData = localStorage.getItem(CACHE_KEY);
-          if (cachedData) {
-            window.renderBooks(cachedData);
-          }
-
-          // --- FETCH UPDATE ---
-          fetch(SHEET_URL)
-            .then(res => {
-              if (!res.ok) throw new Error('Fetch failed');
-              return res.text();
-            })
-            .then(csv => {
-              if (csv !== cachedData) {
-                localStorage.setItem(CACHE_KEY, csv);
-                window.renderBooks(csv);
-              }
-            })
-            .catch(err => {
-              if (!cachedData) {
-                container.innerHTML = '<div class=books-loading>Failed to load library.</div>';
-              }
-            });
-        })();
-      "
+      onload="if(window.initBookshelf) window.initBookshelf();"
     />
   </main>
 
