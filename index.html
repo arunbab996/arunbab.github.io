@@ -16,7 +16,6 @@
     html { visibility: hidden; }
     html.ready { visibility: visible; }
 
-    /* --- 1. GLOBAL VARIABLES --- */
     :root{
       --bg:#dbe2eb;
       --text:#151515;
@@ -34,7 +33,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* --- 2. HEADER & NAV (LOCKED ORDER) --- */
     .page-top-border{height:3px;background:rgba(0,0,0,0.08);}
 
     header{
@@ -56,7 +54,7 @@
       font-size:15px;
       font-weight:600;
       color:#706A68;
-      white-space:nowrap;              /* prevents reflow */
+      white-space:nowrap;
     }
 
     .nav a{
@@ -65,7 +63,7 @@
       padding-bottom:2px;
       border-bottom:2px solid transparent;
       transition:color .2s ease;
-      flex:0 0 auto;                   /* prevents swapping */
+      flex:0 0 auto;
     }
 
     .nav a:hover{color:var(--text);}
@@ -74,7 +72,6 @@
       border-bottom-color:var(--text);
     }
 
-    /* --- 3. MAIN CONTENT --- */
     main{
       max-width:var(--max-width);
       margin:64px auto;
@@ -117,10 +114,7 @@
       font-weight:400;
     }
 
-    .spacer{
-      display:block;
-      margin-bottom:24px;
-    }
+    .spacer{display:block;margin-bottom:24px;}
 
     .current a{
       color:#000;
@@ -130,16 +124,10 @@
       text-decoration-color:rgba(0,0,0,.3);
     }
 
-    .current a:hover{
-      text-decoration-color:#000;
-    }
+    .current a:hover{text-decoration-color:#000;}
 
-    .current strong{
-      font-weight:700;
-      color:#111;
-    }
+    .current strong{font-weight:700;color:#111;}
 
-    /* --- 4. FOOTER --- */
     .social-fixed{
       position:fixed;
       bottom:28px;
@@ -159,25 +147,8 @@
     }
 
     .social-fixed a:hover{opacity:.6;}
-
-    /* --- 5. STAGGER --- */
-    @keyframes fadeUp{
-      from{opacity:0;transform:translateY(15px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-
-    .stagger-wrapper>*{
-      opacity:0;
-      animation:fadeUp .6s cubic-bezier(.16,1,.3,1) forwards;
-    }
-
-    .stagger-wrapper>*:nth-child(1){animation-delay:.1s}
-    .stagger-wrapper>*:nth-child(2){animation-delay:.2s}
-    .stagger-wrapper>*:nth-child(3){animation-delay:.3s}
-    .stagger-wrapper>*:nth-child(4){animation-delay:.4s}
   </style>
 
-  <!-- UNHIDE AFTER FONTS -->
   <script>
     document.documentElement.classList.add("ready");
   </script>
@@ -197,7 +168,7 @@
   </header>
 
   <main id="app">
-    <section class="stagger-wrapper">
+    <section>
       <div class="name">Arun Baburaj</div>
 
       <div class="desc">
@@ -219,15 +190,9 @@
   </main>
 
   <div class="social-fixed">
-    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
-      <!-- svg unchanged -->
-    </a>
-    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
-      <!-- svg unchanged -->
-    </a>
-    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
-      <!-- svg unchanged -->
-    </a>
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn"></a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X"></a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email"></a>
   </div>
 
   <script src="/spa-nav.js"></script>
