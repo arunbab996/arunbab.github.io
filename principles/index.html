@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Arun Baburaj — Principles</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -82,16 +82,10 @@
       counter-reset:p;
     }
 
-    /* ADDED: Animation Keyframes */
+    /* MATCHING PORTFOLIO ANIMATION */
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     li{
@@ -100,9 +94,10 @@
       gap:12px;
       margin-bottom:18px;
       
-      /* ADDED: Animation Initial State */
+      /* Initial state */
       opacity: 0;
-      animation: fadeUp 0.6s ease forwards;
+      /* Exact speed and bezier curve from Portfolio */
+      animation: fadeUp 0.5s cubic-bezier(.2,.8,.2,1) forwards;
     }
 
     li::before{
@@ -122,10 +117,6 @@
       color:var(--muted);
       line-height:1.45;
     }
-
-    /* =====================
-       FOOTER — HARD LOCK
-       ===================== */
 
     .social-fixed{
       position:fixed;
