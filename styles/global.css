@@ -1,11 +1,23 @@
+/* ===== HARD LAYOUT LOCK (kills FOUC) ===== */
+html.spa-loading body {
+  visibility: hidden;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ===== VARIABLES ===== */
 :root{
   --bg:#f4f5f7;
   --text:#111219;
   --muted:#5b6066;
-  --max-width:640px;
   --nav-gap:28px;
+  --nav-width:640px;
 }
 
+/* ===== RESET ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
@@ -15,13 +27,7 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 
-a{color:inherit;text-decoration:none}
-
-.page-top-border{
-  height:3px;
-  background:rgba(0,0,0,.08);
-}
-
+/* ===== HEADER / NAV (LOCKED) ===== */
 header{
   display:flex;
   justify-content:center;
@@ -31,18 +37,19 @@ header{
 }
 
 .nav{
-  max-width:var(--max-width);
-  width:100%;
+  width:var(--nav-width);
   display:flex;
-  gap:var(--nav-gap);
+  justify-content:space-between; /* 🔒 prevents reordering */
   padding:20px 16px;
   font-size:15px;
   font-weight:600;
-  color:var(--muted);
-  white-space:nowrap;          /* FIX nav jumping */
+  white-space:nowrap;
 }
 
 .nav a{
+  flex:0 0 auto;                /* 🔒 prevents width collapse */
+  min-width:92px;               /* 🔒 prevents text swap jump */
+  text-align:center;
   padding-bottom:2px;
   border-bottom:2px solid transparent;
   color:var(--muted);
@@ -53,6 +60,14 @@ header{
   border-bottom-color:var(--text);
 }
 
+/* ===== MAIN ===== */
+main{
+  max-width:1120px;
+  margin:40px auto 60px;
+  padding:0 32px 100px;
+}
+
+/* ===== FOOTER ===== */
 .social-fixed{
   position:fixed;
   bottom:28px;
