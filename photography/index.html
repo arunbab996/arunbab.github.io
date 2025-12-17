@@ -11,26 +11,49 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
-    html { visibility: hidden; }
+    /* 1. STABLE HEADER FIX */
+    html { 
+      visibility: hidden; 
+      overflow-y: scroll; 
+    }
     html.ready { visibility: visible; }
 
-    body{
-      background:#f4f5f7;
-      font-family:Inter,-apple-system,system-ui;
-      -webkit-font-smoothing:antialiased;
+    :root{
+      --bg:#f4f5f7;
+      --text:#111219;
+      --muted:#5b6066;
+      --nav-gap:28px;
     }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    body{
+      background:var(--bg);
+      font-family:Inter,-apple-system,system-ui;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      /* Ensure full height to center content vertically */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-top-border{height:3px;background:rgba(0,0,0,0.08)}
 
     header{
       display:flex;
       justify-content:center;
-      border-bottom:1px solid rgba(0,0,0,0.08);
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      background:rgba(244,245,247,0.96);
+      backdrop-filter:blur(10px);
+      flex-shrink: 0; /* Prevent header from squishing */
     }
 
     .nav{
       max-width:640px;
       width:100%;
       display:flex;
-      gap:28px;
+      gap:var(--nav-gap);
       padding:20px 16px;
       font-size:15px;
       font-weight:600;
@@ -38,35 +61,71 @@
     }
 
     .nav a{
-      color:#5b6066;
-      text-decoration:none;
+      color:var(--muted);
       padding-bottom:2px;
       border-bottom:2px solid transparent;
+      text-decoration:none;
     }
 
     .nav a.active{
-      color:#111;
-      border-bottom-color:#111;
+      color:var(--text);
+      border-bottom-color:var(--text);
     }
 
+    /* === MAIN PHOTO CONTAINER === */
     main{
-      min-height:70vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding-bottom:140px; /* footer clearance */
+      flex-grow: 1; /* Fills available space between header/footer */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      width: 100%;
+      max-width: 100vw;
     }
 
-    img{
-      max-width:90%;
-      max-height:70vh;
-      object-fit:contain;
+    /* THE PHOTO */
+    .photo-frame {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
     }
 
-    /* =====================
-       FOOTER — HARD LOCK
-       ===================== */
+    .photo-frame img {
+      max-width: 100%;
+      max-height: 75vh; /* Leaves room for header/footer */
+      object-fit: contain;
+      cursor: pointer; /* Tells user it's clickable */
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      
+      /* Smooth fade transition */
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
 
+    /* Class to trigger the snappy fade-in animation */
+    .fade-in {
+      animation: snappyFade 0.5s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    @keyframes snappyFade {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* PHOTO CAPTION (Optional, appears on hover) */
+    .caption-hint {
+      position: absolute;
+      bottom: 100px;
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* FOOTER */
     .social-fixed{
       position:fixed;
       bottom:28px;
@@ -74,27 +133,18 @@
       transform:translateX(-50%);
       display:flex;
       gap:28px;
-      align-items:center;
-      z-index:1000;
+      z-index:40;
     }
 
-    .social-fixed a{
-      color:#000 !important;
-      display:flex;
-      align-items:center;
-    }
-
-    .social-fixed svg{
-      display:block;
-    }
+    .social-fixed a{color:#000;}
   </style>
 
-  <script>
-    document.documentElement.classList.add("ready");
-  </script>
+  <script>document.documentElement.classList.add("ready");</script>
 </head>
 
 <body>
+  <div class="page-top-border"></div>
+
   <header>
     <nav class="nav">
       <a href="/" data-spa>Index</a>
@@ -106,14 +156,69 @@
   </header>
 
   <main id="app">
-    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Photography placeholder" />
+    <div class="photo-frame">
+      <img id="main-photo" src="" alt="Photography">
+    </div>
+    <div class="caption-hint">Click photo to view next</div>
   </main>
 
-  <!-- FOOTER -->
   <div class="social-fixed">
-    <!-- SAME SVGs AS HOME (LinkedIn / X / Email) -->
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/>
+      </svg>
+    </a>
+    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/>
+      </svg>
+    </a>
+    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+      </svg>
+    </a>
   </div>
 
   <script src="/spa-nav.js"></script>
+
+  <script>
+    // Replace these URLs with your actual photos
+    const photos = [
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80",
+      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600&q=80",
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80",
+      "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1600&q=80",
+      "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1600&q=80"
+    ];
+
+    let currentIndex = 0;
+    const imgElement = document.getElementById("main-photo");
+
+    // Function to update image with animation
+    function showPhoto(index) {
+      // 1. Remove animation class to reset
+      imgElement.classList.remove("fade-in");
+      
+      // 2. Small timeout to allow browser to register the removal
+      //    (This triggers the reflow so animation plays again)
+      void imgElement.offsetWidth; 
+
+      // 3. Change source
+      imgElement.src = photos[index];
+
+      // 4. Add animation class
+      imgElement.classList.add("fade-in");
+    }
+
+    // Initialize first photo
+    showPhoto(currentIndex);
+
+    // Click Event: Infinite Loop
+    imgElement.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % photos.length;
+      showPhoto(currentIndex);
+    });
+  </script>
 </body>
 </html>
