@@ -93,7 +93,6 @@
     }
 
     .photo-frame img {
-      /* Adjusted to make room for 2 lines of text below */
       max-height: calc(100vh - 260px);
       max-width: 90vw;
       object-fit: contain; 
@@ -118,27 +117,42 @@
       100% { opacity: 1; transform: scale(1); filter: blur(0px); }
     }
 
-    /* === CAPTION === */
+    /* === CAPTION STYLES === */
+    .caption-container {
+      margin-top: 22px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     .location-caption {
-      margin-top: 22px; 
       color: var(--muted);
       font-size: 14px;
       font-weight: 500;
-      text-align: center;
       letter-spacing: 0.01em;
       opacity: 0;
       transition: opacity 0.4s ease;
       pointer-events: none;
     }
 
+    .date-caption {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0; 
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      filter: opacity(0.7); 
+    }
+
     .show-caption { opacity: 1 !important; }
 
-    /* === HINT (FIXED) === */
+    /* === HINT === */
     .caption-hint {
-      /* Changed from Absolute to Relative so it stacks nicely */
-      margin-top: 8px; 
+      margin-top: 12px; 
       font-size: 11px;
-      color: #999; /* Lighter color so it fights less with location */
+      color: #999;
       opacity: 0.6;
       transition: opacity 0.3s ease;
       pointer-events: none; 
@@ -181,49 +195,15 @@
         class="fade-in"
         src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic" 
         alt="Photography"
-        onload="
-          window.myPhotos = [
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic', loc: 'Kabukicho, Shinjuku' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic', loc: 'Osaka, Japan' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic', loc: 'Osaka, Japan' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic', loc: 'Asakusa, Tokyo' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic', loc: 'Osaka Castle, Osaka' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic', loc: 'Kinkaku-ji, Kyoto' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan' }
-          ];
-
-          window.nextPhoto = function() {
-            const img = document.getElementById('main-photo');
-            const caption = document.getElementById('location-caption');
-            const hint = document.getElementById('instruction-hint');
-
-            // Hide hint on first click
-            if(hint) hint.style.display = 'none';
-
-            let idx = parseInt(img.getAttribute('data-index') || '0');
-            idx = (idx + 1) % window.myPhotos.length;
-            
-            img.classList.remove('fade-in');
-            caption.classList.remove('show-caption');
-            
-            void img.offsetWidth;
-            
-            const photoData = window.myPhotos[idx];
-            img.src = photoData.url;
-            img.setAttribute('data-index', idx);
-            caption.innerText = photoData.loc; 
-            
-            img.classList.add('fade-in');
-            setTimeout(() => caption.classList.add('show-caption'), 50);
-          };
-        "
       >
 
-      <div id="location-caption" class="location-caption show-caption">
-        Tokyo, Japan
+      <div class="caption-container">
+        <div id="location-text" class="location-caption show-caption">
+          Tokyo, Japan
+        </div>
+        <div id="date-text" class="date-caption show-caption">
+          Sep 2024
+        </div>
       </div>
 
       <div id="instruction-hint" class="caption-hint">
@@ -231,6 +211,63 @@
       </div>
 
     </div>
+
+    <img 
+      src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+      style="display:none;" 
+      onload="
+        (function(){
+          // === YOUR DATA ===
+          window.myPhotos = [
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic', loc: 'Kabukicho, Shinjuku', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic', loc: 'Asakusa, Tokyo', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic', loc: 'Osaka Castle, Osaka', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic', loc: 'Kinkaku-ji, Kyoto', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
+          ];
+
+          // === LOGIC ===
+          window.nextPhoto = function() {
+            const img = document.getElementById('main-photo');
+            const locText = document.getElementById('location-text');
+            const dateText = document.getElementById('date-text');
+            const hint = document.getElementById('instruction-hint');
+
+            if(hint) hint.style.display = 'none';
+
+            let idx = parseInt(img.getAttribute('data-index') || '0');
+            idx = (idx + 1) % window.myPhotos.length;
+            
+            // Animation Reset
+            img.classList.remove('fade-in');
+            locText.classList.remove('show-caption');
+            dateText.classList.remove('show-caption');
+            
+            // Reflow
+            void img.offsetWidth;
+            
+            // Update
+            const photoData = window.myPhotos[idx];
+            img.src = photoData.url;
+            img.setAttribute('data-index', idx);
+            locText.innerText = photoData.loc; 
+            dateText.innerText = photoData.date;
+            
+            // Animation Start
+            img.classList.add('fade-in');
+            setTimeout(() => {
+              locText.classList.add('show-caption');
+              dateText.classList.add('show-caption');
+            }, 50);
+          };
+        })();
+      "
+    />
   </main>
 
   <div class="social-fixed">
