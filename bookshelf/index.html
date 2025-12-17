@@ -167,80 +167,84 @@
       <div class="books-loading">Loading library…</div>
     </div>
 
-    <script>
-      // Using the faster "export" endpoint instead of "gviz"
-      const SHEET_URL = "https://docs.google.com/spreadsheets/d/1IY-ictcATAZNfcJajwkKCJlT7-b7SBwPl_q2RZ4ntCc/export?format=csv&gid=861814196";
-      const CACHE_KEY = "arun_books_v1";
+    <img 
+      src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+      style="display:none;" 
+      onload="
+        (function() {
+          const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1IY-ictcATAZNfcJajwkKCJlT7-b7SBwPl_q2RZ4ntCc/export?format=csv&gid=861814196';
+          const CACHE_KEY = 'arun_books_v1';
+          const container = document.getElementById('books-container');
 
-      // --- 1. RENDER FUNCTION ---
-      function renderBooks(csvData) {
-        const rows = csvData.split(/\r?\n/);
-        const container = document.getElementById("books-container");
-        
-        // Only clear container if we found data
-        if(rows.length > 1) container.innerHTML = "";
+          // --- RENDER FUNCTION ---
+          window.renderBooks = function(csvData) {
+            const rows = csvData.split(/\r?\n/);
+            
+            // Only clear container if we found data
+            if(rows.length > 1) container.innerHTML = '';
 
-        // Filter empty rows
-        const cleanRows = rows.filter(r => r.trim().length > 0);
-        
-        // Skip header row (slice 1)
-        cleanRows.slice(1).forEach((row, index) => {
-          // Robust CSV parsing for commas inside quotes
-          const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c =>
-            c.replace(/^"|"$/g, "")
-          );
+            const cleanRows = rows.filter(r => r.trim().length > 0);
+            
+            // Skip header row
+            cleanRows.slice(1).forEach((row, index) => {
+              // CSV Parsing
+              const cols = row.split(/,(?=(?:(?:[^']*'){2})*[^']*$)/).map(c =>
+                c.replace(/^'|'$/g, '').replace(/^&quot;|&quot;$/g, '')
+              );
 
-          const [title, author, cover] = cols;
-          if (!title || !cover) return;
+              // Handle simple CSV splitting if regex fails or quotes differ
+              const rawCols = row.split(',');
+              // Fallback to simple split if complex parsing acts up on simple data
+              const title = cols[0] || rawCols[0]; 
+              const author = cols[1] || rawCols[1];
+              const cover = cols[2] || rawCols[2];
 
-          const card = document.createElement("div");
-          card.className = "book-card";
-          
-          // Animation Stagger (0.05s per book)
-          card.style.animationDelay = `${index * 0.05}s`;
+              if (!title || !cover) return;
 
-          card.innerHTML = `
-            <div class="book-cover">
-              <img src="${cover}" alt="${title}" loading="lazy">
-            </div>
-            <div class="book-title">${title}</div>
-            <div class="book-author">${author || ""}</div>
-          `;
-          container.appendChild(card);
-        });
-      }
+              const card = document.createElement('div');
+              card.className = 'book-card';
+              card.style.animationDelay = (index * 0.05) + 's';
 
-      // --- 2. INSTANT LOAD (From Cache) ---
-      const cachedData = localStorage.getItem(CACHE_KEY);
-      if (cachedData) {
-        renderBooks(cachedData);
-      }
+              card.innerHTML = `
+                <div class='book-cover'>
+                  <img src='${cover}' alt='${title}' loading='lazy'>
+                </div>
+                <div class='book-title'>${title}</div>
+                <div class='book-author'>${author || ''}</div>
+              `;
+              container.appendChild(card);
+            });
+          };
 
-      // --- 3. BACKGROUND UPDATE (From Google) ---
-      fetch(SHEET_URL)
-        .then(res => {
-          if (!res.ok) throw new Error("Fetch failed");
-          return res.text();
-        })
-        .then(csv => {
-          // If data has changed, update cache and re-render
-          if (csv !== cachedData) {
-            localStorage.setItem(CACHE_KEY, csv);
-            renderBooks(csv);
+          // --- INSTANT LOAD ---
+          const cachedData = localStorage.getItem(CACHE_KEY);
+          if (cachedData) {
+            window.renderBooks(cachedData);
           }
-        })
-        .catch(err => {
-          // If no cache and fetch fails, show error
-          if (!cachedData) {
-            document.getElementById("books-container").innerHTML = 
-              "<div class='books-loading'>Failed to load library.</div>";
-          }
-        });
-    </script>
+
+          // --- FETCH UPDATE ---
+          fetch(SHEET_URL)
+            .then(res => {
+              if (!res.ok) throw new Error('Fetch failed');
+              return res.text();
+            })
+            .then(csv => {
+              if (csv !== cachedData) {
+                localStorage.setItem(CACHE_KEY, csv);
+                window.renderBooks(csv);
+              }
+            })
+            .catch(err => {
+              if (!cachedData) {
+                container.innerHTML = '<div class=books-loading>Failed to load library.</div>';
+              }
+            });
+        })();
+      "
+    />
   </main>
 
-  <div class="social-fixed">
-    </div>
+  <div class="social-fixed"></div>
 
   <script src="/spa-nav.js"></script>
 </body>
