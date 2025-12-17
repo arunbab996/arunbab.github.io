@@ -96,18 +96,42 @@
       max-width: 90vw;
       object-fit: contain; 
       border-radius: 4px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      
+      /* Shadow for depth */
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       
       opacity: 0; 
-      transform: scale(0.98);
       pointer-events: none; 
+      
+      transform: scale(1.02);
+      filter: blur(10px);
+      transition: none;
     }
 
-    /* === LOCATION PILL === */
+    /* === ANIMATION: Cinema Focus === */
+    .fade-in {
+      animation: cinemaFocus 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    @keyframes cinemaFocus {
+      0% { 
+        opacity: 0; 
+        transform: scale(1.02); 
+        filter: blur(8px);
+      }
+      100% { 
+        opacity: 1; 
+        transform: scale(1); 
+        filter: blur(0px);
+      }
+    }
+
+    /* === UPDATED: BOTTOM RIGHT LOCATION === */
     .location-pill {
       position: absolute;
       bottom: 24px;
-      left: 24px;
+      right: 24px; /* Docked to the right */
+      left: auto;  /* Remove left positioning */
       
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(8px);
@@ -129,27 +153,17 @@
       z-index: 10;
     }
 
+    /* Mobile Adjustment */
     @media (max-width: 450px) {
       .location-pill {
         bottom: 16px;
-        left: 16px;
+        right: 16px;
         font-size: 12px;
         padding: 6px 12px;
       }
     }
 
-    .fade-in {
-      animation: smoothPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .show-pill {
-      opacity: 1 !important;
-    }
-
-    @keyframes smoothPop {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
-    }
+    .show-pill { opacity: 1 !important; }
 
     .caption-hint {
       position: absolute;
@@ -223,20 +237,20 @@
             let idx = parseInt(img.getAttribute('data-index') || '0');
             idx = (idx + 1) % window.myPhotos.length;
             
-            // 1. Fade Out
+            // 1. Reset Animation
             img.classList.remove('fade-in');
             label.classList.remove('show-pill');
             
-            // 2. Reflow
+            // 2. Force Reflow
             void img.offsetWidth;
             
-            // 3. Update Data
+            // 3. Update Content
             const photoData = window.myPhotos[idx];
             img.src = photoData.url;
             img.setAttribute('data-index', idx);
             label.innerText = photoData.loc; 
             
-            // 4. Fade In
+            // 4. Animate In
             img.classList.add('fade-in');
             setTimeout(() => label.classList.add('show-pill'), 50);
           };
