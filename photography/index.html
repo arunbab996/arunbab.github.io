@@ -77,8 +77,7 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      /* Reduced padding to let image grow */
-      padding-bottom: 60px; 
+      padding-bottom: 70px; /* Balanced padding */
       position: relative;
     }
 
@@ -94,11 +93,11 @@
     }
 
     .photo-frame img {
-      /* UPDATED: -160px instead of -280px.
-         This makes the image significantly taller.
+      /* THE FIX: 220px gives perfect breathing room for Header + Footer 
+         while keeping the image large and impressive.
       */
-      max-height: calc(100vh - 160px);
-      max-width: 92vw; /* Slight width increase too */
+      max-height: calc(100vh - 220px);
+      max-width: 90vw;
       object-fit: contain; 
       border-radius: 4px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -123,7 +122,7 @@
 
     /* === CAPTION === */
     .location-caption {
-      margin-top: 20px; 
+      margin-top: 22px; 
       color: var(--muted);
       font-size: 14px;
       font-weight: 500;
@@ -139,15 +138,12 @@
     /* === HINT === */
     .caption-hint {
       position: absolute;
-      /* Adjusted to float nicely over the bottom area */
-      bottom: 90px; 
+      bottom: 100px; 
       font-size: 12px;
       color: var(--muted);
       opacity: 0.5;
       pointer-events: none; 
       transition: opacity 0.3s ease;
-      /* Ensure it doesn't block clicks */
-      pointer-events: none;
     }
 
     .social-fixed{
@@ -206,7 +202,7 @@
             const caption = document.getElementById('location-caption');
             const hint = document.getElementById('instruction-hint');
 
-            // Hide hint immediately on interaction
+            // Hide hint on first click
             if(hint) hint.style.display = 'none';
 
             let idx = parseInt(img.getAttribute('data-index') || '0');
