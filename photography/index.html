@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
     /* 1. SCROLLBAR FIX */
@@ -77,12 +77,13 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      padding-bottom: 60px; 
+      padding-bottom: 80px; /* Increased padding for caption space */
       position: relative;
     }
 
     .photo-frame {
       display: flex;
+      flex-direction: column; /* Stack image and caption vertically */
       justify-content: center;
       align-items: center;
       width: 100%;
@@ -92,7 +93,7 @@
     }
 
     .photo-frame img {
-      max-height: calc(100vh - 220px);
+      max-height: calc(100vh - 260px); /* Adjusted for caption space */
       max-width: 90vw;
       object-fit: contain; 
       border-radius: 4px;
@@ -126,48 +127,25 @@
       }
     }
 
-    /* === UPDATED: BOTTOM RIGHT LOCATION === */
-    .location-pill {
-      position: absolute;
-      bottom: 24px;
-      right: 24px; /* Docked to the right */
-      left: auto;  /* Remove left positioning */
-      
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 13px;
+    /* === NEW: CLEAN LOCATION CAPTION === */
+    .location-caption {
+      margin-top: 20px; /* Space between image and caption */
+      color: var(--muted);
+      font-size: 14px;
       font-weight: 500;
+      text-align: center;
       letter-spacing: 0.01em;
-      
-      padding: 8px 14px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
       
       opacity: 0;
       transition: opacity 0.4s ease;
-      
       pointer-events: none;
-      z-index: 10;
     }
 
-    /* Mobile Adjustment */
-    @media (max-width: 450px) {
-      .location-pill {
-        bottom: 16px;
-        right: 16px;
-        font-size: 12px;
-        padding: 6px 12px;
-      }
-    }
-
-    .show-pill { opacity: 1 !important; }
+    .show-caption { opacity: 1 !important; }
 
     .caption-hint {
       position: absolute;
-      bottom: 80px; 
+      bottom: 30px; 
       font-size: 12px;
       color: var(--muted);
       opacity: 0.5;
@@ -206,10 +184,6 @@
   <main id="app">
     <div class="photo-frame" onclick="if(window.nextPhoto) window.nextPhoto()">
       
-      <div id="location-label" class="location-pill show-pill">
-        Tokyo, Japan
-      </div>
-
       <img 
         id="main-photo" 
         class="fade-in"
@@ -232,14 +206,14 @@
 
           window.nextPhoto = function() {
             const img = document.getElementById('main-photo');
-            const label = document.getElementById('location-label');
+            const caption = document.getElementById('location-caption');
             
             let idx = parseInt(img.getAttribute('data-index') || '0');
             idx = (idx + 1) % window.myPhotos.length;
             
             // 1. Reset Animation
             img.classList.remove('fade-in');
-            label.classList.remove('show-pill');
+            caption.classList.remove('show-caption');
             
             // 2. Force Reflow
             void img.offsetWidth;
@@ -248,14 +222,19 @@
             const photoData = window.myPhotos[idx];
             img.src = photoData.url;
             img.setAttribute('data-index', idx);
-            label.innerText = photoData.loc; 
+            caption.innerText = photoData.loc; 
             
             // 4. Animate In
             img.classList.add('fade-in');
-            setTimeout(() => label.classList.add('show-pill'), 50);
+            setTimeout(() => caption.classList.add('show-caption'), 50);
           };
         "
       >
+
+      <div id="location-caption" class="location-caption show-caption">
+        Tokyo, Japan
+      </div>
+
     </div>
     <div class="caption-hint">Click anywhere to view next</div>
   </main>
