@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj — Principles</title>
+  <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -82,11 +82,27 @@
       counter-reset:p;
     }
 
+    /* ADDED: Animation Keyframes */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     li{
       counter-increment:p;
       display:flex;
       gap:12px;
       margin-bottom:18px;
+      
+      /* ADDED: Animation Initial State */
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
     }
 
     li::before{
@@ -189,12 +205,15 @@
     </ul>
   </main>
 
-  <!-- FOOTER -->
   <div class="social-fixed">
-    <!-- SAME SVGs AS HOME — DO NOT CHANGE -->
-    <!-- (LinkedIn, X, Email) -->
-  </div>
+    </div>
 
   <script src="/spa-nav.js"></script>
+
+  <script>
+    document.querySelectorAll("li").forEach((el, index) => {
+      el.style.animationDelay = `${index * 0.05}s`;
+    });
+  </script>
 </body>
 </html>
