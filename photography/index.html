@@ -77,13 +77,13 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      padding-bottom: 80px; /* Increased padding for caption space */
+      padding-bottom: 80px; 
       position: relative;
     }
 
     .photo-frame {
       display: flex;
-      flex-direction: column; /* Stack image and caption vertically */
+      flex-direction: column; 
       justify-content: center;
       align-items: center;
       width: 100%;
@@ -93,12 +93,10 @@
     }
 
     .photo-frame img {
-      max-height: calc(100vh - 260px); /* Adjusted for caption space */
+      max-height: calc(100vh - 280px); /* Slightly smaller to make room for everything */
       max-width: 90vw;
       object-fit: contain; 
       border-radius: 4px;
-      
-      /* Shadow for depth */
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       
       opacity: 0; 
@@ -109,33 +107,24 @@
       transition: none;
     }
 
-    /* === ANIMATION: Cinema Focus === */
+    /* === ANIMATION === */
     .fade-in {
       animation: cinemaFocus 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
     @keyframes cinemaFocus {
-      0% { 
-        opacity: 0; 
-        transform: scale(1.02); 
-        filter: blur(8px);
-      }
-      100% { 
-        opacity: 1; 
-        transform: scale(1); 
-        filter: blur(0px);
-      }
+      0% { opacity: 0; transform: scale(1.02); filter: blur(8px); }
+      100% { opacity: 1; transform: scale(1); filter: blur(0px); }
     }
 
-    /* === NEW: CLEAN LOCATION CAPTION === */
+    /* === CAPTION === */
     .location-caption {
-      margin-top: 20px; /* Space between image and caption */
+      margin-top: 24px; 
       color: var(--muted);
       font-size: 14px;
       font-weight: 500;
       text-align: center;
       letter-spacing: 0.01em;
-      
       opacity: 0;
       transition: opacity 0.4s ease;
       pointer-events: none;
@@ -143,13 +132,16 @@
 
     .show-caption { opacity: 1 !important; }
 
+    /* === HINT === */
     .caption-hint {
       position: absolute;
-      bottom: 30px; 
+      /* Moved UP to avoid footer overlap */
+      bottom: 100px; 
       font-size: 12px;
       color: var(--muted);
       opacity: 0.5;
       pointer-events: none; 
+      transition: opacity 0.3s ease;
     }
 
     .social-fixed{
@@ -190,7 +182,6 @@
         src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic" 
         alt="Photography"
         onload="
-          // === FULL GALLERY ===
           window.myPhotos = [
             { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan' },
             { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan' },
@@ -207,24 +198,28 @@
           window.nextPhoto = function() {
             const img = document.getElementById('main-photo');
             const caption = document.getElementById('location-caption');
-            
+            const hint = document.getElementById('instruction-hint');
+
+            // 1. Remove the hint forever on first click
+            if(hint) hint.style.display = 'none';
+
             let idx = parseInt(img.getAttribute('data-index') || '0');
             idx = (idx + 1) % window.myPhotos.length;
             
-            // 1. Reset Animation
+            // 2. Reset Animation
             img.classList.remove('fade-in');
             caption.classList.remove('show-caption');
             
-            // 2. Force Reflow
+            // 3. Force Reflow
             void img.offsetWidth;
             
-            // 3. Update Content
+            // 4. Update Content
             const photoData = window.myPhotos[idx];
             img.src = photoData.url;
             img.setAttribute('data-index', idx);
             caption.innerText = photoData.loc; 
             
-            // 4. Animate In
+            // 5. Animate In
             img.classList.add('fade-in');
             setTimeout(() => caption.classList.add('show-caption'), 50);
           };
@@ -236,7 +231,8 @@
       </div>
 
     </div>
-    <div class="caption-hint">Click anywhere to view next</div>
+    
+    <div id="instruction-hint" class="caption-hint">Click anywhere to view next</div>
   </main>
 
   <div class="social-fixed">
