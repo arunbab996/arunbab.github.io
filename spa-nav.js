@@ -1,15 +1,12 @@
 (() => {
   const READY_CLASS = "ready";
-  const LOADING_CLASS = "spa-loading";
 
   function lock() {
     document.documentElement.classList.remove(READY_CLASS);
-    document.documentElement.classList.add(LOADING_CLASS);
   }
 
   function unlock() {
     requestAnimationFrame(() => {
-      document.documentElement.classList.remove(LOADING_CLASS);
       document.documentElement.classList.add(READY_CLASS);
     });
   }
@@ -28,12 +25,10 @@
          1. SWAP PAGE-SPECIFIC STYLES
          =============================== */
 
-      // Remove old page styles
       document
         .querySelectorAll("style[data-page-style]")
         .forEach(s => s.remove());
 
-      // Inject new page styles
       doc
         .querySelectorAll("style[data-page-style]")
         .forEach(style => {
@@ -41,7 +36,7 @@
         });
 
       /* ===============================
-         2. SWAP MAIN CONTENT ONLY
+         2. SWAP MAIN CONTENT
          =============================== */
 
       const newMain = doc.querySelector("main");
@@ -55,7 +50,21 @@
       currentMain.replaceWith(newMain);
 
       /* ===============================
-         3. UPDATE ACTIVE NAV STATE
+         3. RE-RUN PAGE SCRIPTS
+         =============================== */
+
+      newMain.querySelectorAll("script").forEach(oldScript => {
+        const script = document.createElement("script");
+        if (oldScript.src) {
+          script.src = oldScript.src;
+        } else {
+          script.textContent = oldScript.textContent;
+        }
+        oldScript.replaceWith(script);
+      });
+
+      /* ===============================
+         4. UPDATE ACTIVE NAV STATE
          =============================== */
 
       document.querySelectorAll(".nav a").forEach(a => {
@@ -88,7 +97,7 @@
   });
 
   /* ===============================
-     BACK / FORWARD SUPPORT
+     BACK / FORWARD
      =============================== */
 
   window.addEventListener("popstate", () => {
@@ -96,7 +105,7 @@
   });
 
   /* ===============================
-     INITIAL READY
+     INITIAL STATE
      =============================== */
 
   document.documentElement.classList.add(READY_CLASS);
