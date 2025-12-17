@@ -12,10 +12,7 @@
 
   <style data-page-style>
     /* 1. SCROLLBAR FIX */
-    html { 
-      visibility: hidden; 
-      overflow-y: scroll;
-    }
+    html { visibility: hidden; overflow-y: scroll; }
     html.ready { visibility: visible; }
 
     :root{
@@ -85,7 +82,6 @@
       position: relative;
     }
 
-    /* CLICK TARGET WRAPPER */
     .photo-frame {
       display: flex;
       justify-content: center;
@@ -96,15 +92,18 @@
     }
 
     .photo-frame img {
+      /* Vertical Photo Logic: 
+         This calc ensures tall iPhone photos fit perfectly 
+         without getting cut off or needing scroll. */
       max-height: calc(100vh - 220px);
       max-width: 90vw;
+      
       object-fit: contain; 
       border-radius: 4px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       
       opacity: 0; 
       transition: opacity 0.2s ease;
-      /* Ignore clicks on image so they pass to the frame */
       pointer-events: none; 
     }
 
@@ -156,61 +155,54 @@
   </header>
 
   <main id="app">
-    <div class="photo-frame" onclick="if(window.nextPhoto) window.nextPhoto()">
+    <div class="photo-frame" onclick="window.nextPhoto()">
       <img 
         id="main-photo" 
         class="fade-in"
         src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80" 
+        data-index="0"
         alt="Photography"
+        onload="
+          // This list contains your photos. Swap the URLs here!
+          window.myPhotos = [
+            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80',
+            'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600&q=80', 
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80',
+            'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1600&q=80',
+            'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1600&q=80'
+          ];
+
+          // Define the click function globally so the div can find it
+          window.nextPhoto = function() {
+            const img = document.getElementById('main-photo');
+            let idx = parseInt(img.getAttribute('data-index') || '0');
+            
+            // Calculate next index
+            idx = (idx + 1) % window.myPhotos.length;
+            
+            // Reset Animation
+            img.classList.remove('fade-in');
+            void img.offsetWidth; // Force Reflow
+            
+            // Update Image
+            img.src = window.myPhotos[idx];
+            img.setAttribute('data-index', idx);
+            
+            // Play Animation
+            img.classList.add('fade-in');
+          };
+        "
       >
     </div>
     <div class="caption-hint">Click anywhere to view next</div>
   </main>
 
   <div class="social-fixed">
-    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg>
-    </a>
-    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg>
-    </a>
-    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-    </a>
+    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/></svg></a>
+    <a href="https://x.com/96Arun" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg></a>
+    <a href="mailto:arunbaburajc@gmail.com"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
   </div>
 
   <script src="/spa-nav.js"></script>
-
-  <script>
-    {
-      const photos = [
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80", 
-        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600&q=80",
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80",
-        "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1600&q=80",
-        "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1600&q=80"
-      ];
-
-      let currentIndex = 0;
-      
-      // We attach this to 'window' so the HTML onclick="" can see it
-      window.nextPhoto = function() {
-        const imgElement = document.getElementById("main-photo");
-        if(!imgElement) return;
-
-        currentIndex = (currentIndex + 1) % photos.length;
-        
-        // Reset Animation
-        imgElement.classList.remove("fade-in");
-        void imgElement.offsetWidth; // Force Reflow
-        
-        // Swap
-        imgElement.src = photos[currentIndex];
-        
-        // Start Animation
-        imgElement.classList.add("fade-in");
-      };
-    }
-  </script>
 </body>
 </html>
