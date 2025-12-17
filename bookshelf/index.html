@@ -80,7 +80,7 @@
       row-gap:var(--row-gap);
     }
 
-    /* ANIMATION: Same as Portfolio */
+    /* ANIMATION */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -90,9 +90,7 @@
       width:var(--book-width);
       display:flex;
       flex-direction:column;
-      /* Initial state */
       opacity: 0;
-      /* Speed: 0.5s | Curve: Snappy Bezier */
       animation: fadeUp 0.5s cubic-bezier(.2,.8,.2,1) forwards;
     }
 
@@ -104,6 +102,7 @@
       background:#e7e8eb;
       box-shadow:0 6px 14px rgba(15,23,42,0.10);
       transition: transform 0.18s ease;
+      position: relative; /* For broken image fallback */
     }
     
     .book-card:hover .book-cover {
@@ -182,32 +181,37 @@
           window.renderBooks = function(csvData) {
             const rows = csvData.split(/\r?\n/);
             
-            // Only clear container if we found data
             if(rows.length > 1) container.innerHTML = '';
 
             const cleanRows = rows.filter(r => r.trim().length > 0);
             
-            // Skip header row
             cleanRows.slice(1).forEach((row, index) => {
-              // CSV Parsing
-              const cols = row.split(/,(?=(?:(?:[^']*'){2})*[^']*$)/).map(c =>
-                c.replace(/^'|'$/g, '').replace(/^&quot;|&quot;$/g, '')
-              );
+              // FIX: Correctly split CSVs that use Double Quotes for commas
+              const cols = row.split(/,(?=(?:(?:[^' + '\x22' + ']*' + '\x22' + '){2})*[^' + '\x22' + ']*$)/);
 
-              const rawCols = row.split(',');
-              const title = cols[0] || rawCols[0]; 
-              const author = cols[1] || rawCols[1];
-              const cover = cols[2] || rawCols[2];
+              // Remove quotes from the result
+              const cleanCols = cols.map(c => c.replace(/^[\x22']|[\x22']$/g, '').trim());
 
-              if (!title || !cover) return;
+              const title = cleanCols[0]; 
+              const author = cleanCols[1];
+              const cover = cleanCols[2];
+
+              // Basic validation
+              if (!title) return;
 
               const card = document.createElement('div');
               card.className = 'book-card';
               card.style.animationDelay = (index * 0.05) + 's';
 
+              // Added 'onerror' to swap broken images with a neat placeholder
               card.innerHTML = `
                 <div class='book-cover'>
-                  <img src='${cover}' alt='${title}' loading='lazy'>
+                  <img 
+                    src='${cover || ''}' 
+                    alt='${title}' 
+                    loading='lazy'
+                    onerror='this.onerror=null;this.src=\"https://placehold.co/100x155/e7e8eb/a3a3a3?text=No+Cover\"'
+                  >
                 </div>
                 <div class='book-title'>${title}</div>
                 <div class='book-author'>${author || ''}</div>
