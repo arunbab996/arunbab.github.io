@@ -92,9 +92,7 @@
     }
 
     .photo-frame img {
-      /* Vertical Photo Logic: 
-         This calc ensures tall iPhone photos fit perfectly 
-         without getting cut off or needing scroll. */
+      /* Dynamic sizing to fit any screen */
       max-height: calc(100vh - 220px);
       max-width: 90vw;
       
@@ -155,40 +153,41 @@
   </header>
 
   <main id="app">
-    <div class="photo-frame" onclick="window.nextPhoto()">
+    <div class="photo-frame" onclick="if(window.nextPhoto) window.nextPhoto()">
       <img 
         id="main-photo" 
         class="fade-in"
-        src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80" 
-        data-index="0"
+        src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic" 
         alt="Photography"
         onload="
-          // This list contains your photos. Swap the URLs here!
+          // === YOUR PHOTOS ===
+          // I have injected 'f_auto,q_auto' into all links below.
           window.myPhotos = [
-            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80',
-            'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600&q=80', 
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80',
-            'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1600&q=80',
-            'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1600&q=80'
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1015_gzoxxb.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_0716_xvygou.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic',
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic'
           ];
 
-          // Define the click function globally so the div can find it
           window.nextPhoto = function() {
             const img = document.getElementById('main-photo');
             let idx = parseInt(img.getAttribute('data-index') || '0');
             
-            // Calculate next index
             idx = (idx + 1) % window.myPhotos.length;
             
-            // Reset Animation
             img.classList.remove('fade-in');
             void img.offsetWidth; // Force Reflow
             
-            // Update Image
             img.src = window.myPhotos[idx];
             img.setAttribute('data-index', idx);
-            
-            // Play Animation
             img.classList.add('fade-in');
           };
         "
