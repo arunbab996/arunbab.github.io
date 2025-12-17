@@ -72,10 +72,11 @@
       padding:0 32px 120px;
     }
 
+    /* UPDATED: Centered grid and tighter spacing */
     .books-grid{
       display:grid;
       grid-template-columns:repeat(4,var(--book-width));
-      justify-content:space-between;
+      justify-content:center; /* Changed from space-between to center */
       column-gap:var(--gap);
       row-gap:var(--row-gap);
     }
@@ -115,6 +116,7 @@
     .books-loading{
       font-size:14px;
       color:var(--muted);
+      text-align: center; /* Center loading text too */
     }
 
     .social-fixed{
@@ -204,4 +206,3 @@
   <script src="/spa-nav.js"></script>
 </body>
 </html>
-[cite_start]``` [cite: 1]
