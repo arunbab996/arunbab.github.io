@@ -81,6 +81,7 @@
       position: relative;
     }
 
+    /* === FRAME CSS === */
     .photo-frame {
       display: flex;
       flex-direction: column; 
@@ -90,6 +91,20 @@
       height: 100%;
       cursor: pointer;
       position: relative; 
+      
+      /* Disable selection "stickiness" */
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      
+      /* Only transition the transform for the click feel */
+      transition: transform 0.05s ease-out;
+    }
+
+    /* Tactile "Press" Feedback */
+    .photo-frame:active {
+      transform: scale(0.99);
+      opacity: 0.95;
     }
 
     .photo-frame img {
@@ -99,22 +114,9 @@
       border-radius: 4px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       
-      opacity: 0; 
+      /* INSTANT VISIBILITY (No opacity/animation) */
+      opacity: 1; 
       pointer-events: none; 
-      
-      transform: scale(1.02);
-      filter: blur(10px);
-      transition: none;
-    }
-
-    /* === ANIMATION === */
-    .fade-in {
-      animation: cinemaFocus 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    }
-
-    @keyframes cinemaFocus {
-      0% { opacity: 0; transform: scale(1.02); filter: blur(8px); }
-      100% { opacity: 1; transform: scale(1); filter: blur(0px); }
     }
 
     /* === CAPTION STYLES === */
@@ -131,8 +133,6 @@
       font-size: 14px;
       font-weight: 500;
       letter-spacing: 0.01em;
-      opacity: 0;
-      transition: opacity 0.4s ease;
       pointer-events: none;
     }
 
@@ -140,13 +140,9 @@
       color: var(--muted);
       font-size: 12px;
       font-weight: 400;
-      opacity: 0; 
-      transition: opacity 0.4s ease;
       pointer-events: none;
       filter: opacity(0.7); 
     }
-
-    .show-caption { opacity: 1 !important; }
 
     /* === HINT === */
     .caption-hint {
@@ -192,16 +188,15 @@
       
       <img 
         id="main-photo" 
-        class="fade-in"
         src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic" 
         alt="Photography"
       >
 
       <div class="caption-container">
-        <div id="location-text" class="location-caption show-caption">
+        <div id="location-text" class="location-caption">
           Paris, France
         </div>
-        <div id="date-text" class="date-caption show-caption">
+        <div id="date-text" class="date-caption">
           March 2025
         </div>
       </div>
@@ -242,7 +237,6 @@
             { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
           ];
 
-          // === LOGIC ===
           window.nextPhoto = function() {
             const img = document.getElementById('main-photo');
             const locText = document.getElementById('location-text');
@@ -254,27 +248,12 @@
             let idx = parseInt(img.getAttribute('data-index') || '0');
             idx = (idx + 1) % window.myPhotos.length;
             
-            // Animation Reset
-            img.classList.remove('fade-in');
-            locText.classList.remove('show-caption');
-            dateText.classList.remove('show-caption');
-            
-            // Reflow
-            void img.offsetWidth;
-            
-            // Update
+            // UPDATE CONTENT INSTANTLY
             const photoData = window.myPhotos[idx];
             img.src = photoData.url;
             img.setAttribute('data-index', idx);
             locText.innerText = photoData.loc; 
             dateText.innerText = photoData.date;
-            
-            // Animation Start
-            img.classList.add('fade-in');
-            setTimeout(() => {
-              locText.classList.add('show-caption');
-              dateText.classList.add('show-caption');
-            }, 50);
           };
         })();
       "
