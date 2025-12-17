@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj — Bookshelf</title>
+  <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -20,8 +20,9 @@
       --muted:#5b6066;
       --nav-gap:28px;
       --book-width:95px;
-      --gap:22px;
-      --row-gap:28px;
+      /* UPDATED: Increased gaps for better breathing room */
+      --gap:48px;
+      --row-gap:48px;
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -72,19 +73,33 @@
       padding:0 32px 120px;
     }
 
-    /* UPDATED: Centered grid and tighter spacing */
     .books-grid{
       display:grid;
       grid-template-columns:repeat(4,var(--book-width));
-      justify-content:center; /* Changed from space-between to center */
+      justify-content:center;
       column-gap:var(--gap);
       row-gap:var(--row-gap);
+    }
+
+    /* UPDATED: Animation Keyframes */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .book-card{
       width:var(--book-width);
       display:flex;
       flex-direction:column;
+      /* UPDATED: Initial state for animation */
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
     }
 
     .book-cover{
@@ -94,6 +109,12 @@
       overflow:hidden;
       background:#e7e8eb;
       box-shadow:0 6px 14px rgba(15,23,42,0.10);
+      transition: transform 0.2s ease;
+    }
+    
+    /* Optional: subtle hover effect for covers */
+    .book-card:hover .book-cover {
+      transform: translateY(-2px);
     }
 
     .book-cover img{
@@ -116,7 +137,10 @@
     .books-loading{
       font-size:14px;
       color:var(--muted);
-      text-align: center; /* Center loading text too */
+      text-align: center;
+      /* UPDATED: Spans all columns to center properly within the grid */
+      grid-column: 1 / -1;
+      padding: 40px 0;
     }
 
     .social-fixed{
@@ -161,27 +185,30 @@
           return res.text();
         })
         .then(csv => {
-          // Fix: Split by actual newline characters (CRLF or LF)
           const rows = csv.split(/\r?\n/).slice(1);
           const container = document.getElementById("books-container");
+          
+          // Clear loading text
           container.innerHTML = "";
 
-          rows.forEach(row => {
-            // Ignore empty rows
-            if (!row.trim()) return;
+          // Filter rows first to get a clean index for animation
+          const cleanRows = rows.filter(row => row.trim() !== "");
 
-            // Regex to parse CSV properly (handling commas inside quotes)
+          cleanRows.forEach((row, index) => {
             const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c =>
               c.replace(/^"|"$/g, "")
             );
 
             const [title, author, cover] = cols;
-            
-            // Ensure we at least have a title and cover before rendering
             if (!title || !cover) return;
 
             const card = document.createElement("div");
             card.className = "book-card";
+            
+            // UPDATED: Staggered Animation Delay
+            // Delays each book by 0.05s increments
+            card.style.animationDelay = `${index * 0.05}s`;
+
             card.innerHTML = `
               <div class="book-cover">
                 <img src="${cover}" alt="${title}">
