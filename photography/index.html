@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj — Photography</title>
+  <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
-    /* 1. SCROLLBAR FIX */
     html { visibility: hidden; overflow-y: scroll; }
     html.ready { visibility: visible; }
 
@@ -71,7 +70,6 @@
       border-bottom-color:var(--text);
     }
 
-    /* === MAIN CONTAINER === */
     main{
       flex-grow: 1;
       display: flex;
@@ -92,24 +90,26 @@
     }
 
     .photo-frame img {
-      /* Dynamic sizing to fit any screen */
       max-height: calc(100vh - 220px);
       max-width: 90vw;
-      
       object-fit: contain; 
       border-radius: 4px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       
+      /* Default state is hidden to allow fade-in */
       opacity: 0; 
-      transition: opacity 0.2s ease;
+      transform: scale(0.98);
       pointer-events: none; 
     }
 
+    /* UPDATED ANIMATION: 
+       Faster (0.4s) and smoother easing (cubic-bezier) 
+    */
     .fade-in {
-      animation: snappyFade 0.5s cubic-bezier(.2,.8,.2,1) forwards;
+      animation: smoothPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes snappyFade {
+    @keyframes smoothPop {
       from { opacity: 0; transform: scale(0.98); }
       to { opacity: 1; transform: scale(1); }
     }
@@ -157,21 +157,20 @@
       <img 
         id="main-photo" 
         class="fade-in"
-        src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic" 
+        src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic" 
         alt="Photography"
         onload="
-          // === YOUR PHOTOS ===
-          // I have injected 'f_auto,q_auto' into all links below.
+          // === UPDATED PHOTO LIST ===
+          // 1. Removed the 2 images you didn't want.
+          // 2. Moved IMG_0846 to the top.
           window.myPhotos = [
+            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1015_gzoxxb.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_0716_xvygou.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic',
             'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic'
@@ -183,11 +182,17 @@
             
             idx = (idx + 1) % window.myPhotos.length;
             
+            // 1. Remove class to reset animation state
             img.classList.remove('fade-in');
-            void img.offsetWidth; // Force Reflow
             
+            // 2. Force Reflow (Crucial for restarting CSS animation)
+            void img.offsetWidth;
+            
+            // 3. Update Source & Index
             img.src = window.myPhotos[idx];
             img.setAttribute('data-index', idx);
+            
+            // 4. Re-add class to trigger the smooth pop
             img.classList.add('fade-in');
           };
         "
