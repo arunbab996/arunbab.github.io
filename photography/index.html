@@ -85,7 +85,7 @@
       position: relative;
     }
 
-    /* The Frame acts as the click target */
+    /* CLICK TARGET WRAPPER */
     .photo-frame {
       display: flex;
       justify-content: center;
@@ -193,7 +193,7 @@
 
       let currentIndex = 0;
       
-      // Attach to window so HTML onclick can find it
+      // We attach this to 'window' so the HTML onclick="" can see it
       window.nextPhoto = function() {
         const imgElement = document.getElementById("main-photo");
         if(!imgElement) return;
