@@ -77,7 +77,8 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      padding-bottom: 80px; 
+      /* Reduced padding to let image grow */
+      padding-bottom: 60px; 
       position: relative;
     }
 
@@ -93,8 +94,11 @@
     }
 
     .photo-frame img {
-      max-height: calc(100vh - 280px); /* Slightly smaller to make room for everything */
-      max-width: 90vw;
+      /* UPDATED: -160px instead of -280px.
+         This makes the image significantly taller.
+      */
+      max-height: calc(100vh - 160px);
+      max-width: 92vw; /* Slight width increase too */
       object-fit: contain; 
       border-radius: 4px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -119,7 +123,7 @@
 
     /* === CAPTION === */
     .location-caption {
-      margin-top: 24px; 
+      margin-top: 20px; 
       color: var(--muted);
       font-size: 14px;
       font-weight: 500;
@@ -135,13 +139,15 @@
     /* === HINT === */
     .caption-hint {
       position: absolute;
-      /* Moved UP to avoid footer overlap */
-      bottom: 100px; 
+      /* Adjusted to float nicely over the bottom area */
+      bottom: 90px; 
       font-size: 12px;
       color: var(--muted);
       opacity: 0.5;
       pointer-events: none; 
       transition: opacity 0.3s ease;
+      /* Ensure it doesn't block clicks */
+      pointer-events: none;
     }
 
     .social-fixed{
@@ -200,26 +206,22 @@
             const caption = document.getElementById('location-caption');
             const hint = document.getElementById('instruction-hint');
 
-            // 1. Remove the hint forever on first click
+            // Hide hint immediately on interaction
             if(hint) hint.style.display = 'none';
 
             let idx = parseInt(img.getAttribute('data-index') || '0');
             idx = (idx + 1) % window.myPhotos.length;
             
-            // 2. Reset Animation
             img.classList.remove('fade-in');
             caption.classList.remove('show-caption');
             
-            // 3. Force Reflow
             void img.offsetWidth;
             
-            // 4. Update Content
             const photoData = window.myPhotos[idx];
             img.src = photoData.url;
             img.setAttribute('data-index', idx);
             caption.innerText = photoData.loc; 
             
-            // 5. Animate In
             img.classList.add('fade-in');
             setTimeout(() => caption.classList.add('show-caption'), 50);
           };
