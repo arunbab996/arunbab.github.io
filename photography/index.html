@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Arun Baburaj — Photography</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
+    /* 1. SCROLLBAR FIX */
     html { visibility: hidden; overflow-y: scroll; }
     html.ready { visibility: visible; }
 
@@ -87,6 +88,7 @@
       width: 100%;
       height: 100%;
       cursor: pointer;
+      position: relative; 
     }
 
     .photo-frame img {
@@ -96,17 +98,52 @@
       border-radius: 4px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       
-      /* Default state is hidden to allow fade-in */
       opacity: 0; 
       transform: scale(0.98);
       pointer-events: none; 
     }
 
-    /* UPDATED ANIMATION: 
-       Faster (0.4s) and smoother easing (cubic-bezier) 
-    */
+    /* === LOCATION PILL === */
+    .location-pill {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @media (max-width: 450px) {
+      .location-pill {
+        bottom: 16px;
+        left: 16px;
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+    }
+
     .fade-in {
       animation: smoothPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .show-pill {
+      opacity: 1 !important;
     }
 
     @keyframes smoothPop {
@@ -154,46 +191,54 @@
 
   <main id="app">
     <div class="photo-frame" onclick="if(window.nextPhoto) window.nextPhoto()">
+      
+      <div id="location-label" class="location-pill show-pill">
+        Tokyo, Japan
+      </div>
+
       <img 
         id="main-photo" 
         class="fade-in"
         src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic" 
         alt="Photography"
         onload="
-          // === UPDATED PHOTO LIST ===
-          // 1. Removed the 2 images you didn't want.
-          // 2. Moved IMG_0846 to the top.
+          // === FULL GALLERY ===
           window.myPhotos = [
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic',
-            'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic'
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic', loc: 'Kabukicho, Shinjuku' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic', loc: 'Osaka, Japan' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic', loc: 'Osaka, Japan' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic', loc: 'Asakusa, Tokyo' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic', loc: 'Osaka Castle, Osaka' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic', loc: 'Kinkaku-ji, Kyoto' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan' }
           ];
 
           window.nextPhoto = function() {
             const img = document.getElementById('main-photo');
-            let idx = parseInt(img.getAttribute('data-index') || '0');
+            const label = document.getElementById('location-label');
             
+            let idx = parseInt(img.getAttribute('data-index') || '0');
             idx = (idx + 1) % window.myPhotos.length;
             
-            // 1. Remove class to reset animation state
+            // 1. Fade Out
             img.classList.remove('fade-in');
+            label.classList.remove('show-pill');
             
-            // 2. Force Reflow (Crucial for restarting CSS animation)
+            // 2. Reflow
             void img.offsetWidth;
             
-            // 3. Update Source & Index
-            img.src = window.myPhotos[idx];
+            // 3. Update Data
+            const photoData = window.myPhotos[idx];
+            img.src = photoData.url;
             img.setAttribute('data-index', idx);
+            label.innerText = photoData.loc; 
             
-            // 4. Re-add class to trigger the smooth pop
+            // 4. Fade In
             img.classList.add('fade-in');
+            setTimeout(() => label.classList.add('show-pill'), 50);
           };
         "
       >
