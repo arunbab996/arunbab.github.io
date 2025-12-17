@@ -32,11 +32,11 @@
       font-family:Inter,-apple-system,system-ui;
       color:var(--text);
       -webkit-font-smoothing:antialiased;
-      /* Full screen height */
+      /* Full viewport height */
       height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* Lock scroll on this page since it's a single view */
+      overflow: hidden; /* Lock page scroll */
     }
 
     .page-top-border{height:3px;background:rgba(0,0,0,0.08)}
@@ -49,6 +49,8 @@
       backdrop-filter:blur(10px);
       flex-shrink: 0;
       z-index: 50;
+      /* Ensure header has a defined visual height in the flow */
+      padding-bottom: 1px; 
     }
 
     .nav{
@@ -74,32 +76,30 @@
       border-bottom-color:var(--text);
     }
 
-    /* === MAIN CONTAINER (The Vertical Center Fix) === */
+    /* === MAIN CONTAINER === */
     main{
       flex-grow: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
-      position: relative;
-      /* Remove default margins/padding that might offset center */
-      padding: 0;
-      margin: 0;
+      /* Vital: Padding bottom accounts for the fixed footer so center feels true */
+      padding-bottom: 60px; 
     }
 
     .photo-frame {
-      /* Limit height so it doesn't hit header/footer */
-      max-height: calc(100vh - 160px); 
-      max-width: 90vw;
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 100%;
     }
 
     .photo-frame img {
-      max-width: 100%;
-      max-height: 100%;
-      /* Ensure it respects the parent's limits */
+      /* CALCULATED HEIGHT LIMIT: 
+         100vh (Screen) - 220px (Header + Footer + Safety Gap) */
+      max-height: calc(100vh - 220px);
+      max-width: 90vw;
+      
       object-fit: contain; 
       cursor: pointer;
       border-radius: 4px;
@@ -120,7 +120,7 @@
 
     .caption-hint {
       position: absolute;
-      bottom: 20px; /* Position relative to the main container */
+      bottom: 80px; /* Sitting just above the footer area */
       font-size: 12px;
       color: var(--muted);
       opacity: 0.5;
@@ -129,8 +129,6 @@
 
     /* FOOTER */
     .social-fixed{
-      /* Changed from fixed to absolute to sit within flex flow if needed, 
-         but fixed works best to guarantee bottom placement */
       position: fixed;
       bottom: 28px;
       left: 50%;
@@ -181,7 +179,6 @@
   <script src="/spa-nav.js"></script>
 
   <script>
-    // Replace with your real photo URLs
     const photos = [
       "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80",
       "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600&q=80",
@@ -195,7 +192,7 @@
 
     function showPhoto(index) {
       imgElement.classList.remove("fade-in");
-      void imgElement.offsetWidth; // Trigger reflow
+      void imgElement.offsetWidth;
       imgElement.src = photos[index];
       imgElement.classList.add("fade-in");
     }
