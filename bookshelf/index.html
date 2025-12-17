@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Arun Baburaj — Bookshelf</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -20,7 +20,6 @@
       --muted:#5b6066;
       --nav-gap:28px;
       --book-width:95px;
-      /* UPDATED: Increased gaps for better breathing room */
       --gap:48px;
       --row-gap:48px;
     }
@@ -81,25 +80,20 @@
       row-gap:var(--row-gap);
     }
 
-    /* UPDATED: Animation Keyframes */
+    /* SNAPPY PORTFOLIO ANIMATION */
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .book-card{
       width:var(--book-width);
       display:flex;
       flex-direction:column;
-      /* UPDATED: Initial state for animation */
+      /* Initial state */
       opacity: 0;
-      animation: fadeUp 0.6s ease forwards;
+      /* Speed: 0.5s | Curve: Snappy Bezier */
+      animation: fadeUp 0.5s cubic-bezier(.2,.8,.2,1) forwards;
     }
 
     .book-cover{
@@ -109,12 +103,11 @@
       overflow:hidden;
       background:#e7e8eb;
       box-shadow:0 6px 14px rgba(15,23,42,0.10);
-      transition: transform 0.2s ease;
+      transition: transform 0.18s ease;
     }
     
-    /* Optional: subtle hover effect for covers */
     .book-card:hover .book-cover {
-      transform: translateY(-2px);
+      transform: translateY(-4px);
     }
 
     .book-cover img{
@@ -138,7 +131,6 @@
       font-size:14px;
       color:var(--muted);
       text-align: center;
-      /* UPDATED: Spans all columns to center properly within the grid */
       grid-column: 1 / -1;
       padding: 40px 0;
     }
@@ -176,53 +168,72 @@
     </div>
 
     <script>
-      const SHEET_URL =
-        "https://docs.google.com/spreadsheets/d/1IY-ictcATAZNfcJajwkKCJlT7-b7SBwPl_q2RZ4ntCc/gviz/tq?tqx=out:csv&gid=861814196";
+      const SHEET_URL = "https://docs.google.com/spreadsheets/d/1IY-ictcATAZNfcJajwkKCJlT7-b7SBwPl_q2RZ4ntCc/gviz/tq?tqx=out:csv&gid=861814196";
+      const CACHE_KEY = "arun_books_cache";
 
+      // 1. Define Render Function
+      function renderBooks(csvData) {
+        const rows = csvData.split(/\r?\n/).slice(1);
+        const container = document.getElementById("books-container");
+        
+        // Only clear if we actually have data to show
+        if(rows.length > 0) container.innerHTML = "";
+
+        const cleanRows = rows.filter(r => r.trim().length > 0);
+
+        cleanRows.forEach((row, index) => {
+          const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c =>
+            c.replace(/^"|"$/g, "")
+          );
+
+          const [title, author, cover] = cols;
+          if (!title || !cover) return;
+
+          const card = document.createElement("div");
+          card.className = "book-card";
+          
+          // Animation Stagger
+          card.style.animationDelay = `${index * 0.05}s`;
+
+          card.innerHTML = `
+            <div class="book-cover">
+              <img src="${cover}" alt="${title}" loading="lazy">
+            </div>
+            <div class="book-title">${title}</div>
+            <div class="book-author">${author || ""}</div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      // 2. Load from Cache IMMEDIATELY (Instant Load)
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        console.log("Loading from cache...");
+        renderBooks(cachedData);
+      }
+
+      // 3. Fetch Fresh Data (Background Update)
       fetch(SHEET_URL)
         .then(res => {
           if (!res.ok) throw new Error("Network response was not ok");
           return res.text();
         })
         .then(csv => {
-          const rows = csv.split(/\r?\n/).slice(1);
-          const container = document.getElementById("books-container");
-          
-          // Clear loading text
-          container.innerHTML = "";
-
-          // Filter rows first to get a clean index for animation
-          const cleanRows = rows.filter(row => row.trim() !== "");
-
-          cleanRows.forEach((row, index) => {
-            const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c =>
-              c.replace(/^"|"$/g, "")
-            );
-
-            const [title, author, cover] = cols;
-            if (!title || !cover) return;
-
-            const card = document.createElement("div");
-            card.className = "book-card";
-            
-            // UPDATED: Staggered Animation Delay
-            // Delays each book by 0.05s increments
-            card.style.animationDelay = `${index * 0.05}s`;
-
-            card.innerHTML = `
-              <div class="book-cover">
-                <img src="${cover}" alt="${title}">
-              </div>
-              <div class="book-title">${title}</div>
-              <div class="book-author">${author || ""}</div>
-            `;
-            container.appendChild(card);
-          });
+          // If data changed, update cache and re-render
+          if (csv !== cachedData) {
+            console.log("New data found, updating...");
+            localStorage.setItem(CACHE_KEY, csv);
+            renderBooks(csv);
+          }
         })
         .catch((error) => {
           console.error("Error fetching books:", error);
-          document.getElementById("books-container").innerHTML =
-            "<div class='books-loading'>Failed to load books. Please check the console.</div>";
+          // If no cache and fetch fails, show error
+          if (!cachedData) {
+            document.getElementById("books-container").innerHTML =
+              "<div class='books-loading'>Failed to load books. Please refresh.</div>";
+          }
         });
     </script>
   </main>
