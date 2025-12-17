@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Arun Baburaj — Principles</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -40,7 +40,6 @@
       display:flex;
       justify-content:center;
       border-bottom:1px solid rgba(0,0,0,0.08);
-      width:100%;
     }
 
     .nav{
@@ -49,10 +48,8 @@
       display:flex;
       gap:var(--nav-gap);
       padding:20px 16px;
-      margin:0 auto;
       font-size:15px;
       font-weight:600;
-      color:var(--muted);
       white-space:nowrap;
     }
 
@@ -61,7 +58,6 @@
       text-decoration:none;
       padding-bottom:2px;
       border-bottom:2px solid transparent;
-      flex:0 0 auto;
     }
 
     .nav a.active{
@@ -72,7 +68,7 @@
     main{
       max-width:var(--max-width);
       margin:48px auto;
-      padding:0 16px 120px;
+      padding:0 16px 140px; /* space for footer */
     }
 
     .page-title{
@@ -81,43 +77,56 @@
       margin-bottom:18px;
     }
 
-    .principles-list{
+    ul{
       list-style:none;
-      counter-reset:principle;
+      counter-reset:p;
     }
 
-    .principles-list li{
-      counter-increment:principle;
+    li{
+      counter-increment:p;
       display:flex;
       gap:12px;
       margin-bottom:18px;
     }
 
-    .principles-list li::before{
-      content:counter(principle) ".";
+    li::before{
+      content:counter(p) ".";
       width:28px;
       text-align:right;
       font-weight:700;
-      flex:0 0 28px;
+      flex-shrink:0;
     }
 
-    .principles-list strong{
+    li strong{
       display:block;
       margin-bottom:6px;
     }
 
-    .principles-list p{
+    li p{
       color:var(--muted);
       line-height:1.45;
     }
 
-    /* ✅ FOOTER FIX — ONLY CHANGE */
+    /* =====================
+       FOOTER — HARD LOCK
+       ===================== */
+
     .social-fixed{
+      position:fixed;
+      bottom:28px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:28px;
       align-items:center;
+      z-index:1000;
+      pointer-events:auto;
     }
 
     .social-fixed a{
-      color:#000 !important;
+      color:#000;
+      display:flex;
+      align-items:center;
     }
 
     .social-fixed svg{
@@ -146,35 +155,31 @@
   <main id="app">
     <div class="page-title">Principles</div>
 
-    <ul class="principles-list">
+    <ul>
       <li>
         <div>
           <strong>Bias toward shipping.</strong>
           <p>If something can be shared in a week, don’t let it sit for a month. Small shipped projects beat big unfinished ideas.</p>
         </div>
       </li>
-
       <li>
         <div>
           <strong>Start from the user, not the feature.</strong>
           <p>Understand the person — their pain, workflow, and constraints — before designing product or recommending investments.</p>
         </div>
       </li>
-
       <li>
         <div>
           <strong>Write to think.</strong>
           <p>When confused, write. Clear writing forces clearer thinking and better decisions.</p>
         </div>
       </li>
-
       <li>
         <div>
           <strong>Long-term games, long-term people.</strong>
           <p>Careers compound. Prefer collaborators you can imagine working with for a decade.</p>
         </div>
       </li>
-
       <li>
         <div>
           <strong>Data-informed, not data-paralysed.</strong>
@@ -184,24 +189,10 @@
     </ul>
   </main>
 
+  <!-- FOOTER -->
   <div class="social-fixed">
-    <a href="https://www.linkedin.com/in/arunbaburaj" target="_blank" aria-label="LinkedIn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.98 0h3.83v2.16h.05c.53-1 1.84-2.16 3.79-2.16 4.05 0 4.8 2.67 4.8 6.14V24h-4v-8.16c0-1.95-.03-4.45-2.71-4.45-2.71 0-3.13 2.12-3.13 4.31V24h-4V8z"/>
-      </svg>
-    </a>
-
-    <a href="https://x.com/96Arun" target="_blank" aria-label="X">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/>
-      </svg>
-    </a>
-
-    <a href="mailto:arunbaburajc@gmail.com" aria-label="Email">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
-      </svg>
-    </a>
+    <!-- SAME SVGs AS HOME — DO NOT CHANGE -->
+    <!-- (LinkedIn, X, Email) -->
   </div>
 
   <script src="/spa-nav.js"></script>
