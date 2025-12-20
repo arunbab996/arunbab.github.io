@@ -6,11 +6,9 @@
   }
 
   function unlock() {
-    // Small buffer to allow the browser to paint the new layout
-    // and let scripts initiate before showing the page.
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       document.documentElement.classList.add(READY_CLASS);
-    }, 50);
+    });
   }
 
   async function navigate(url, push = true) {
@@ -24,41 +22,36 @@
       const doc = parser.parseFromString(html, "text/html");
 
       /* ===============================
-         1. SCROLL TO TOP (Crucial for Articles)
+         1. SWAP STYLES (Standard Method)
          =============================== */
-      window.scrollTo(0, 0);
+      // Remove old page-specific styles
+      document.querySelectorAll("style[data-page-style]").forEach(s => s.remove());
 
-      /* ===============================
-         2. SWAP STYLES (Safer Order)
-         Load new CSS -> Then remove old CSS.
-         Prevents "Unstyled" flashes.
-         =============================== */
-      const newStyles = doc.querySelectorAll("style[data-page-style]");
-      newStyles.forEach(style => {
+      // Add new page-specific styles
+      doc.querySelectorAll("style[data-page-style]").forEach(style => {
         document.head.appendChild(style.cloneNode(true));
       });
 
-      // Give browser a micro-task to recognize new styles before deleting old ones
-      const oldStyles = document.querySelectorAll("style[data-page-style]");
-      
       /* ===============================
-         3. SWAP MAIN CONTENT
+         2. SWAP MAIN CONTENT
          =============================== */
       const newMain = doc.querySelector("main");
       const currentMain = document.querySelector("main");
 
       if (!newMain || !currentMain) {
-        window.location.href = url;
+        window.location.href = url; // Fallback if structure differs
         return;
       }
 
       currentMain.replaceWith(newMain);
 
-      // Now safe to remove old styles
-      oldStyles.forEach(s => s.remove());
+      /* ===============================
+         3. SCROLL TO TOP (Kept this fix)
+         =============================== */
+      window.scrollTo(0, 0);
 
       /* ===============================
-         4. RE-RUN PAGE SCRIPTS
+         4. RE-RUN SCRIPTS
          =============================== */
       newMain.querySelectorAll("script").forEach(oldScript => {
         const script = document.createElement("script");
@@ -71,7 +64,7 @@
       });
 
       /* ===============================
-         5. UPDATE ACTIVE NAV STATE
+         5. UPDATE NAV HIGHLIGHT
          =============================== */
       document.querySelectorAll(".nav a").forEach(a => {
         const href = a.getAttribute("href");
@@ -79,7 +72,7 @@
       });
 
       if (push) history.pushState({}, "", url);
-      
+
     } catch (err) {
       console.error("Nav Error:", err);
       window.location.href = url;
@@ -90,7 +83,7 @@
   }
 
   /* ===============================
-     LINK INTERCEPTION
+     EVENT LISTENERS
      =============================== */
   document.addEventListener("click", e => {
     const link = e.target.closest("a[data-spa]");
@@ -103,19 +96,10 @@
     navigate(url);
   });
 
-  /* ===============================
-     BACK / FORWARD
-     =============================== */
   window.addEventListener("popstate", () => {
     navigate(location.pathname, false);
   });
 
-  /* ===============================
-     INITIAL STATE
-     =============================== */
-  // Slight delay on initial load too, just to be smooth
-  setTimeout(() => {
-    document.documentElement.classList.add(READY_CLASS);
-  }, 50);
-
+  // Initial Ready State
+  document.documentElement.classList.add(READY_CLASS);
 })();
