@@ -1,14 +1,30 @@
 (() => {
-  // We will use standard CSS opacity for a smoother, safer hide
-  const TRANSITION_DURATION = 150; 
+  // Define your main header paths here. 
+  // These will load INSTANTLY (no blank screen).
+  const MAIN_PAGES = [
+    "/",
+    "/index.html",
+    "/portfolio", "/portfolio/",
+    "/bookshelf", "/bookshelf/",
+    "/principles", "/principles/",
+    "/photography", "/photography/"
+  ];
 
   async function navigate(url, push = true) {
-    // 1. HARD LOCK: Force invisible immediately
-    document.documentElement.style.transition = `opacity ${TRANSITION_DURATION}ms ease`;
-    document.documentElement.style.opacity = "0";
+    // Clean up the URL to check against our list
+    const path = url.split("?")[0].split("#")[0];
+    
+    // Check: Is this a Main Page?
+    // If YES: We skip the "fade out" so it feels instant.
+    // If NO (Articles): We keep the "fade out" to prevent glitches.
+    const isMainPage = MAIN_PAGES.some(p => path === p || path === p.replace(/\/$/, ""));
 
-    // Wait for the fade-out to finish before touching DOM
-    await new Promise(r => setTimeout(r, TRANSITION_DURATION));
+    if (!isMainPage) {
+      // THE "HARD WIPE" (Only for Articles)
+      document.documentElement.style.transition = "opacity 0.15s ease";
+      document.documentElement.style.opacity = "0";
+      await new Promise(r => setTimeout(r, 150));
+    }
 
     try {
       const res = await fetch(url, { cache: "no-store" });
@@ -18,7 +34,7 @@
       const doc = parser.parseFromString(html, "text/html");
 
       /* ===============================
-         2. SWAP STYLES
+         SWAP STYLES
          =============================== */
       document.querySelectorAll("style[data-page-style]").forEach(s => s.remove());
       doc.querySelectorAll("style[data-page-style]").forEach(style => {
@@ -26,7 +42,7 @@
       });
 
       /* ===============================
-         3. SWAP CONTENT
+         SWAP CONTENT
          =============================== */
       const newMain = doc.querySelector("main");
       const currentMain = document.querySelector("main");
@@ -38,11 +54,11 @@
 
       currentMain.replaceWith(newMain);
 
-      // Force Scroll Top
+      // Always scroll to top
       window.scrollTo(0, 0);
 
       /* ===============================
-         4. RE-RUN SCRIPTS
+         RE-RUN SCRIPTS
          =============================== */
       newMain.querySelectorAll("script").forEach(oldScript => {
         const script = document.createElement("script");
@@ -55,7 +71,7 @@
       });
 
       /* ===============================
-         5. UPDATE NAV
+         UPDATE NAV
          =============================== */
       document.querySelectorAll(".nav a").forEach(a => {
         const href = a.getAttribute("href");
@@ -70,10 +86,13 @@
       return;
     }
 
-    // 6. UNLOCK: Tiny delay to ensure browser painting is done, then fade in
-    setTimeout(() => {
-      document.documentElement.style.opacity = "1";
-    }, 50);
+    // IF we hid the page (for an article), reveal it now.
+    // IF we didn't hide it (main page), this does nothing (opacity is already 1).
+    if (!isMainPage) {
+      setTimeout(() => {
+        document.documentElement.style.opacity = "1";
+      }, 50);
+    }
   }
 
   /* ===============================
@@ -94,7 +113,6 @@
     navigate(location.pathname, false);
   });
 
-  // Initial Load: Fade in cleanly
-  document.documentElement.style.transition = "opacity 0.3s ease";
+  // Initial Load
   document.documentElement.style.opacity = "1";
 })();
