@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomeHunter — Arun Baburaj</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.png" type="image/png">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style data-page-style>
+    /* --- FIX: HIDE GLOBAL ELEMENTS --- */
+    header, .nav, .page-top-border, .social-fixed { display: none !important; }
+
+    /* --- VARIABLES --- */
+    :root {
+      --bg: #ffffff; 
+      --text: #111219;
+      --muted: #5b6066;
+      --maxw: 680px; 
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Main Container */
+    main#app { 
+      max-width: var(--maxw); 
+      margin: 0 auto; 
+      padding: 60px 24px 80px; 
+    }
+
+    /* --- NAVIGATION --- */
+    a.back {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 24px;
+      transition: color 0.2s;
+    }
+    a.back:hover { color: var(--text); }
+
+    /* --- TYPOGRAPHY --- */
+    h1 { 
+      font-size: 32px; 
+      font-weight: 700; 
+      margin: 0 0 8px 0; 
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    
+    .meta-line { 
+      font-size: 15px; 
+      color: var(--muted); 
+      margin-bottom: 32px; 
+    }
+
+    h2 { 
+      font-size: 22px; 
+      margin: 48px 0 16px 0; 
+      font-weight: 700; 
+      letter-spacing: -0.01em;
+    }
+    
+    p { font-size: 17px; margin: 0 0 20px 0; color: #333; }
+    strong { font-weight: 600; color: #000; }
+    
+    /* --- LISTS --- */
+    ul { margin: 20px 0 32px 20px; padding: 0; color: #333; }
+    ul li { margin: 8px 0; padding-left: 4px; font-size: 17px; }
+
+    /* --- IMAGES --- */
+    img.content-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 32px 0;
+      object-fit: cover;
+      background-color: #f4f5f7; 
+      border: 1px solid rgba(0,0,0,0.06);
+      display: block;
+    }
+
+    /* --- ANIMATIONS --- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-entry {
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <main id="app">
+
+    <div id="content-wrapper" style="display: none;">
+
+      <a href="/portfolio" class="back" data-spa>← Back</a>
+
+      <div class="animate-entry delay-1">
+        <h1>HomeHunter: A Rental Marketplace I Chose Not to Scale</h1>
+        <div class="meta-line">Case Study · Product · 2025</div>
+      </div>
+
+      <div class="animate-entry delay-2">
+        <p>HomeHunter was built with the intention of simplifying rental accommodation discovery for Gen Z and Millennial renters.</p>
+        <p>The idea came from a very personal place. Whenever friends or family members planned to move to Bangalore, my friends and I often became their first point of contact.</p>
+        <p>We would be asked to help find a place that matched their preferences, budget, and timelines.</p>
+        <p>Despite the presence of well-known platforms like NoBroker, MagicBricks, and 99acres, this process was consistently painful.</p>
+        <p>After visiting multiple properties across different localities, I started noticing recurring patterns in how rental discovery actually worked on the ground.</p>
+        <p>Some of the most common and frustrating issues were unspoken but widely enforced.</p>
+        <p>House owners or brokers often preferred vegetarians over non-vegetarians (at least in old Bangalore).</p>
+        <p>There were strong preferences around religion or community. Families were favored over bachelors or single tenants.</p>
+        <p>Brokers frequently reused the same listings across multiple platforms. Many rules felt outdated and arbitrary, yet they directly influenced outcomes.</p>
+        <p>These constraints were rarely visible upfront. Renters would spend days shortlisting properties, visiting homes, and following up, only to be rejected at the very end because they did not fit an unstated criterion.</p>
+        <p>The cost was not just time, but emotional fatigue.</p>
+
+        <h2>Initial hypothesis</h2>
+        <p>My core hypothesis was that rental discovery in India fails early because critical decision-making constraints are hidden.</p>
+        <p>In a country with frequent intercity migration and diverse cultural backgrounds, supply-side preferences play an outsized role in who gets access to housing.</p>
+        <p>House owners often rely on heuristics shaped by past experiences, community familiarity, and perceived risk.</p>
+        <p>These preferences, whether around marital status, food habits, or religion, act as invisible filters.</p>
+        <p>Renters only discover them after investing significant effort.</p>
+        <p>I believed that if these constraints could be surfaced during the discovery phase, many wasted cycles could be eliminated.</p>
+        <p>A bachelor moving cities for a new job should not have to visit multiple properties only to be rejected later for being a bachelor.</p>
+        <p>If those preferences were visible earlier, discovery could become more efficient and less frustrating.</p>
+        <p>The bet was that better information, not more listings, was the real unlock.</p>
+
+        <img class="content-image" 
+             src="https://res.cloudinary.com/dp67k01qy/image/upload/v1766214927/picture1_paemgx.png" 
+             alt="HomeHunter Constraints Concept">
+
+        <h2>What I built and why</h2>
+        <p>I started building HomeHunter in Bengaluru and later extended it to Chennai, Delhi, and Hyderabad.</p>
+        <p>Since rental discovery is a marketplace problem, I focused first on solving the cold start challenge.</p>
+        <p>I chose to start with supply aggregation, which I believed was the harder side of the network.</p>
+        <p>At the time, a large volume of real rental inventory lived on Facebook groups and Twitter threads, especially in groups like Flats and Flatmates.</p>
+        <p>I joined every relevant group I could find and actively searched for keywords on Twitter.</p>
+        <p>By manually collecting posts every morning and evening, I was able to source roughly fifty new listings per day.</p>
+        <p>The first version of the product was intentionally simple. I used Airtable as a database to store listings and shared a filtered view on the website.</p>
+        <p>The goal was not polish but speed. I wanted to test whether aggregated, hard-to-find listings had real demand.</p>
+        <p>To acquire users, I commented on rental queries across social platforms and openly shared the HomeHunter link.</p>
+        <p>This drove a steady inflow of users who were seeing listings that were not easily accessible through traditional platforms.</p>
+
+        <img class="content-image" 
+             src="https://res.cloudinary.com/dp67k01qy/image/upload/v1766214925/homehunter_homepage_qhvbn9.png" 
+             alt="HomeHunter Homepage">
+
+        <h2>Early traction and scaling attempts</h2>
+        <p>The first two weeks showed strong early signals. The site received close to one thousand daily visitors.</p>
+        <p>As manual data collection became time-consuming, I looked for ways to scale sourcing.</p>
+        <p>I began using PhantomBuster to scrape Facebook groups and then manually cleaned and structured the data before adding it to Airtable.</p>
+        <p>This reduced the time spent on sourcing and improved consistency.</p>
+        <p>By the fourth week, daily traffic grew to around two thousand users. Discovery demand was clearly present.</p>
+        <p>However, this momentum was fragile. PhantomBuster discontinued Facebook group scraping after Facebook updated its terms.</p>
+        <p>I attempted a short-term workaround by building a custom Python scraper, which worked briefly but eventually led to my account being restricted for violating platform policies.</p>
+        <p>At that point, returning to manual sourcing was no longer viable.</p>
+        <p>More importantly, the incident forced me to confront a deeper issue.</p>
+
+        <h2>What users actually did</h2>
+        <p>While HomeHunter performed well as a discovery layer, it consistently broke down at the point of contact.</p>
+        <p>Many source posts did not include direct contact details. Users had to click through to the original Facebook or Twitter post to reach the owner.</p>
+        <p>If the post lived inside a private group or a restricted account, users were forced to request access.</p>
+        <p>This broke the flow entirely. Users liked listings but could not act on them immediately.</p>
+        <p>Churn concentrated heavily among users who could not reach property owners through the platform.</p>
+        <p>Their journey often ended the moment they encountered a closed group or missing contact information.</p>
+        <p>In practice, the product was only as good as the completeness and accessibility of third-party data.</p>
+
+        <img class="content-image" 
+             src="https://res.cloudinary.com/dp67k01qy/image/upload/v1766214929/picture2_hqzhmw.png" 
+             alt="HomeHunter Core Issue Diagram">
+
+        <h2>The real core flaw</h2>
+        <p>I initially tried to solve the marketplace cold start problem by fixing the supply side through aggregation.</p>
+        <p>This worked in the short term, but it relied on several high-risk assumptions.</p>
+        <p>The supply was borrowed, not owned. Any advantage could be revoked without notice.</p>
+        <p>The data required to validate my core hypothesis were inconsistently available across posts. This made differentiation difficult.</p>
+        <p>Even with growing traffic, defensibility remained weak.</p>
+        <p>The deeper flaw was that HomeHunter depended on temporary access to someone else’s network rather than creating a durable incentive for house owners to participate directly.</p>
+        <p>Even if the platform had reached escape velocity, success would still have depended on convincing owners to change entrenched listing behavior.</p>
+        <p>That shift required trust, incentives, and offline validation that software alone could not provide.</p>
+
+        <h2>Why I chose not to pivot</h2>
+        <p>When the supply pipeline broke, I evaluated whether the product could be meaningfully pivoted instead of shut down.</p>
+        <p>The obvious options involved actively onboarding house owners, partnering with brokers, or running a more operations-heavy model to verify and manage listings.</p>
+        <p>Each of these paths required solving trust and coordination problems through manual effort rather than product leverage.</p>
+        <p>None of them removed the core risk or improved defensibility. They only shifted complexity into operations.</p>
+        <p>Given the lack of a clear, scalable path that aligned with the original thesis, I decided that continuing would be a poor use of time and effort and chose to sunset the project.</p>
+
+        <h2>How this changed my product thinking</h2>
+        <p>Working on HomeHunter fundamentally changed how I evaluate product ideas, especially marketplaces.</p>
+        <p>I now place far greater emphasis on supply-side incentives and defensibility before investing in demand-side experience or growth.</p>
+        <p>Early traction taught me that usage alone is a weak signal when the underlying behavior change is fragile.</p>
+        <p>I have also become more cautious about products that rely on borrowed platforms or policies outside my control.</p>
+        <p>Most importantly, this experience helped me better distinguish problems that software can realistically solve from those that require sustained operational effort.</p>
+        <p>Since then, I have been more disciplined about validating leverage, incentives, and long-term risk early rather than optimizing for short-term momentum.</p>
+      </div>
+
+    </div>
+
+    <img 
+      src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+      style="display:none;" 
+      onload="
+        (function() {
+          // 1. Force Scroll Top
+          window.scrollTo(0, 0);
+
+          // 2. Reveal Content
+          const wrapper = document.getElementById('content-wrapper');
+          if(wrapper) {
+            setTimeout(() => {
+              wrapper.style.display = 'block';
+            }, 50);
+          }
+        })();
+      "
+    />
+
+  </main>
+
+  <script src="/spa-nav.js"></script>
+</body>
+</html>
