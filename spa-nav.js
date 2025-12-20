@@ -1,18 +1,14 @@
 (() => {
-  const READY_CLASS = "ready";
-
-  function lock() {
-    document.documentElement.classList.remove(READY_CLASS);
-  }
-
-  function unlock() {
-    requestAnimationFrame(() => {
-      document.documentElement.classList.add(READY_CLASS);
-    });
-  }
+  // We will use standard CSS opacity for a smoother, safer hide
+  const TRANSITION_DURATION = 150; 
 
   async function navigate(url, push = true) {
-    lock();
+    // 1. HARD LOCK: Force invisible immediately
+    document.documentElement.style.transition = `opacity ${TRANSITION_DURATION}ms ease`;
+    document.documentElement.style.opacity = "0";
+
+    // Wait for the fade-out to finish before touching DOM
+    await new Promise(r => setTimeout(r, TRANSITION_DURATION));
 
     try {
       const res = await fetch(url, { cache: "no-store" });
@@ -22,32 +18,27 @@
       const doc = parser.parseFromString(html, "text/html");
 
       /* ===============================
-         1. SWAP STYLES (Standard Method)
+         2. SWAP STYLES
          =============================== */
-      // Remove old page-specific styles
       document.querySelectorAll("style[data-page-style]").forEach(s => s.remove());
-
-      // Add new page-specific styles
       doc.querySelectorAll("style[data-page-style]").forEach(style => {
         document.head.appendChild(style.cloneNode(true));
       });
 
       /* ===============================
-         2. SWAP MAIN CONTENT
+         3. SWAP CONTENT
          =============================== */
       const newMain = doc.querySelector("main");
       const currentMain = document.querySelector("main");
 
       if (!newMain || !currentMain) {
-        window.location.href = url; // Fallback if structure differs
+        window.location.href = url;
         return;
       }
 
       currentMain.replaceWith(newMain);
 
-      /* ===============================
-         3. SCROLL TO TOP (Kept this fix)
-         =============================== */
+      // Force Scroll Top
       window.scrollTo(0, 0);
 
       /* ===============================
@@ -64,7 +55,7 @@
       });
 
       /* ===============================
-         5. UPDATE NAV HIGHLIGHT
+         5. UPDATE NAV
          =============================== */
       document.querySelectorAll(".nav a").forEach(a => {
         const href = a.getAttribute("href");
@@ -79,11 +70,14 @@
       return;
     }
 
-    unlock();
+    // 6. UNLOCK: Tiny delay to ensure browser painting is done, then fade in
+    setTimeout(() => {
+      document.documentElement.style.opacity = "1";
+    }, 50);
   }
 
   /* ===============================
-     EVENT LISTENERS
+     LISTENERS
      =============================== */
   document.addEventListener("click", e => {
     const link = e.target.closest("a[data-spa]");
@@ -100,6 +94,7 @@
     navigate(location.pathname, false);
   });
 
-  // Initial Ready State
-  document.documentElement.classList.add(READY_CLASS);
+  // Initial Load: Fade in cleanly
+  document.documentElement.style.transition = "opacity 0.3s ease";
+  document.documentElement.style.opacity = "1";
 })();
