@@ -156,6 +156,34 @@
     }
 
     .social-fixed a:hover{opacity:.6;}
+
+    /* ==== SPECTER POPUP STYLES ==== */
+    .specter-link {
+      position: relative;
+      display: inline-block; /* Required for positioning the popup relative to text */
+    }
+
+    .specter-popup {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      width: 80px;  /* Size of the logo popup */
+      height: auto;
+      transform: translate(-50%, 10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+      border-radius: 12px; /* Smooth corners */
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      pointer-events: none; /* Prevents flickering if mouse touches image */
+    }
+
+    .specter-link:hover .specter-popup {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -12px); /* Moves up and bounces slightly */
+    }
   </style>
 
   <script>
@@ -189,7 +217,10 @@
       <div class="current">
         <span class="spacer">
           I'm currently leading a product at
-          <a href="https://tryspecter.com" target="_blank" rel="noopener">Specter</a>.
+          <a href="https://tryspecter.com" target="_blank" rel="noopener" class="specter-link">
+            Specter
+            <img src="specterhq_logo (2).jpeg" alt="Specter Logo" class="specter-popup">
+          </a>.
         </span>
 
         Previously built <strong>Homehunter Club</strong> (rental intelligence for Gen-Z)
