@@ -43,12 +43,12 @@
     h1 { font-size: 32px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: -0.02em; line-height: 1.2; }
     h2 { font-size: 22px; margin: 48px 0 16px 0; font-weight: 700; letter-spacing: -0.01em; }
     
-    /* UPDATED: Table Title Style (Black, Regular Case, Larger) */
+    /* Table Title Style */
     h3 { 
-      font-size: 17px; /* Increased size */
+      font-size: 17px; 
       margin: 48px 0 16px 0; 
       font-weight: 700; 
-      color: #111219; /* Black */
+      color: #111219; 
       letter-spacing: -0.01em;
     }
     
@@ -73,7 +73,7 @@
       display: block; 
     }
 
-    /* --- TABLE STYLES (Card Style) --- */
+    /* --- TABLE STYLES (Fixed 50/50 Split) --- */
     .table-wrapper {
       margin: 16px 0 40px 0;
       border: 1px solid #e5e7eb;
@@ -86,7 +86,7 @@
       border-collapse: collapse; 
       font-family: 'Inter', sans-serif;
       font-size: 15px;
-      table-layout: fixed; /* Ensures even width distribution */
+      table-layout: fixed; /* STRICTLY enforces column widths */
     }
     
     .comparison-table th { 
@@ -98,7 +98,8 @@
       font-size: 12px; 
       font-weight: 600;
       text-transform: uppercase; 
-      letter-spacing: 0.05em; 
+      letter-spacing: 0.05em;
+      width: 50%; /* Force 50% width on headers */
     }
     
     .comparison-table td { 
@@ -107,18 +108,18 @@
       vertical-align: top; 
       line-height: 1.5;
       color: #374151;
+      width: 50%; /* Force 50% width on cells */
+      box-sizing: border-box;
     }
     
     /* Last row border fix */
     .comparison-table tr:last-child td { border-bottom: none; }
     
-    /* UPDATED: First Column Styling (Removed Bold, Increased Width) */
-    .comparison-table td:first-child, 
-    .comparison-table th:first-child { 
-      width: 50%; /* Give it more room */
-      color: #111827; /* Slightly darker text */
-      font-weight: 400; /* Regular weight */
-      border-right: 1px solid #f3f4f6; /* Subtle divider */
+    /* Vertical Divider Line */
+    .comparison-table th:first-child,
+    .comparison-table td:first-child {
+      border-right: 1px solid #e5e7eb;
+      color: #111827; /* Darker text for first column */
     }
 
     /* --- ANIMATION --- */
