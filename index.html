@@ -155,48 +155,76 @@
 
     .social-fixed a:hover{opacity:.6;}
 
-    /* ==== NEW GENERIC POPUP STYLES ==== */
-    /* 1. The container (applied to text) */
+    /* ==== POPUP STYLES ==== */
+    
+    /* 1. Base Container */
     .pop-link {
       position: relative;
       display: inline-block;
       cursor: pointer;
     }
 
-    /* 2. The popup image itself */
+    /* 2. Base Popup Image (Default: Top Center) */
     .pop-img {
       position: absolute;
       bottom: 100%;
       left: 50%;
-      transform: translate(-50%, 10px); /* Start slightly down */
+      transform: translate(-50%, 10px);
       
-      /* Default small size (for company logos) */
-      width: 48px;
+      width: 48px; /* Default small size */
       height: auto;
       
       opacity: 0;
       visibility: hidden;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 100;
       border-radius: 8px;
-      box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      pointer-events: none; /* Ignore mouse clicks on the image */
-      background: white;    /* White background behind transparent logos */
+      box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+      background: white;
     }
 
-    /* 3. Special styling for larger images (like your avatar) */
-    .pop-img.pop-lg {
-      width: 110px; /* Bigger size */
-      border-radius: 12px;
-      background: transparent; /* Remove white box if the image is already cut out nicely */
-    }
-
-    /* 4. Hover State */
+    /* 3. Hover Effect (Default: Slide Up) */
     .pop-link:hover .pop-img {
       opacity: 1;
       visibility: visible;
-      transform: translate(-50%, -10px); /* Move up into place */
+      transform: translate(-50%, -10px);
     }
+
+    /* ==== SPECIAL MODIFIERS ==== */
+
+    /* Modifier: Large Image (for Avatar) */
+    .pop-img.pop-lg {
+      width: 130px; /* Nice and big */
+      background: transparent; /* No white box for cutout images */
+      box-shadow: none; /* No shadow box for cutout images */
+      border-radius: 0;
+    }
+
+    /* Modifier: Side Position (For Name section) */
+    /* This overrides the default 'Top' position to put it on the Left */
+    .pop-link.pop-side .pop-img {
+      bottom: auto; 
+      left: auto;
+      
+      /* Position to the LEFT of the text */
+      right: 100%; 
+      top: 50%;
+      
+      /* Start slightly hidden to the right for animation */
+      transform: translateY(-50%) translateX(20px); 
+      
+      margin-right: 20px; /* Gap between image and text */
+    }
+
+    /* Hover Effect for Side Position */
+    .pop-link.pop-side:hover .pop-img {
+      opacity: 1;
+      visibility: visible;
+      /* Slide into final position */
+      transform: translateY(-50%) translateX(0); 
+    }
+
   </style>
 
   <script>
@@ -220,7 +248,7 @@
   <main id="app">
     <section class="stagger-content">
       
-      <div class="name pop-link">
+      <div class="name pop-link pop-side">
         Arun Baburaj
         <img src="avatar.jpg" alt="Me waving" class="pop-img pop-lg">
       </div>
