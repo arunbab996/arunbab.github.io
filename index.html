@@ -128,13 +128,11 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Apply to direct children of the staggered section */
     .stagger-content > * {
-      opacity: 0; /* Hidden initially */
+      opacity: 0;
       animation: fadeUp 0.5s cubic-bezier(.2,.8,.2,1) forwards;
     }
 
-    /* Delays for the 3 main blocks: Name, Desc, Current */
     .stagger-content > *:nth-child(1) { animation-delay: 0.05s; }
     .stagger-content > *:nth-child(2) { animation-delay: 0.1s; }
     .stagger-content > *:nth-child(3) { animation-delay: 0.15s; }
@@ -157,32 +155,47 @@
 
     .social-fixed a:hover{opacity:.6;}
 
-    /* ==== SPECTER POPUP STYLES ==== */
-    .specter-link {
+    /* ==== NEW GENERIC POPUP STYLES ==== */
+    /* 1. The container (applied to text) */
+    .pop-link {
       position: relative;
       display: inline-block;
+      cursor: pointer;
     }
 
-    .specter-popup {
+    /* 2. The popup image itself */
+    .pop-img {
       position: absolute;
       bottom: 100%;
       left: 50%;
-      width: 48px;  /* <---- CHANGED: Smaller size (was 80px) */
+      transform: translate(-50%, 10px); /* Start slightly down */
+      
+      /* Default small size (for company logos) */
+      width: 48px;
       height: auto;
-      transform: translate(-50%, 10px);
+      
       opacity: 0;
       visibility: hidden;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
       z-index: 100;
-      border-radius: 8px; /* Slightly smaller radius for smaller icon */
+      border-radius: 8px;
       box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      pointer-events: none;
+      pointer-events: none; /* Ignore mouse clicks on the image */
+      background: white;    /* White background behind transparent logos */
     }
 
-    .specter-link:hover .specter-popup {
+    /* 3. Special styling for larger images (like your avatar) */
+    .pop-img.pop-lg {
+      width: 110px; /* Bigger size */
+      border-radius: 12px;
+      background: transparent; /* Remove white box if the image is already cut out nicely */
+    }
+
+    /* 4. Hover State */
+    .pop-link:hover .pop-img {
       opacity: 1;
       visibility: visible;
-      transform: translate(-50%, -8px); /* Moves up less since it's smaller */
+      transform: translate(-50%, -10px); /* Move up into place */
     }
   </style>
 
@@ -206,7 +219,11 @@
 
   <main id="app">
     <section class="stagger-content">
-      <div class="name">Arun Baburaj</div>
+      
+      <div class="name pop-link">
+        Arun Baburaj
+        <img src="avatar.jpg" alt="Me waving" class="pop-img pop-lg">
+      </div>
 
       <div class="desc">
         Product Manager, Researcher, and Generalist.
@@ -217,9 +234,9 @@
       <div class="current">
         <span class="spacer">
           I'm currently leading a product at
-          <a href="https://tryspecter.com" target="_blank" rel="noopener" class="specter-link">
+          <a href="https://tryspecter.com" target="_blank" rel="noopener" class="pop-link">
             Specter
-            <img src="specterhq_logo (2).jpeg" alt="Specter Logo" class="specter-popup">
+            <img src="specterhq_logo (2).jpeg" alt="Specter Logo" class="pop-img">
           </a>.
         </span>
 
