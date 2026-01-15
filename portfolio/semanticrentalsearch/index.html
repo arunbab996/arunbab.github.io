@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
-    /* --- PRESERVED STYLES --- */
+    /* --- GLOBAL & RESET --- */
     header, .nav, .page-top-border, .social-fixed { display: none !important; }
     :root { --bg: #ffffff; --text: #111219; --muted: #5b6066; --maxw: 680px; }
     
@@ -25,16 +25,34 @@
     
     main#app { max-width: var(--maxw); margin: 0 auto; padding: 60px 24px 80px; }
     
-    a { color: inherit; }
-    a.back { font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; display: inline-block; margin-bottom: 24px; transition: color 0.2s; }
+    a { color: inherit; transition: opacity 0.2s; }
+    a:hover { opacity: 0.8; }
+
+    /* --- NAVIGATION --- */
+    a.back { 
+      font-size: 14px; 
+      font-weight: 600; 
+      color: var(--muted); 
+      text-decoration: none; 
+      display: inline-block; 
+      margin-bottom: 24px; 
+    }
     a.back:hover { color: var(--text); }
     
+    /* --- TYPOGRAPHY --- */
     h1 { font-size: 32px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: -0.02em; line-height: 1.2; }
-    h2 { font-size: 20px; margin: 48px 0 16px 0; font-weight: 700; letter-spacing: -0.01em; }
+    h2 { font-size: 22px; margin: 48px 0 16px 0; font-weight: 700; letter-spacing: -0.01em; }
+    h3 { font-size: 14px; margin: 40px 0 16px 0; font-weight: 600; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
     
     .meta-line { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
-    p { font-size: 16px; margin: 0 0 24px 0; color: #333; line-height: 1.6; }
-    strong { font-weight: 600; color: #000; }
+    
+    /* Paragraph styling to match Word doc flow */
+    p { 
+      font-size: 17px; 
+      margin: 0 0 24px 0; 
+      color: #333; 
+      line-height: 1.6; 
+    }
     
     /* --- IMAGES --- */
     img.hero, img.content-img { 
@@ -47,48 +65,50 @@
       border: 1px solid rgba(0,0,0,0.06); 
       display: block; 
     }
-    
-    /* --- TABLE STYLES (Fixed Density) --- */
+
+    /* --- TABLE STYLES (MATCHING SCREENSHOT) --- */
     .table-wrapper {
-      margin: 32px 0;
-      border-top: 1px solid #e5e5e5;
+      margin: 20px 0 40px 0;
+      overflow-x: auto;
     }
     
     .comparison-table { 
       width: 100%; 
       border-collapse: collapse; 
       font-family: 'Inter', sans-serif;
+      font-size: 15px;
     }
     
     .comparison-table th { 
       text-align: left; 
-      padding: 12px 0; 
-      border-bottom: 1px solid #e5e5e5; 
-      color: #5b6066; 
-      font-size: 11px; 
+      padding: 0 0 16px 0; 
+      border-bottom: 1px solid #e5e7eb; 
+      color: #6b7280; 
+      font-size: 12px; 
       font-weight: 600;
       text-transform: uppercase; 
       letter-spacing: 0.05em; 
     }
     
     .comparison-table td { 
-      padding: 14px 20px 14px 0; /* Tighter padding */
-      border-bottom: 1px solid #f0f0f0; 
+      padding: 24px 24px 24px 0; 
+      border-bottom: 1px solid #e5e7eb; 
       vertical-align: top; 
-      font-size: 15px;
-      line-height: 1.45; /* Tighter line height */
-      color: #333;
+      line-height: 1.5;
+      color: #374151;
     }
+    
+    /* Remove right padding for the last column */
+    .comparison-table td:last-child { padding-right: 0; }
     
     /* First Column: Bold & Darker */
     .comparison-table td:first-child { 
       font-weight: 600; 
-      color: #222; 
-      width: 45%;
-      padding-right: 24px;
+      color: #111827; 
+      width: 45%; 
     }
 
-    /* Animation */
+    /* --- ANIMATION --- */
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .animate-entry { opacity: 0; animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
     .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
@@ -114,48 +134,41 @@
       </a>
 
       <section class="animate-entry delay-3">
-        <p>Renting is one of those problems people complain about constantly but rarely stop to redesign properly.</p>
-        <p>Most rental platforms still assume that if users are given enough filters, they’ll eventually find what they want.</p>
-        <p>In practice, that rarely happens. People don’t think in parameters; they think in intent.</p>
-        <p>After coming across an early-stage proptech startup, I decided to build a small prototype to explore whether a different approach could reduce friction in the rental journey.</p>
-        <p>Instead of starting with features or metrics, I started with a simple question: why is it still so hard to go from “I want a place” to “I’ve booked a viewing”?</p>
         
-        <p style="margin-top: 28px;">
-            <a href="https://uprent-agent.vercel.app/" target="_blank" style="color:#111219; text-decoration: none; border-bottom: 2px solid #111219;">
+        <p>Renting is one of those problems people complain about constantly but rarely stop to redesign properly. Most rental platforms still assume that if users are given enough filters, they’ll eventually find what they want.</p>
+        
+        <p>In practice, that rarely happens. People don’t think in parameters; they think in intent.</p>
+        
+        <p>After coming across an early-stage proptech startup, I decided to build a small prototype to explore whether a different approach could reduce friction in the rental journey. Instead of starting with features or metrics, I started with a simple question: why is it still so hard to go from “I want a place” to “I’ve booked a viewing”?</p>
+        
+        <p style="margin-top: 32px; margin-bottom: 40px;">
+            <a href="https://uprent-agent.vercel.app/" target="_blank" style="color:#111219; text-decoration: none; border-bottom: 2px solid #111219; padding-bottom: 1px;">
                 <strong>Visit the Working Prototype ↗</strong>
             </a>
         </p>
 
-        <p>From my own experience and from watching how people actually search for homes, the core issue seemed to be translation.</p>
-        <p>Users know what they want, but they struggle to express it in the rigid language platforms expect.</p>
-        <p>Someone might say they want a quiet apartment near public transport, within a certain budget, and available soon.</p>
-        <p>What the platform hears is a set of incomplete filters that either return nothing or flood the user with irrelevant results.</p>
+        <p>From my own experience and from watching how people actually search for homes, the core issue seemed to be translation. Users know what they want, but they struggle to express it in the rigid language platforms expect. Someone might say they want a quiet apartment near public transport, within a certain budget, and available soon. What the platform hears is a set of incomplete filters that either return nothing or flood the user with irrelevant results.</p>
         
         <img class="content-img" src="images/rigid-matching.png" alt="Rigid Matching Diagram" style="display:none;" 
              onload="this.style.display='block'" onerror="this.style.display='none'">
 
-        <p>The hypothesis behind the prototype was straightforward: if users can express intent in natural language, the system should adapt to them rather than the other way around.</p>
-        <p>Instead of forcing precision early, it should accept ambiguity, make trade-offs explicit, and help users move forward quickly.</p>
+        <p>The hypothesis behind the prototype was straightforward: if users can express intent in natural language, the system should adapt to them rather than the other way around. Instead of forcing precision early, it should accept ambiguity, make trade-offs explicit, and help users move forward quickly.</p>
 
         <img class="content-img" src="images/weighted-ranking.png" alt="Weighted Ranking Diagram" style="display:none;"
              onload="this.style.display='block'" onerror="this.style.display='none'">
 
-        <p>The prototype I built uses a chat-style interface where users describe what they’re looking for in plain language.</p>
-        <p>That input is parsed into a set of structured signals - budget constraints, location preferences, timing, and softer lifestyle requirements.</p>
-        <p>Importantly, these signals aren’t treated as absolute filters. They’re weighted and used to score listings relative to one another.</p>
-        <p>This ranking-first approach was a deliberate choice. In real rental decisions, people rarely find a perfect match. They make compromises.</p>
-        <p>By ranking listings and explaining why something shows up higher or lower, the system mirrors how users actually evaluate options.</p>
-        <p>A place might rank second because it’s slightly over budget but much closer to public transport.</p>
-        <p>That context matters more than a binary “match or no match.”</p>
-        <p>Another issue I wanted to address was unrealistic expectations. Many rental searches fail not because there are no options, but because the user’s budget or constraints don’t align with the market they’re searching in. To handle this, I added a market check layer that evaluates whether the user’s requirements are realistic for a given location.</p>
-        <p>When they aren’t, the system explains what’s off and suggests what to relax.</p>
-        <p>When they are, it moves the user forward instead of leaving them stuck browsing.</p>
+        <p>The prototype I built uses a chat-style interface where users describe what they’re looking for in plain language. That input is parsed into a set of structured signals—budget constraints, location preferences, timing, and softer lifestyle requirements.</p>
 
+        <p>Importantly, these signals aren’t treated as absolute filters. They’re weighted and used to score listings relative to one another. This ranking-first approach was a deliberate choice. In real rental decisions, people rarely find a perfect match. They make compromises. By ranking listings and explaining why something shows up higher or lower, the system mirrors how users actually evaluate options. A place might rank second because it’s slightly over budget but much closer to public transport. That context matters more than a binary “match or no match.”</p>
+        
+        <p>Another issue I wanted to address was unrealistic expectations. Many rental searches fail not because there are no options, but because the user’s budget or constraints don’t align with the market they’re searching in. To handle this, I added a market check layer that evaluates whether the user’s requirements are realistic for a given location. When they aren’t, the system explains what’s off and suggests what to relax. When they are, it moves the user forward instead of leaving them stuck browsing.</p>
+
+        <h3>Search Methodology Comparison</h3>
         <div class="table-wrapper">
           <table class="comparison-table">
             <thead>
               <tr>
-                <th>Traditional Filter-Based Search</th>
+                <th>Traditional Filter Search</th>
                 <th>Intent-Driven AI Search</th>
               </tr>
             </thead>
@@ -188,24 +201,19 @@
           </table>
         </div>
 
-        <p>Speed is critical in rental markets, so the prototype doesn’t stop at showing results.</p>
-        <p>Once a user finds a suitable option, the system drafts a viewing request email to the landlord in real time.</p>
-        <p>This removes yet another small but meaningful delay between intent and action — something that often determines whether a deal happens or not.</p>
-        <p>I also included commercial logic directly in the search experience.</p>
-        <p>For each listing, the system estimates what the user would typically pay in traditional agent fees and compares it to the platform’s fees.</p>
-        <p>The idea wasn’t to “sell,” but to surface value at the exact moment the user is making a decision, rather than relying on abstract marketing claims elsewhere.</p>
-        <p>The prototype was built using mock data and simple heuristics rather than complex models. That was intentional.</p>
-        <p>The goal wasn’t accuracy at scale, but clarity of thought.</p>
-        <p>I wanted to make the decision logic inspectable and easy to iterate on, rather than hiding everything behind a black box.</p>
-        <p>Building this reinforced a pattern I’ve seen before: most friction in marketplaces doesn’t come from lack of features, but from poorly designed decision-making.</p>
-        <p>When systems help users think clearly and act quickly, outcomes improve on both sides of the marketplace.</p>
-        <p>This project also reflects how I prefer to work. Instead of describing ideas or writing speculative docs, I tend to build small, concrete systems to test assumptions.</p>
-        <p>That approach has served me well in previous 0→1, data-heavy products, where progress came from tightening feedback loops rather than perfect planning.</p>
-        <p>If I were to take this further, the next step would be to let the system learn from outcomes - which listings actually convert, which constraints matter most by city, and how landlord response times affect ranking.</p>
-        <p>Those feedback loops are where this kind of system becomes truly powerful.</p>
-        <p>This prototype was never meant to be a finished product.</p>
-        <p>It was a way to think clearly about a broken process and explore how intent-driven systems could meaningfully reduce time-to-rent.</p>
-        <p>For me, it’s a good example of how building something tangible can lead to better conversations and better decisions than abstract problem statements ever could.</p>
+        <p>Speed is critical in rental markets, so the prototype doesn’t stop at showing results. Once a user finds a suitable option, the system drafts a viewing request email to the landlord in real time. This removes yet another small but meaningful delay between intent and action—something that often determines whether a deal happens or not.</p>
+        
+        <p>I also included commercial logic directly in the search experience. For each listing, the system estimates what the user would typically pay in traditional agent fees and compares it to the platform’s fees. The idea wasn’t to “sell,” but to surface value at the exact moment the user is making a decision, rather than relying on abstract marketing claims elsewhere.</p>
+        
+        <p>The prototype was built using mock data and simple heuristics rather than complex models. That was intentional. The goal wasn’t accuracy at scale, but clarity of thought. I wanted to make the decision logic inspectable and easy to iterate on, rather than hiding everything behind a black box.</p>
+        
+        <p>Building this reinforced a pattern I’ve seen before: most friction in marketplaces doesn’t come from lack of features, but from poorly designed decision-making. When systems help users think clearly and act quickly, outcomes improve on both sides of the marketplace.</p>
+        
+        <p>This project also reflects how I prefer to work. Instead of describing ideas or writing speculative docs, I tend to build small, concrete systems to test assumptions. That approach has served me well in previous 0→1, data-heavy products, where progress came from tightening feedback loops rather than perfect planning.</p>
+        
+        <p>If I were to take this further, the next step would be to let the system learn from outcomes—which listings actually convert, which constraints matter most by city, and how landlord response times affect ranking. Those feedback loops are where this kind of system becomes truly powerful.</p>
+        
+        <p>This prototype was never meant to be a finished product. It was a way to think clearly about a broken process and explore how intent-driven systems could meaningfully reduce time-to-rent. For me, it’s a good example of how building something tangible can lead to better conversations and better decisions than abstract problem statements ever could.</p>
       </section>
 
     </div>
