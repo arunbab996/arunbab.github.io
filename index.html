@@ -160,29 +160,29 @@
     /* ==== SPECTER POPUP STYLES ==== */
     .specter-link {
       position: relative;
-      display: inline-block; /* Required for positioning the popup relative to text */
+      display: inline-block;
     }
 
     .specter-popup {
       position: absolute;
       bottom: 100%;
       left: 50%;
-      width: 80px;  /* Size of the logo popup */
+      width: 48px;  /* <---- CHANGED: Smaller size (was 80px) */
       height: auto;
       transform: translate(-50%, 10px);
       opacity: 0;
       visibility: hidden;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 100;
-      border-radius: 12px; /* Smooth corners */
-      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      pointer-events: none; /* Prevents flickering if mouse touches image */
+      border-radius: 8px; /* Slightly smaller radius for smaller icon */
+      box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      pointer-events: none;
     }
 
     .specter-link:hover .specter-popup {
       opacity: 1;
       visibility: visible;
-      transform: translate(-50%, -12px); /* Moves up and bounces slightly */
+      transform: translate(-50%, -8px); /* Moves up less since it's smaller */
     }
   </style>
 
