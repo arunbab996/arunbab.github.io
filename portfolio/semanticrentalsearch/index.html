@@ -42,11 +42,19 @@
     /* --- TYPOGRAPHY --- */
     h1 { font-size: 32px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: -0.02em; line-height: 1.2; }
     h2 { font-size: 22px; margin: 48px 0 16px 0; font-weight: 700; letter-spacing: -0.01em; }
-    h3 { font-size: 14px; margin: 40px 0 16px 0; font-weight: 600; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
+    
+    /* UPDATED: Table Title Style */
+    h3 { 
+      font-size: 13px; 
+      margin: 48px 0 12px 0; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      color: #111; /* Darker/Bolder */
+      letter-spacing: 0.04em; 
+    }
     
     .meta-line { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
     
-    /* Paragraph styling to match Word doc flow */
     p { 
       font-size: 17px; 
       margin: 0 0 24px 0; 
@@ -66,10 +74,13 @@
       display: block; 
     }
 
-    /* --- TABLE STYLES (MATCHING SCREENSHOT) --- */
+    /* --- TABLE STYLES (Card Style) --- */
     .table-wrapper {
-      margin: 20px 0 40px 0;
-      overflow-x: auto;
+      margin: 16px 0 40px 0;
+      /* Card border styling */
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden; /* Clips children to rounded corners */
     }
     
     .comparison-table { 
@@ -81,9 +92,10 @@
     
     .comparison-table th { 
       text-align: left; 
-      padding: 0 0 16px 0; 
+      padding: 16px 20px; 
       border-bottom: 1px solid #e5e7eb; 
-      color: #6b7280; 
+      background-color: #f9fafb; /* Slight grey background for header */
+      color: #374151; 
       font-size: 12px; 
       font-weight: 600;
       text-transform: uppercase; 
@@ -91,21 +103,22 @@
     }
     
     .comparison-table td { 
-      padding: 24px 24px 24px 0; 
+      padding: 16px 20px; 
       border-bottom: 1px solid #e5e7eb; 
       vertical-align: top; 
       line-height: 1.5;
       color: #374151;
     }
     
-    /* Remove right padding for the last column */
-    .comparison-table td:last-child { padding-right: 0; }
+    /* Remove bottom border for the very last row */
+    .comparison-table tr:last-child td { border-bottom: none; }
     
-    /* First Column: Bold & Darker */
+    /* First Column Styling */
     .comparison-table td:first-child { 
       font-weight: 600; 
       color: #111827; 
-      width: 45%; 
+      width: 40%; 
+      padding-right: 24px;
     }
 
     /* --- ANIMATION --- */
@@ -157,7 +170,7 @@
         <img class="content-img" src="images/weighted-ranking.png" alt="Weighted Ranking Diagram" style="display:none;"
              onload="this.style.display='block'" onerror="this.style.display='none'">
 
-        <p>The prototype I built uses a chat-style interface where users describe what they’re looking for in plain language. That input is parsed into a set of structured signals—budget constraints, location preferences, timing, and softer lifestyle requirements.</p>
+        <p>The prototype I built uses a chat-style interface where users describe what they’re looking for in plain language. That input is parsed into a set of structured signals - budget constraints, location preferences, timing, and softer lifestyle requirements.</p>
 
         <p>Importantly, these signals aren’t treated as absolute filters. They’re weighted and used to score listings relative to one another. This ranking-first approach was a deliberate choice. In real rental decisions, people rarely find a perfect match. They make compromises. By ranking listings and explaining why something shows up higher or lower, the system mirrors how users actually evaluate options. A place might rank second because it’s slightly over budget but much closer to public transport. That context matters more than a binary “match or no match.”</p>
         
@@ -201,7 +214,7 @@
           </table>
         </div>
 
-        <p>Speed is critical in rental markets, so the prototype doesn’t stop at showing results. Once a user finds a suitable option, the system drafts a viewing request email to the landlord in real time. This removes yet another small but meaningful delay between intent and action—something that often determines whether a deal happens or not.</p>
+        <p>Speed is critical in rental markets, so the prototype doesn’t stop at showing results. Once a user finds a suitable option, the system drafts a viewing request email to the landlord in real time. This removes yet another small but meaningful delay between intent and action - something that often determines whether a deal happens or not.</p>
         
         <p>I also included commercial logic directly in the search experience. For each listing, the system estimates what the user would typically pay in traditional agent fees and compares it to the platform’s fees. The idea wasn’t to “sell,” but to surface value at the exact moment the user is making a decision, rather than relying on abstract marketing claims elsewhere.</p>
         
@@ -211,7 +224,7 @@
         
         <p>This project also reflects how I prefer to work. Instead of describing ideas or writing speculative docs, I tend to build small, concrete systems to test assumptions. That approach has served me well in previous 0→1, data-heavy products, where progress came from tightening feedback loops rather than perfect planning.</p>
         
-        <p>If I were to take this further, the next step would be to let the system learn from outcomes—which listings actually convert, which constraints matter most by city, and how landlord response times affect ranking. Those feedback loops are where this kind of system becomes truly powerful.</p>
+        <p>If I were to take this further, the next step would be to let the system learn from outcomes - which listings actually convert, which constraints matter most by city, and how landlord response times affect ranking. Those feedback loops are where this kind of system becomes truly powerful.</p>
         
         <p>This prototype was never meant to be a finished product. It was a way to think clearly about a broken process and explore how intent-driven systems could meaningfully reduce time-to-rent. For me, it’s a good example of how building something tangible can lead to better conversations and better decisions than abstract problem statements ever could.</p>
       </section>
