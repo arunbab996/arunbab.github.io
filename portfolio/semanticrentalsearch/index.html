@@ -43,14 +43,13 @@
     h1 { font-size: 32px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: -0.02em; line-height: 1.2; }
     h2 { font-size: 22px; margin: 48px 0 16px 0; font-weight: 700; letter-spacing: -0.01em; }
     
-    /* UPDATED: Table Title Style */
+    /* UPDATED: Table Title Style (Black, Regular Case, Larger) */
     h3 { 
-      font-size: 13px; 
-      margin: 48px 0 12px 0; 
+      font-size: 17px; /* Increased size */
+      margin: 48px 0 16px 0; 
       font-weight: 700; 
-      text-transform: uppercase; 
-      color: #111; /* Darker/Bolder */
-      letter-spacing: 0.04em; 
+      color: #111219; /* Black */
+      letter-spacing: -0.01em;
     }
     
     .meta-line { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
@@ -77,10 +76,9 @@
     /* --- TABLE STYLES (Card Style) --- */
     .table-wrapper {
       margin: 16px 0 40px 0;
-      /* Card border styling */
       border: 1px solid #e5e7eb;
       border-radius: 12px;
-      overflow: hidden; /* Clips children to rounded corners */
+      overflow: hidden; 
     }
     
     .comparison-table { 
@@ -88,13 +86,14 @@
       border-collapse: collapse; 
       font-family: 'Inter', sans-serif;
       font-size: 15px;
+      table-layout: fixed; /* Ensures even width distribution */
     }
     
     .comparison-table th { 
       text-align: left; 
-      padding: 16px 20px; 
+      padding: 16px 24px; 
       border-bottom: 1px solid #e5e7eb; 
-      background-color: #f9fafb; /* Slight grey background for header */
+      background-color: #f9fafb; 
       color: #374151; 
       font-size: 12px; 
       font-weight: 600;
@@ -103,22 +102,23 @@
     }
     
     .comparison-table td { 
-      padding: 16px 20px; 
+      padding: 20px 24px; 
       border-bottom: 1px solid #e5e7eb; 
       vertical-align: top; 
       line-height: 1.5;
       color: #374151;
     }
     
-    /* Remove bottom border for the very last row */
+    /* Last row border fix */
     .comparison-table tr:last-child td { border-bottom: none; }
     
-    /* First Column Styling */
-    .comparison-table td:first-child { 
-      font-weight: 600; 
-      color: #111827; 
-      width: 40%; 
-      padding-right: 24px;
+    /* UPDATED: First Column Styling (Removed Bold, Increased Width) */
+    .comparison-table td:first-child, 
+    .comparison-table th:first-child { 
+      width: 50%; /* Give it more room */
+      color: #111827; /* Slightly darker text */
+      font-weight: 400; /* Regular weight */
+      border-right: 1px solid #f3f4f6; /* Subtle divider */
     }
 
     /* --- ANIMATION --- */
