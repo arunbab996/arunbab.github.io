@@ -48,11 +48,10 @@
       display: block; 
     }
     
-    /* --- TABLE STYLES (Fixed) --- */
+    /* --- TABLE STYLES (Fixed Density) --- */
     .table-wrapper {
-      overflow-x: auto;
-      margin: 40px 0;
-      border-top: 2px solid #f0f0f0;
+      margin: 32px 0;
+      border-top: 1px solid #e5e5e5;
     }
     
     .comparison-table { 
@@ -63,9 +62,9 @@
     
     .comparison-table th { 
       text-align: left; 
-      padding: 16px 0; 
+      padding: 12px 0; 
       border-bottom: 1px solid #e5e5e5; 
-      color: #666; 
+      color: #5b6066; 
       font-size: 11px; 
       font-weight: 600;
       text-transform: uppercase; 
@@ -73,20 +72,20 @@
     }
     
     .comparison-table td { 
-      padding: 20px 24px 20px 0; 
+      padding: 14px 20px 14px 0; /* Tighter padding */
       border-bottom: 1px solid #f0f0f0; 
       vertical-align: top; 
       font-size: 15px;
-      line-height: 1.5;
+      line-height: 1.45; /* Tighter line height */
       color: #333;
     }
     
-    /* Make the first column distinct (Header-like) */
+    /* First Column: Bold & Darker */
     .comparison-table td:first-child { 
       font-weight: 600; 
-      color: #444; 
+      color: #222; 
       width: 45%;
-      padding-right: 32px;
+      padding-right: 24px;
     }
 
     /* Animation */
@@ -121,8 +120,10 @@
         <p>After coming across an early-stage proptech startup, I decided to build a small prototype to explore whether a different approach could reduce friction in the rental journey.</p>
         <p>Instead of starting with features or metrics, I started with a simple question: why is it still so hard to go from “I want a place” to “I’ve booked a viewing”?</p>
         
-        <p>
-            <strong>Working Prototype:</strong> <a href="https://uprent-agent.vercel.app/" target="_blank" style="color:#000; text-decoration: underline;">https://uprent-agent.vercel.app/</a>
+        <p style="margin-top: 28px;">
+            <a href="https://uprent-agent.vercel.app/" target="_blank" style="color:#111219; text-decoration: none; border-bottom: 2px solid #111219;">
+                <strong>Visit the Working Prototype ↗</strong>
+            </a>
         </p>
 
         <p>From my own experience and from watching how people actually search for homes, the core issue seemed to be translation.</p>
