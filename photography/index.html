@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj</title>
+  <title>Arun Baburaj — Photography</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
-    /* 1. SCROLLBAR FIX */
     html { visibility: hidden; overflow-y: scroll; }
     html.ready { visibility: visible; }
 
@@ -90,20 +89,13 @@
       width: 100%;
       height: 100%;
       position: relative; 
-      
-      /* Navigation Cursor */
-      cursor: ew-resize; /* Indicates left/right navigation */
-      
-      /* Disable selection "stickiness" */
+      cursor: ew-resize; 
       user-select: none;
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
-      
-      /* Only transition the transform for the click feel */
       transition: transform 0.05s ease-out;
     }
 
-    /* Tactile "Press" Feedback */
     .photo-frame:active {
       transform: scale(0.99);
       opacity: 0.95;
@@ -115,20 +107,17 @@
       object-fit: contain; 
       border-radius: 4px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      
-      /* SMOOTH TRANSITIONS */
       transition: opacity 0.15s ease-out, transform 0.15s ease-out;
       opacity: 1; 
       pointer-events: none; 
     }
 
-    /* Class used by JS to create the fade-out/in effect */
+    /* Loading state for transitions */
     .photo-frame img.loading {
       opacity: 0.7; 
       transform: scale(0.995);
     }
 
-    /* === CAPTION STYLES === */
     .caption-container {
       margin-top: 22px;
       text-align: center;
@@ -153,7 +142,6 @@
       filter: opacity(0.7); 
     }
 
-    /* === HINT === */
     .caption-hint {
       margin-top: 12px; 
       font-size: 11px;
@@ -193,11 +181,12 @@
   </header>
 
   <main id="app">
-    <div class="photo-frame" id="photo-frame">
+    <div class="photo-frame" id="photo-frame-container">
       
       <img 
         id="main-photo" 
         src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic" 
+        data-index="0" 
         alt="Photography"
       >
 
@@ -211,7 +200,7 @@
       </div>
 
       <div id="instruction-hint" class="caption-hint">
-        (Use Arrow Keys or Click sides to navigate)
+        (Arrow keys or Click sides to navigate)
       </div>
 
     </div>
@@ -225,9 +214,9 @@
 
   <script>
     (function() {
-      // --- 1. CONFIGURATION & DATA ---
+      // DATA
       const photos = [
-        // PARIS (March 2025)
+        // PARIS
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic', loc: 'Paris, France', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_5271_inc2jg.heic', loc: 'Montmartre, Paris', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5506_obeji0.heic', loc: 'Eiffel Tower, Paris', date: 'March 2025' },
@@ -237,8 +226,7 @@
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5361_jpxu89.heic', loc: 'Paris, France', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5192_rahvfy.heic', loc: 'Paris, France', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5145_fiiz2o.heic', loc: 'Arc de Triomphe, Paris', date: 'March 2025' },
-
-        // JAPAN (Sep 2024)
+        // JAPAN
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
@@ -251,95 +239,99 @@
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
       ];
 
-      // --- 2. STATE & ELEMENTS ---
-      let currentIndex = 0;
-      const els = {
-        frame: document.getElementById('photo-frame'),
+      // GLOBAL HELPERS
+      // We look up elements dynamically because SPA replaces them
+      const getEls = () => ({
+        container: document.getElementById('photo-frame-container'),
         img: document.getElementById('main-photo'),
         loc: document.getElementById('location-text'),
         date: document.getElementById('date-text'),
         hint: document.getElementById('instruction-hint')
-      };
+      });
 
-      // --- 3. CORE LOGIC ---
-      function updatePhoto(newIndex) {
-        // 1. Hide Hint on first interaction
+      // CORE UPDATE LOGIC
+      function navigateGallery(direction) {
+        const els = getEls();
+        if (!els.img) return; // Not on photography page
+
+        // Get current index from DOM to stay in sync
+        let currentIdx = parseInt(els.img.getAttribute('data-index') || '0');
+        
+        // Calculate new index
+        let newIdx;
+        if (direction === 'next') {
+          newIdx = (currentIdx + 1) % photos.length;
+        } else {
+          newIdx = (currentIdx - 1 + photos.length) % photos.length;
+        }
+
+        // Hide Hint
         if (els.hint && els.hint.style.display !== 'none') {
           els.hint.style.display = 'none';
         }
 
-        // 2. Visual Feedback (Fade out slightly)
+        // Animate
         els.img.classList.add('loading');
 
-        // 3. Update Content after short delay to allow fade to register
         setTimeout(() => {
-          currentIndex = newIndex;
-          const photo = photos[currentIndex];
-          
+          const photo = photos[newIdx];
           els.img.src = photo.url;
+          els.img.setAttribute('data-index', newIdx); // Update State in DOM
           els.loc.innerText = photo.loc;
           els.date.innerText = photo.date;
 
-          // 4. Fade back in
+          // Fade In
           els.img.onload = () => els.img.classList.remove('loading');
-          
-          // Fallback in case onload misses (cached images)
           setTimeout(() => els.img.classList.remove('loading'), 50);
 
-          // 5. Preload NEXT image
-          const nextIndex = (currentIndex + 1) % photos.length;
-          const preload = new Image();
-          preload.src = photos[nextIndex].url;
-
-        }, 150); // 150ms matches CSS transition
+          // Preload Next
+          const preloadIdx = (newIdx + 1) % photos.length;
+          new Image().src = photos[preloadIdx].url;
+        }, 150);
       }
 
-      function next() {
-        const newIdx = (currentIndex + 1) % photos.length;
-        updatePhoto(newIdx);
-      }
-
-      function prev() {
-        // Handle negative modulo wrapper
-        const newIdx = (currentIndex - 1 + photos.length) % photos.length;
-        updatePhoto(newIdx);
-      }
-
-      // --- 4. EVENT LISTENERS ---
-
-      // A. Keyboard Navigation
+      // --- EVENT DELEGATION (SAFE FOR SPA) ---
+      
+      // 1. Keyboard
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') next();
-        if (e.key === 'ArrowLeft') prev();
+        // Check if we are actually on the photo page by looking for the element
+        if (!document.getElementById('main-photo')) return;
+
+        if (e.key === 'ArrowRight') navigateGallery('next');
+        if (e.key === 'ArrowLeft') navigateGallery('prev');
       });
 
-      // B. Click Navigation (Left vs Right side)
-      els.frame.addEventListener('click', (e) => {
-        const rect = els.frame.getBoundingClientRect();
+      // 2. Clicks (Delegated to Document)
+      document.addEventListener('click', (e) => {
+        const container = e.target.closest('#photo-frame-container');
+        if (!container) return; // Click wasn't on our frame
+
+        const rect = container.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         
-        // If click is in the left 30% of the container, go back. Otherwise go next.
+        // Left 30% = Prev, Right = Next
         if (clickX < rect.width * 0.3) {
-          prev();
+          navigateGallery('prev');
         } else {
-          next();
+          navigateGallery('next');
         }
       });
 
-      // C. Swipe Gestures (Mobile)
+      // 3. Swipe (Delegated to Document)
       let touchStartX = 0;
-      
-      els.frame.addEventListener('touchstart', (e) => {
+      document.addEventListener('touchstart', (e) => {
+        if (!e.target.closest('#photo-frame-container')) return;
         touchStartX = e.changedTouches[0].screenX;
       }, {passive: true});
 
-      els.frame.addEventListener('touchend', (e) => {
+      document.addEventListener('touchend', (e) => {
+        if (!e.target.closest('#photo-frame-container')) return;
         const touchEndX = e.changedTouches[0].screenX;
         const diff = touchStartX - touchEndX;
 
-        if (Math.abs(diff) > 50) { // Threshold of 50px
-          if (diff > 0) next(); // Swiped Left -> Next
-          else prev();          // Swiped Right -> Prev
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) navigateGallery('next');
+          else navigateGallery('prev');
         }
       }, {passive: true});
 
