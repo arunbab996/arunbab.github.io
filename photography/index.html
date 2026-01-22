@@ -89,8 +89,10 @@
       align-items: center;
       width: 100%;
       height: 100%;
-      cursor: pointer;
       position: relative; 
+      
+      /* Navigation Cursor */
+      cursor: ew-resize; /* Indicates left/right navigation */
       
       /* Disable selection "stickiness" */
       user-select: none;
@@ -114,9 +116,16 @@
       border-radius: 4px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       
-      /* INSTANT VISIBILITY (No opacity/animation) */
+      /* SMOOTH TRANSITIONS */
+      transition: opacity 0.15s ease-out, transform 0.15s ease-out;
       opacity: 1; 
       pointer-events: none; 
+    }
+
+    /* Class used by JS to create the fade-out/in effect */
+    .photo-frame img.loading {
+      opacity: 0.7; 
+      transform: scale(0.995);
     }
 
     /* === CAPTION STYLES === */
@@ -184,7 +193,7 @@
   </header>
 
   <main id="app">
-    <div class="photo-frame" onclick="if(window.nextPhoto) window.nextPhoto()">
+    <div class="photo-frame" id="photo-frame">
       
       <img 
         id="main-photo" 
@@ -202,62 +211,10 @@
       </div>
 
       <div id="instruction-hint" class="caption-hint">
-        (Click anywhere to view next)
+        (Use Arrow Keys or Click sides to navigate)
       </div>
 
     </div>
-
-    <img 
-      src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
-      style="display:none;" 
-      onload="
-        (function(){
-          window.myPhotos = [
-            // --- PARIS (March 2025) ---
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic', loc: 'Paris, France', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_5271_inc2jg.heic', loc: 'Montmartre, Paris', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5506_obeji0.heic', loc: 'Eiffel Tower, Paris', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5419_tjcvau.heic', loc: 'Jardin des Tuileries, Paris', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4714_r6ltis.heic', loc: 'Notre-Dame Cathedral, Paris', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_4804_qv8n6j.heic', loc: 'Paris, France', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5361_jpxu89.heic', loc: 'Paris, France', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5192_rahvfy.heic', loc: 'Paris, France', date: 'March 2025' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5145_fiiz2o.heic', loc: 'Arc de Triomphe, Paris', date: 'March 2025' },
-
-            // --- JAPAN (Sep 2024) ---
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic', loc: 'Kabukicho, Shinjuku', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic', loc: 'Asakusa, Tokyo', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic', loc: 'Osaka Castle, Osaka', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic', loc: 'Kinkaku-ji, Kyoto', date: 'Sep 2024' },
-            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
-          ];
-
-          window.nextPhoto = function() {
-            const img = document.getElementById('main-photo');
-            const locText = document.getElementById('location-text');
-            const dateText = document.getElementById('date-text');
-            const hint = document.getElementById('instruction-hint');
-
-            if(hint) hint.style.display = 'none';
-
-            let idx = parseInt(img.getAttribute('data-index') || '0');
-            idx = (idx + 1) % window.myPhotos.length;
-            
-            // UPDATE CONTENT INSTANTLY
-            const photoData = window.myPhotos[idx];
-            img.src = photoData.url;
-            img.setAttribute('data-index', idx);
-            locText.innerText = photoData.loc; 
-            dateText.innerText = photoData.date;
-          };
-        })();
-      "
-    />
   </main>
 
   <div class="social-fixed">
@@ -265,6 +222,129 @@
     <a href="https://x.com/96Arun" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg></a>
     <a href="mailto:arunbaburajc@gmail.com"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
   </div>
+
+  <script>
+    (function() {
+      // --- 1. CONFIGURATION & DATA ---
+      const photos = [
+        // PARIS (March 2025)
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic', loc: 'Paris, France', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_5271_inc2jg.heic', loc: 'Montmartre, Paris', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5506_obeji0.heic', loc: 'Eiffel Tower, Paris', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5419_tjcvau.heic', loc: 'Jardin des Tuileries, Paris', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4714_r6ltis.heic', loc: 'Notre-Dame Cathedral, Paris', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_4804_qv8n6j.heic', loc: 'Paris, France', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5361_jpxu89.heic', loc: 'Paris, France', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5192_rahvfy.heic', loc: 'Paris, France', date: 'March 2025' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5145_fiiz2o.heic', loc: 'Arc de Triomphe, Paris', date: 'March 2025' },
+
+        // JAPAN (Sep 2024)
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic', loc: 'Kabukicho, Shinjuku', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic', loc: 'Asakusa, Tokyo', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic', loc: 'Osaka Castle, Osaka', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic', loc: 'Kinkaku-ji, Kyoto', date: 'Sep 2024' },
+        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
+      ];
+
+      // --- 2. STATE & ELEMENTS ---
+      let currentIndex = 0;
+      const els = {
+        frame: document.getElementById('photo-frame'),
+        img: document.getElementById('main-photo'),
+        loc: document.getElementById('location-text'),
+        date: document.getElementById('date-text'),
+        hint: document.getElementById('instruction-hint')
+      };
+
+      // --- 3. CORE LOGIC ---
+      function updatePhoto(newIndex) {
+        // 1. Hide Hint on first interaction
+        if (els.hint && els.hint.style.display !== 'none') {
+          els.hint.style.display = 'none';
+        }
+
+        // 2. Visual Feedback (Fade out slightly)
+        els.img.classList.add('loading');
+
+        // 3. Update Content after short delay to allow fade to register
+        setTimeout(() => {
+          currentIndex = newIndex;
+          const photo = photos[currentIndex];
+          
+          els.img.src = photo.url;
+          els.loc.innerText = photo.loc;
+          els.date.innerText = photo.date;
+
+          // 4. Fade back in
+          els.img.onload = () => els.img.classList.remove('loading');
+          
+          // Fallback in case onload misses (cached images)
+          setTimeout(() => els.img.classList.remove('loading'), 50);
+
+          // 5. Preload NEXT image
+          const nextIndex = (currentIndex + 1) % photos.length;
+          const preload = new Image();
+          preload.src = photos[nextIndex].url;
+
+        }, 150); // 150ms matches CSS transition
+      }
+
+      function next() {
+        const newIdx = (currentIndex + 1) % photos.length;
+        updatePhoto(newIdx);
+      }
+
+      function prev() {
+        // Handle negative modulo wrapper
+        const newIdx = (currentIndex - 1 + photos.length) % photos.length;
+        updatePhoto(newIdx);
+      }
+
+      // --- 4. EVENT LISTENERS ---
+
+      // A. Keyboard Navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') next();
+        if (e.key === 'ArrowLeft') prev();
+      });
+
+      // B. Click Navigation (Left vs Right side)
+      els.frame.addEventListener('click', (e) => {
+        const rect = els.frame.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        
+        // If click is in the left 30% of the container, go back. Otherwise go next.
+        if (clickX < rect.width * 0.3) {
+          prev();
+        } else {
+          next();
+        }
+      });
+
+      // C. Swipe Gestures (Mobile)
+      let touchStartX = 0;
+      
+      els.frame.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, {passive: true});
+
+      els.frame.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > 50) { // Threshold of 50px
+          if (diff > 0) next(); // Swiped Left -> Next
+          else prev();          // Swiped Right -> Prev
+        }
+      }, {passive: true});
+
+    })();
+  </script>
 
   <script src="/spa-nav.js"></script>
 </body>
