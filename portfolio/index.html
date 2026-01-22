@@ -188,10 +188,41 @@
     .stagger-wrapper>*:nth-child(5){animation-delay:.25s}
     .stagger-wrapper>*:nth-child(6){animation-delay:.3s}
 
+    /* --- MOBILE RESPONSIVE FIX --- */
     @media(max-width:900px){
-      .two-col{grid-template-columns:1fr;}
-      .project-card img{width:100%;height:180px;}
-      .tool-thumb{width:100px;height:80px;}
+      /* 1. Stack the main columns vertically */
+      .two-col{
+        grid-template-columns:1fr;
+        gap: 48px; /* Breathing room between Projects and Experiments */
+      }
+
+      /* 2. FIX: Make the Project Cards vertical so image sits on top */
+      .project-card {
+        flex-direction: column; 
+        align-items: flex-start;
+      }
+
+      /* 3. Adjust image to fill width */
+      .project-card img{
+        width:100%;
+        height:200px;
+        margin-bottom: 12px;
+      }
+      
+      /* 4. Allow Navigation to scroll horizontally if it overflows */
+      .nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .nav::-webkit-scrollbar { display: none; }
+
+      /* 5. Ensure "Experiment" thumbnails don't squish */
+      .tool-thumb{
+        width:90px;
+        height:70px;
+        flex-shrink: 0;
+      }
     }
   </style>
 
