@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style data-page-style>
+    /* 1. SCROLLBAR FIX */
     html { visibility: hidden; overflow-y: scroll; }
     html.ready { visibility: visible; }
 
@@ -89,13 +90,20 @@
       width: 100%;
       height: 100%;
       position: relative; 
-      cursor: ew-resize; 
+      
+      /* Navigation Cursor */
+      cursor: ew-resize; /* Indicates left/right navigation */
+      
+      /* Disable selection "stickiness" */
       user-select: none;
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
+      
+      /* Only transition the transform for the click feel */
       transition: transform 0.05s ease-out;
     }
 
+    /* Tactile "Press" Feedback */
     .photo-frame:active {
       transform: scale(0.99);
       opacity: 0.95;
@@ -107,17 +115,20 @@
       object-fit: contain; 
       border-radius: 4px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      
+      /* SMOOTH TRANSITIONS */
       transition: opacity 0.15s ease-out, transform 0.15s ease-out;
       opacity: 1; 
       pointer-events: none; 
     }
 
-    /* Loading state for transitions */
+    /* Class used by JS to create the fade-out/in effect */
     .photo-frame img.loading {
       opacity: 0.7; 
       transform: scale(0.995);
     }
 
+    /* === CAPTION STYLES === */
     .caption-container {
       margin-top: 22px;
       text-align: center;
@@ -142,6 +153,7 @@
       filter: opacity(0.7); 
     }
 
+    /* === HINT === */
     .caption-hint {
       margin-top: 12px; 
       font-size: 11px;
@@ -186,17 +198,12 @@
       <img 
         id="main-photo" 
         src="https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic" 
-        data-index="0" 
         alt="Photography"
       >
 
       <div class="caption-container">
-        <div id="location-text" class="location-caption">
-          Paris, France
-        </div>
-        <div id="date-text" class="date-caption">
-          March 2025
-        </div>
+        <div id="location-text" class="location-caption">Paris, France</div>
+        <div id="date-text" class="date-caption">March 2025</div>
       </div>
 
       <div id="instruction-hint" class="caption-hint">
@@ -212,11 +219,12 @@
     <a href="mailto:arunbaburajc@gmail.com"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
   </div>
 
-  <script>
-    (function() {
-      // DATA
-      const photos = [
-        // PARIS
+  <img 
+    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+    style="display:none;" 
+    onload="(function(){
+      /* === DATA === */
+      var photos = [
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic', loc: 'Paris, France', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_5271_inc2jg.heic', loc: 'Montmartre, Paris', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5506_obeji0.heic', loc: 'Eiffel Tower, Paris', date: 'March 2025' },
@@ -226,7 +234,6 @@
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5361_jpxu89.heic', loc: 'Paris, France', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5192_rahvfy.heic', loc: 'Paris, France', date: 'March 2025' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5145_fiiz2o.heic', loc: 'Arc de Triomphe, Paris', date: 'March 2025' },
-        // JAPAN
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
@@ -239,104 +246,76 @@
         { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
       ];
 
-      // GLOBAL HELPERS
-      // We look up elements dynamically because SPA replaces them
-      const getEls = () => ({
-        container: document.getElementById('photo-frame-container'),
-        img: document.getElementById('main-photo'),
-        loc: document.getElementById('location-text'),
-        date: document.getElementById('date-text'),
-        hint: document.getElementById('instruction-hint')
-      });
+      /* === STATE === */
+      var frame = document.getElementById('photo-frame-container');
+      var img = document.getElementById('main-photo');
+      var loc = document.getElementById('location-text');
+      var date = document.getElementById('date-text');
+      var hint = document.getElementById('instruction-hint');
+      var idx = 0;
 
-      // CORE UPDATE LOGIC
-      function navigateGallery(direction) {
-        const els = getEls();
-        if (!els.img) return; // Not on photography page
-
-        // Get current index from DOM to stay in sync
-        let currentIdx = parseInt(els.img.getAttribute('data-index') || '0');
+      /* === UPDATE LOGIC === */
+      window.navGallery = function(dir) {
+        if(hint) hint.style.display = 'none';
         
-        // Calculate new index
-        let newIdx;
-        if (direction === 'next') {
-          newIdx = (currentIdx + 1) % photos.length;
-        } else {
-          newIdx = (currentIdx - 1 + photos.length) % photos.length;
-        }
+        // Calculate Index
+        idx = (idx + dir + photos.length) % photos.length;
+        
+        // Animation Start
+        img.classList.add('loading');
 
-        // Hide Hint
-        if (els.hint && els.hint.style.display !== 'none') {
-          els.hint.style.display = 'none';
-        }
+        setTimeout(function(){
+          // Update Data
+          var p = photos[idx];
+          img.src = p.url;
+          loc.innerText = p.loc;
+          date.innerText = p.date;
 
-        // Animate
-        els.img.classList.add('loading');
-
-        setTimeout(() => {
-          const photo = photos[newIdx];
-          els.img.src = photo.url;
-          els.img.setAttribute('data-index', newIdx); // Update State in DOM
-          els.loc.innerText = photo.loc;
-          els.date.innerText = photo.date;
-
-          // Fade In
-          els.img.onload = () => els.img.classList.remove('loading');
-          setTimeout(() => els.img.classList.remove('loading'), 50);
+          // Animation End (Fade in)
+          img.onload = function(){ img.classList.remove('loading'); };
+          setTimeout(function(){ img.classList.remove('loading'); }, 50);
 
           // Preload Next
-          const preloadIdx = (newIdx + 1) % photos.length;
-          new Image().src = photos[preloadIdx].url;
+          var nextIdx = (idx + 1) % photos.length;
+          new Image().src = photos[nextIdx].url;
         }, 150);
+      };
+
+      /* === EVENT LISTENERS === */
+      
+      // 1. CLICK ZONES (Left 30% = Prev, Right = Next)
+      if(frame) {
+        frame.onclick = function(e) {
+          var rect = frame.getBoundingClientRect();
+          if((e.clientX - rect.left) < rect.width * 0.3) window.navGallery(-1);
+          else window.navGallery(1);
+        };
+
+        // 2. SWIPE (Touch)
+        var tx = 0;
+        frame.ontouchstart = function(e){ tx = e.changedTouches[0].screenX; };
+        frame.ontouchend = function(e){
+          var diff = tx - e.changedTouches[0].screenX;
+          if(Math.abs(diff) > 50) {
+            if(diff > 0) window.navGallery(1); // Left Swipe = Next
+            else window.navGallery(-1);        // Right Swipe = Prev
+          }
+        };
       }
 
-      // --- EVENT DELEGATION (SAFE FOR SPA) ---
-      
-      // 1. Keyboard
-      document.addEventListener('keydown', (e) => {
-        // Check if we are actually on the photo page by looking for the element
-        if (!document.getElementById('main-photo')) return;
-
-        if (e.key === 'ArrowRight') navigateGallery('next');
-        if (e.key === 'ArrowLeft') navigateGallery('prev');
-      });
-
-      // 2. Clicks (Delegated to Document)
-      document.addEventListener('click', (e) => {
-        const container = e.target.closest('#photo-frame-container');
-        if (!container) return; // Click wasn't on our frame
-
-        const rect = container.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        
-        // Left 30% = Prev, Right = Next
-        if (clickX < rect.width * 0.3) {
-          navigateGallery('prev');
-        } else {
-          navigateGallery('next');
-        }
-      });
-
-      // 3. Swipe (Delegated to Document)
-      let touchStartX = 0;
-      document.addEventListener('touchstart', (e) => {
-        if (!e.target.closest('#photo-frame-container')) return;
-        touchStartX = e.changedTouches[0].screenX;
-      }, {passive: true});
-
-      document.addEventListener('touchend', (e) => {
-        if (!e.target.closest('#photo-frame-container')) return;
-        const touchEndX = e.changedTouches[0].screenX;
-        const diff = touchStartX - touchEndX;
-
-        if (Math.abs(diff) > 50) {
-          if (diff > 0) navigateGallery('next');
-          else navigateGallery('prev');
-        }
-      }, {passive: true});
-
-    })();
-  </script>
+      // 3. KEYBOARD (Global) - Checked to avoid duplicates
+      if(!window.isPhotoKeyListening) {
+        document.addEventListener('keydown', function(e) {
+          // Check if photo element exists (user is on the page)
+          if(!document.getElementById('main-photo')) return; 
+          
+          if(e.key === 'ArrowRight') window.navGallery(1);
+          if(e.key === 'ArrowLeft') window.navGallery(-1);
+        });
+        window.isPhotoKeyListening = true;
+      }
+    })()"
+  />
 
   <script src="/spa-nav.js"></script>
 </body>
