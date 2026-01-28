@@ -90,16 +90,12 @@
       width: 100%;
       height: 100%;
       position: relative; 
-      
-      /* Navigation Cursor */
       cursor: ew-resize; /* Indicates left/right navigation */
       
-      /* Disable selection "stickiness" */
       user-select: none;
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
       
-      /* Only transition the transform for the click feel */
       transition: transform 0.05s ease-out;
     }
 
@@ -122,7 +118,6 @@
       pointer-events: none; 
     }
 
-    /* Class used by JS to create the fade-out/in effect */
     .photo-frame img.loading {
       opacity: 0.7; 
       transform: scale(0.995);
@@ -153,7 +148,6 @@
       filter: opacity(0.7); 
     }
 
-    /* === HINT === */
     .caption-hint {
       margin-top: 12px; 
       font-size: 11px;
@@ -211,6 +205,114 @@
       </div>
 
     </div>
+
+    <img src="x" style="display:none;" onerror="
+      (function(){
+        // Prevent infinite loops or visual clutter
+        this.style.display = 'none';
+
+        // Wait 50ms to ensure DOM is ready
+        setTimeout(function(){
+          
+          /* === DATA === */
+          var photos = [
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic', loc: 'Paris, France', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_5271_inc2jg.heic', loc: 'Montmartre, Paris', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5506_obeji0.heic', loc: 'Eiffel Tower, Paris', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5419_tjcvau.heic', loc: 'Jardin des Tuileries, Paris', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4714_r6ltis.heic', loc: 'Notre-Dame Cathedral, Paris', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_4804_qv8n6j.heic', loc: 'Paris, France', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5361_jpxu89.heic', loc: 'Paris, France', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5192_rahvfy.heic', loc: 'Paris, France', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5145_fiiz2o.heic', loc: 'Arc de Triomphe, Paris', date: 'March 2025' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic', loc: 'Kabukicho, Shinjuku', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic', loc: 'Asakusa, Tokyo', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic', loc: 'Osaka Castle, Osaka', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic', loc: 'Kinkaku-ji, Kyoto', date: 'Sep 2024' },
+            { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
+          ];
+
+          /* === DOM ELEMENTS === */
+          var frame = document.getElementById('photo-frame-container');
+          var img = document.getElementById('main-photo');
+          var loc = document.getElementById('location-text');
+          var date = document.getElementById('date-text');
+          var hint = document.getElementById('instruction-hint');
+          var currentIdx = 0;
+
+          // If elements are missing (rare race condition), stop here
+          if(!frame || !img) return;
+
+          /* === UPDATE FUNCTION === */
+          var update = function(dir) {
+            if(hint) hint.style.display = 'none';
+            
+            // Calculate new index (with wrap-around)
+            currentIdx = (currentIdx + dir + photos.length) % photos.length;
+            
+            // Start Transition
+            img.classList.add('loading');
+
+            setTimeout(function(){
+              // Swap Data
+              var p = photos[currentIdx];
+              img.src = p.url;
+              loc.innerText = p.loc;
+              date.innerText = p.date;
+
+              // End Transition (Fade In)
+              img.onload = function(){ img.classList.remove('loading'); };
+              // Backup in case onload misses
+              setTimeout(function(){ img.classList.remove('loading'); }, 50);
+
+              // Preload Next Image
+              var nextIdx = (currentIdx + 1) % photos.length;
+              new Image().src = photos[nextIdx].url;
+            }, 150);
+          };
+
+          /* === EVENT LISTENERS === */
+          
+          // 1. Click Zones (Left vs Right)
+          frame.onclick = function(e) {
+            var rect = frame.getBoundingClientRect();
+            var isLeft = (e.clientX - rect.left) < (rect.width * 0.3);
+            update(isLeft ? -1 : 1);
+          };
+
+          // 2. Touch Swipe
+          var startX = 0;
+          frame.ontouchstart = function(e){ startX = e.changedTouches[0].screenX; };
+          frame.ontouchend = function(e){
+            var diff = startX - e.changedTouches[0].screenX;
+            if(Math.abs(diff) > 50) {
+              update(diff > 0 ? 1 : -1);
+            }
+          };
+
+          // 3. Keyboard (Safe Check)
+          // We define a unique function name so we can remove it if it exists
+          if(window.photoKeyHandler) {
+             document.removeEventListener('keydown', window.photoKeyHandler);
+          }
+          
+          window.photoKeyHandler = function(e) {
+            // Only react if the photo frame is actually on screen
+            if(!document.getElementById('main-photo')) return;
+            if(e.key === 'ArrowRight') update(1);
+            if(e.key === 'ArrowLeft') update(-1);
+          };
+          
+          document.addEventListener('keydown', window.photoKeyHandler);
+
+        }, 50); // End Timeout
+      }).call(this);
+    " />
   </main>
 
   <div class="social-fixed">
@@ -218,104 +320,6 @@
     <a href="https://x.com/96Arun" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2h3.314l-7.26 8.3L24 22h-6.828l-5.343-7.027L5.463 22H2.148l7.78-8.888L0 2h6.828l4.973 6.533L18.244 2zm-1.157 18h1.843L7.08 4h-1.89l11.897 16z"/></svg></a>
     <a href="mailto:arunbaburajc@gmail.com"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
   </div>
-
-  <img 
-    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
-    style="display:none;" 
-    onload="(function(){
-      /* === DATA === */
-      var photos = [
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4430_ykc7eh.heic', loc: 'Paris, France', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_5271_inc2jg.heic', loc: 'Montmartre, Paris', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5506_obeji0.heic', loc: 'Eiffel Tower, Paris', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5419_tjcvau.heic', loc: 'Jardin des Tuileries, Paris', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963841/IMG_4714_r6ltis.heic', loc: 'Notre-Dame Cathedral, Paris', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963840/IMG_4804_qv8n6j.heic', loc: 'Paris, France', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5361_jpxu89.heic', loc: 'Paris, France', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5192_rahvfy.heic', loc: 'Paris, France', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765963839/IMG_5145_fiiz2o.heic', loc: 'Arc de Triomphe, Paris', date: 'March 2025' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954649/IMG_0846_t8d23u.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954652/IMG_0482_svs8vc.heic', loc: 'Tokyo, Japan', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_1002_szjm3u.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954651/IMG_0493_wpmeil.heic', loc: 'Kabukicho, Shinjuku', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1012_rwnger.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954650/IMG_1022_hamz6c.heic', loc: 'Osaka, Japan', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1880_ae5ler.heic', loc: 'Asakusa, Tokyo', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1093_uhazzm.heic', loc: 'Osaka Castle, Osaka', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1593_iy262h.heic', loc: 'Kinkaku-ji, Kyoto', date: 'Sep 2024' },
-        { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
-      ];
-
-      /* === STATE === */
-      var frame = document.getElementById('photo-frame-container');
-      var img = document.getElementById('main-photo');
-      var loc = document.getElementById('location-text');
-      var date = document.getElementById('date-text');
-      var hint = document.getElementById('instruction-hint');
-      var idx = 0;
-
-      /* === UPDATE LOGIC === */
-      window.navGallery = function(dir) {
-        if(hint) hint.style.display = 'none';
-        
-        // Calculate Index
-        idx = (idx + dir + photos.length) % photos.length;
-        
-        // Animation Start
-        img.classList.add('loading');
-
-        setTimeout(function(){
-          // Update Data
-          var p = photos[idx];
-          img.src = p.url;
-          loc.innerText = p.loc;
-          date.innerText = p.date;
-
-          // Animation End (Fade in)
-          img.onload = function(){ img.classList.remove('loading'); };
-          setTimeout(function(){ img.classList.remove('loading'); }, 50);
-
-          // Preload Next
-          var nextIdx = (idx + 1) % photos.length;
-          new Image().src = photos[nextIdx].url;
-        }, 150);
-      };
-
-      /* === EVENT LISTENERS === */
-      
-      // 1. CLICK ZONES (Left 30% = Prev, Right = Next)
-      if(frame) {
-        frame.onclick = function(e) {
-          var rect = frame.getBoundingClientRect();
-          if((e.clientX - rect.left) < rect.width * 0.3) window.navGallery(-1);
-          else window.navGallery(1);
-        };
-
-        // 2. SWIPE (Touch)
-        var tx = 0;
-        frame.ontouchstart = function(e){ tx = e.changedTouches[0].screenX; };
-        frame.ontouchend = function(e){
-          var diff = tx - e.changedTouches[0].screenX;
-          if(Math.abs(diff) > 50) {
-            if(diff > 0) window.navGallery(1); // Left Swipe = Next
-            else window.navGallery(-1);        // Right Swipe = Prev
-          }
-        };
-      }
-
-      // 3. KEYBOARD (Global) - Checked to avoid duplicates
-      if(!window.isPhotoKeyListening) {
-        document.addEventListener('keydown', function(e) {
-          // Check if photo element exists (user is on the page)
-          if(!document.getElementById('main-photo')) return; 
-          
-          if(e.key === 'ArrowRight') window.navGallery(1);
-          if(e.key === 'ArrowLeft') window.navGallery(-1);
-        });
-        window.isPhotoKeyListening = true;
-      }
-    })()"
-  />
 
   <script src="/spa-nav.js"></script>
 </body>
