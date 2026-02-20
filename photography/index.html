@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Arun Baburaj - Photography</title>
+  <title>Arun Baburaj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.png" type="image/png">
 
@@ -16,8 +16,7 @@
     html.ready { visibility: visible; }
 
     :root {
-      /* Dark Theme for Photography Page */
-      --bg: #0f1115; 
+      var(--bg): #0f1115; 
       --text: #f4f5f7;
       --muted: #94a3b8;
       --nav-gap: 28px;
@@ -27,11 +26,10 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: var(--bg);
+      background: #0f1115;
       font-family: Inter, -apple-system, system-ui;
       color: var(--text);
       -webkit-font-smoothing: antialiased;
-      /* Removed height:100vh and overflow:hidden to allow scrolling */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -60,10 +58,9 @@
       font-size: 15px;
       font-weight: 600;
       white-space: nowrap;
-      overflow-x: auto; /* Allow horizontal scroll on very small screens */
+      overflow-x: auto;
     }
 
-    /* Hide scrollbar for nav */
     .nav::-webkit-scrollbar { display: none; }
     .nav { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -76,7 +73,6 @@
     }
 
     .nav a:hover { color: var(--text); }
-
     .nav a.active {
       color: var(--text);
       border-bottom-color: var(--text);
@@ -85,16 +81,25 @@
     main {
       flex-grow: 1;
       width: 100%;
-      padding: 30px 0 100px 0; /* Extra bottom padding for social icons */
+      padding: 30px 0 100px 0; 
     }
 
-    /* === MASONRY GRID === */
+    /* === PAGE LOAD ANIMATION === */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .photo-grid {
       column-count: 3;
       column-gap: var(--grid-gap);
       padding: 0 20px;
       max-width: 1200px;
       margin: 0 auto;
+      
+      /* Apply smooth load animation */
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0; 
     }
 
     @media (max-width: 900px) { .photo-grid { column-count: 2; } }
@@ -106,6 +111,7 @@
       border-radius: 8px;
       overflow: hidden;
       background: #1e2229;
+      cursor: zoom-in;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -126,7 +132,6 @@
       filter: grayscale(0%);
     }
 
-    /* === CAPTIONS === */
     .grid-caption {
       padding: 14px 16px;
       text-align: left;
@@ -145,6 +150,70 @@
       font-size: 12px;
       font-weight: 400;
     }
+
+    /* === LIGHTBOX STYLES === */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10, 11, 14, 0.95);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+      background: none; border: none;
+      padding: 10px;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+      z-index: 1001;
+    }
+
+    .lightbox-close:hover { opacity: 1; }
+
+    .lightbox-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: calc(100vh - 120px);
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      cursor: ew-resize; /* Hint that you can click to navigate */
+    }
+
+    .lightbox-caption {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .lightbox-loc { font-size: 16px; font-weight: 500; color: #fff; }
+    .lightbox-date { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .lightbox-hint { font-size: 11px; color: #666; margin-top: 8px; }
 
     /* === SOCIAL ICONS === */
     .social-fixed {
@@ -167,7 +236,6 @@
       transition: color 0.2s ease, transform 0.2s ease;
       display: flex;
     }
-    
     .social-fixed a:hover {
       color: var(--text);
       transform: scale(1.1);
@@ -194,6 +262,18 @@
     <div class="photo-grid" id="photo-grid">
       </div>
 
+    <div id="lightbox" class="lightbox">
+      <button class="lightbox-close" id="lightbox-close">&times;</button>
+      <div class="lightbox-content">
+        <img id="lightbox-img" class="lightbox-img" src="" alt="Enlarged photo">
+        <div class="lightbox-caption">
+          <div id="lightbox-loc" class="lightbox-loc"></div>
+          <div id="lightbox-date" class="lightbox-date"></div>
+          <div class="lightbox-hint">Use arrow keys or click sides to navigate</div>
+        </div>
+      </div>
+    </div>
+
     <script>
       (function() {
         const photos = [
@@ -218,19 +298,23 @@
           { url: 'https://res.cloudinary.com/dp67k01qy/image/upload/f_auto,q_auto/v1765954648/IMG_1286_oiapzo.heic', loc: 'Kyoto, Japan', date: 'Sep 2024' }
         ];
 
-        // Small timeout ensures the DOM is fully parsed if injected via an SPA router
-        setTimeout(function() {
-          const grid = document.getElementById('photo-grid');
-          if (!grid) return;
+        let currentIndex = 0;
+        const grid = document.getElementById('photo-grid');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxLoc = document.getElementById('lightbox-loc');
+        const lightboxDate = document.getElementById('lightbox-date');
+        const closeBtn = document.getElementById('lightbox-close');
 
-          // Clear grid in case of re-renders
+        // 1. Render Grid
+        setTimeout(function() {
+          if (!grid) return;
           grid.innerHTML = '';
 
-          photos.forEach(photo => {
+          photos.forEach((photo, index) => {
             const item = document.createElement('div');
             item.className = 'grid-item';
             
-            // Using loading="lazy" defers loading offscreen images
             item.innerHTML = `
               <img src="${photo.url}" alt="${photo.loc}" loading="lazy">
               <div class="grid-caption">
@@ -238,9 +322,68 @@
                 <span class="grid-date">${photo.date}</span>
               </div>
             `;
+            
+            // Open lightbox on click
+            item.onclick = () => openLightbox(index);
             grid.appendChild(item);
           });
         }, 50);
+
+        // 2. Lightbox Logic
+        function openLightbox(index) {
+          currentIndex = index;
+          updateLightbox();
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeLightbox() {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        function updateLightbox() {
+          const p = photos[currentIndex];
+          // Pre-load effect
+          lightboxImg.style.opacity = '0.5'; 
+          
+          lightboxImg.src = p.url;
+          lightboxLoc.innerText = p.loc;
+          lightboxDate.innerText = p.date;
+
+          lightboxImg.onload = () => { lightboxImg.style.opacity = '1'; };
+        }
+
+        function navigateLightbox(dir) {
+          currentIndex = (currentIndex + dir + photos.length) % photos.length;
+          updateLightbox();
+        }
+
+        // 3. Event Listeners for Lightbox
+        closeBtn.onclick = closeLightbox;
+        
+        // Close if clicking the background area outside the image
+        lightbox.onclick = (e) => {
+          if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
+            closeLightbox();
+          }
+        };
+
+        // Click sides of image to navigate
+        lightboxImg.onclick = (e) => {
+          const rect = lightboxImg.getBoundingClientRect();
+          const isLeft = (e.clientX - rect.left) < (rect.width * 0.4);
+          navigateLightbox(isLeft ? -1 : 1);
+        };
+
+        // Keyboard Controls
+        document.addEventListener('keydown', (e) => {
+          if (!lightbox.classList.contains('active')) return;
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowRight') navigateLightbox(1);
+          if (e.key === 'ArrowLeft') navigateLightbox(-1);
+        });
+
       })();
     </script>
   </main>
