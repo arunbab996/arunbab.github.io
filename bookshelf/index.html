@@ -18,6 +18,7 @@
       --bg:#f4f5f7;
       --text:#111219;
       --muted:#5b6066;
+      --accent-red:#ef4444; /* Vibrant notification red */
       --nav-gap:28px;
       --book-width:95px;
       --gap:48px;
@@ -85,6 +86,12 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes pulseRed {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
     .book-card{
       width:var(--book-width);
       display:flex;
@@ -97,38 +104,47 @@
       width:100%;
       aspect-ratio:1/1.55;
       border-radius:6px;
-      overflow:hidden;
-      background:#e7e8eb;
-      box-shadow:0 6px 14px rgba(15,23,42,0.10);
-      transition: transform 0.18s ease;
+      overflow:visible; /* Changed to visible so badge can pop out */
       position: relative;
     }
     
-    .book-card:hover .book-cover {
+    .book-cover-img-wrapper {
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #e7e8eb;
+      box-shadow: 0 6px 14px rgba(15,23,42,0.10);
+      transition: transform 0.18s ease;
+    }
+
+    .book-card:hover .book-cover-img-wrapper {
       transform: translateY(-4px);
     }
 
-    .book-cover img{
+    .book-cover-img-wrapper img{
       width:100%;
       height:100%;
       object-fit:cover;
     }
 
-    /* Currently Reading Tag Styles */
+    /* Red Notification Badge */
     .reading-badge {
       position: absolute;
-      top: 6px;
-      right: 6px;
-      background: var(--text);
+      top: -6px;
+      right: -6px;
+      background: var(--accent-red);
       color: #fff;
-      font-size: 7px;
-      font-weight: 700;
-      padding: 3px 6px;
-      border-radius: 3px;
+      font-size: 8px;
+      font-weight: 800;
+      padding: 4px 7px;
+      border-radius: 20px; /* Rounded pill shape */
       text-transform: uppercase;
-      letter-spacing: 0.4px;
-      z-index: 10;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      letter-spacing: 0.5px;
+      z-index: 20;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+      border: 2px solid var(--bg); /* Creates a gap between badge and book */
+      animation: pulseRed 2s infinite;
     }
 
     .book-title{
@@ -190,7 +206,6 @@
         const CACHE_KEY = 'arun_books_v1';
         const container = document.getElementById('books-container');
 
-        // Render Function
         function render(csvData) {
           const rows = csvData.split(/\r?\n/);
           if(rows.length > 1) container.innerHTML = '';
@@ -215,12 +230,14 @@
             card.innerHTML = `
               <div class="book-cover">
                 ${isReading ? '<div class="reading-badge">Reading</div>' : ''}
-                <img 
-                  src="${cover || ''}" 
-                  alt="${title}" 
-                  loading="lazy"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x155/e7e8eb/a3a3a3?text=No+Cover'"
-                >
+                <div class="book-cover-img-wrapper">
+                  <img 
+                    src="${cover || ''}" 
+                    alt="${title}" 
+                    loading="lazy"
+                    onerror="this.onerror=null;this.src='https://placehold.co/100x155/e7e8eb/a3a3a3?text=No+Cover'"
+                  >
+                </div>
               </div>
               <div class="book-title">${title}</div>
               <div class="book-author">${author || ''}</div>
@@ -229,16 +246,11 @@
           });
         }
 
-        // 1. Instant Load from Cache
         const cachedData = localStorage.getItem(CACHE_KEY);
         if (cachedData) render(cachedData);
 
-        // 2. Fresh Fetch
         fetch(SHEET_URL)
-          .then(res => {
-            if (!res.ok) throw new Error('Fetch failed');
-            return res.text();
-          })
+          .then(res => res.text())
           .then(csv => {
             if (csv !== cachedData) {
               localStorage.setItem(CACHE_KEY, csv);
@@ -246,9 +258,7 @@
             }
           })
           .catch(err => {
-            if (!cachedData) {
-              container.innerHTML = '<div class="books-loading">Failed to load library.</div>';
-            }
+            if (!cachedData) container.innerHTML = '<div class="books-loading">Failed to load library.</div>';
           });
       };
     </script>
