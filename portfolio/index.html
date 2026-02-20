@@ -93,7 +93,8 @@
       gap: 16px;
     }
 
-    .project-card{
+    /* --- UNIFIED CARD STYLES --- */
+    .project-card, .tool-card {
       display:flex;
       align-items:center;
       gap:16px;
@@ -106,12 +107,12 @@
       transition:transform .18s ease, box-shadow .18s ease;
     }
 
-    .project-card:hover{
+    .project-card:hover, .tool-card:hover {
       transform:translateY(-4px);
       box-shadow:0 8px 24px rgba(16,24,40,0.10);
     }
 
-    .project-card img{
+    .project-card img, .tool-thumb {
       width:150px;
       height:94px;
       object-fit:cover;
@@ -120,37 +121,45 @@
       flex-shrink: 0;
     }
 
-    .project-meta{padding:4px;}
-    .project-title{font-weight:700;font-size:16px;margin-bottom:4px;}
-    .project-tagline{color:var(--muted);font-size:14px;line-height:1.4;}
-
-    .tool-card{
-      display:flex;
-      gap:14px;
-      border-radius:10px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(0,0,0,0.04);
-      padding:12px;
-      text-decoration:none;
-      color:var(--text);
-      transition:transform .16s ease, box-shadow .16s ease;
-    }
-
-    .tool-card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 10px 30px rgba(16,24,40,0.12);
-    }
-
-    .tool-thumb{
-      width:110px;
-      height:80px;
-      object-fit:cover;
-      border-radius:6px;
+    /* --- FLOATING CANVAS EFFECTS --- */
+    .canvas-frame {
+      width: 150px;
+      height: 94px;
       flex-shrink: 0;
+      padding: 6px; 
+      border-radius: 6px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03), 0 4px 12px rgba(16,24,40,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .tool-title{font-weight:700;margin-bottom:4px;font-size:15px;}
-    .tool-sub{color:var(--muted);font-size:13px;line-height:1.3;}
+    .canvas-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 3px; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: none;
+    }
+
+    .project-meta, .tool-meta {
+      padding:4px;
+      flex: 1;
+    }
+
+    .project-title, .tool-title {
+      font-weight:700;
+      font-size:16px;
+      margin-bottom:4px;
+    }
+
+    .project-tagline, .tool-sub {
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.4;
+    }
 
     /* --- FOOTER --- */
     .social-fixed{
@@ -177,7 +186,6 @@
       animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) forwards;
     }
 
-    /* Assigning delays up to 14 elements roughly */
     .stagger-wrapper>*:nth-child(1){animation-delay:.05s}
     .stagger-wrapper>*:nth-child(2){animation-delay:.1s}
     .stagger-wrapper>*:nth-child(3){animation-delay:.15s}
@@ -190,36 +198,28 @@
 
     /* --- MOBILE RESPONSIVE FIX --- */
     @media(max-width:900px){
-      /* Make grids single column on mobile */
       .grid-layout {
         grid-template-columns: 1fr;
         gap: 16px;
       }
 
-      /* Stack the image and text vertically in Project Cards */
-      .project-card {
+      .project-card, .tool-card {
         flex-direction: column; 
         align-items: flex-start;
       }
 
-      .project-card img{
+      .project-card img, .tool-thumb, .canvas-frame {
         width:100%;
         height:200px;
         margin-bottom: 12px;
       }
       
-      /* Navigation scrolling */
       .nav {
         justify-content: flex-start;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
       }
       .nav::-webkit-scrollbar { display: none; }
-
-      .tool-thumb{
-        width:90px;
-        height:70px;
-      }
     }
   </style>
 
@@ -311,7 +311,7 @@
       <div class="grid-layout">
         <a href="https://btc.heyabc.xyz" class="tool-card" target="_blank">
           <img class="tool-thumb" src="/images/bitcoin.webp" alt="">
-          <div>
+          <div class="tool-meta">
             <div class="tool-title">Magic Internet Money</div>
             <div class="tool-sub">Exploring real-time financial data visualization and mental models.</div>
           </div>
@@ -319,7 +319,7 @@
 
         <a href="https://www.discoveryos.xyz/" class="tool-card" target="_blank">
           <img class="tool-thumb" src="/images/slash.svg" alt="">
-          <div>
+          <div class="tool-meta">
             <div class="tool-title">discovery/OS</div>
             <div class="tool-sub">Market intelligence on emerging companies.</div>
           </div>
@@ -327,7 +327,7 @@
 
         <a href="https://x.com/YCDiscoveryBot" class="tool-card" target="_blank">
           <img class="tool-thumb" src="/images/Y_Combinator_logo(1).png" alt="">
-          <div>
+          <div class="tool-meta">
             <div class="tool-title">Y Combinator Bot</div>
             <div class="tool-sub">Built to automate early startup discovery and reduce manual scanning.</div>
           </div>
@@ -335,73 +335,81 @@
 
         <a href="https://voyager-umber.vercel.app" class="tool-card" target="_blank">
           <img class="tool-thumb" src="/images/voya.png" alt="">
-          <div>
+          <div class="tool-meta">
             <div class="tool-title">Voyager</div>
             <div class="tool-sub">Your AI Travel Concierge.</div>
           </div>
         </a>
 
         <a href="https://pokedex-sigma-three-64.vercel.app/" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/pokedex.png" alt="Pokédex" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=Pokédex'">
-          <div>
+          <img class="tool-thumb" src="/images/pokedex.png" alt="Pokédex" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=Pokédex'">
+          <div class="tool-meta">
             <div class="tool-title">Pokédex</div>
             <div class="tool-sub">Your digital Poké-companion. Gotta fetch ’em all.</div>
           </div>
         </a>
 
         <a href="https://xpay-prototype.vercel.app" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/xpay.png" alt="xPay" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=xPay'">
-          <div>
+          <div class="canvas-frame" style="background-color: #1e293b;">
+            <img src="/images/xpay.png" alt="xPay" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=xPay'">
+          </div>
+          <div class="tool-meta">
             <div class="tool-title">xPay</div>
             <div class="tool-sub">Prototype invoicing flow built to help Indian contractors seamlessly bill US clients.</div>
           </div>
         </a>
 
         <a href="https://kyc-debugger-v2.vercel.app" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/cybrilla.png" alt="Cybrilla" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=Cybrilla'">
-          <div>
+          <div class="canvas-frame" style="background-color: #f0fdf4;">
+            <img src="/images/cybrilla.png" alt="Cybrilla" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=Cybrilla'">
+          </div>
+          <div class="tool-meta">
             <div class="tool-title">Cybrilla (KYC Debugger)</div>
             <div class="tool-sub">An internal dashboard prototype designed to quickly debug and resolve KYC failures.</div>
           </div>
         </a>
 
         <a href="https://reflow-prototype.vercel.app" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/reflow.png" alt="Reflow" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=Reflow'">
-          <div>
+          <div class="canvas-frame" style="background-color: #eef2ff;">
+            <img src="/images/reflow.png" alt="Reflow" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=Reflow'">
+          </div>
+          <div class="tool-meta">
             <div class="tool-title">Reflow</div>
-            <div class="tool-sub">A conceptual prototype focused on optimizing complex business workflows.</div>
-          </div>
-        </a>
-
-        <a href="https://polaroid-sand.vercel.app" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/polaroid.png" alt="Polaroid" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=Polaroid'">
-          <div>
-            <div class="tool-title">Polaroid</div>
-            <div class="tool-sub">A fun image-editing tool that instantly transforms user uploads into classic Polaroid-style photos.</div>
-          </div>
-        </a>
-
-        <a href="https://draper-ai-engine.vercel.app" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/draper.png" alt="Draper" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=Draper'">
-          <div>
-            <div class="tool-title">Draper</div>
-            <div class="tool-sub">Creative Intelligence for modern Brand teams. Reverse-engineers successful social media ads to extract the exact factors driving their high impressions.</div>
+            <div class="tool-sub">AI-driven analysis of blocked communication to help teams diagnose and resolve critical decision bottlenecks.</div>
           </div>
         </a>
 
         <a href="https://certa-risk-intel.vercel.app" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/certa.png" alt="Certa" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=Certa'">
-          <div>
+          <div class="canvas-frame" style="background-color: #f8fafc;">
+            <img src="/images/certa.png" alt="Certa" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=Certa'">
+          </div>
+          <div class="tool-meta">
             <div class="tool-title">Strategic Risk Intelligence</div>
             <div class="tool-sub">An AI-powered screening interface built to instantly surface critical entity risks across global news, legal, and regulatory databases.</div>
           </div>
         </a>
 
+        <a href="https://draper-ai-engine.vercel.app" class="tool-card" target="_blank">
+          <img class="tool-thumb" src="/images/draper.png" alt="Draper" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=Draper'">
+          <div class="tool-meta">
+            <div class="tool-title">Draper</div>
+            <div class="tool-sub">Creative Intelligence for modern Brand teams. Reverse-engineers successful social media ads to extract the exact factors driving their high impressions.</div>
+          </div>
+        </a>
+
         <a href="https://scopex-web-app.vercel.app" class="tool-card" target="_blank">
-          <img class="tool-thumb" src="/images/scopex.png" alt="ScopeX" onerror="this.src='https://placehold.co/110x80/e0e0e0/999?text=ScopeX'">
-          <div>
-            <div class="tool-title">ScopeX - Money Planner</div>
+          <img class="tool-thumb" src="/images/scopex.png" alt="ScopeX" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=ScopeX'">
+          <div class="tool-meta">
+            <div class="tool-title">ScopeX</div>
             <div class="tool-sub">A cross-border payment prototype built to seamlessly automate recurring transactions from the EU to India.</div>
+          </div>
+        </a>
+
+        <a href="https://polaroid-sand.vercel.app" class="tool-card" target="_blank">
+          <img class="tool-thumb" src="/images/polaroid.png" alt="Polaroid" onerror="this.src='https://placehold.co/150x94/e0e0e0/999?text=Polaroid'">
+          <div class="tool-meta">
+            <div class="tool-title">Polaroid</div>
+            <div class="tool-sub">A fun image-editing tool that instantly transforms user uploads into classic Polaroid-style photos.</div>
           </div>
         </a>
       </div>
