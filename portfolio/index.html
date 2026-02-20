@@ -113,11 +113,12 @@
     }
 
     .project-card img, .tool-thumb {
-      width:150px;
-      height:94px;
-      object-fit:cover;
-      border-radius:6px;
-      background:#ccc;
+      width: 150px;
+      height: 94px;
+      object-fit: cover;
+      object-position: center; /* ADD THIS: Keeps the borders even on all sides */
+      border-radius: 6px;
+      background: transparent; /* Changed from #ccc so no grey shows behind */
       flex-shrink: 0;
     }
 
