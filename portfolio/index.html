@@ -116,9 +116,9 @@
       width: 150px;
       height: 94px;
       object-fit: cover;
-      object-position: center; /* ADD THIS: Keeps the borders even on all sides */
+      object-position: center; 
       border-radius: 6px;
-      background: transparent; /* Changed from #ccc so no grey shows behind */
+      background: transparent; 
       flex-shrink: 0;
     }
 
@@ -163,18 +163,15 @@
     }
 
     /* --- FOOTER --- */
-    .social-fixed{
-      position:fixed;
-      bottom:28px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      gap:28px;
-      z-index:40;
+    .social-fixed {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      padding: 0 0 40px 0; /* Breathing room at the very bottom */
     }
 
-    .social-fixed a{color:#000;}
-    .social-fixed a:hover{opacity:.7;}
+    .social-fixed a {color:#000;}
+    .social-fixed a:hover {opacity:.7;}
 
     /* --- STAGGER --- */
     @keyframes fadeUp{
