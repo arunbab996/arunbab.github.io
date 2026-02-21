@@ -30,9 +30,10 @@
       font-family:'DM Sans', sans-serif;
       color:var(--text);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* NODE GRAPH CANVAS STYLING */
+    /* THE CANVAS */
     #nodeWeb {
       position: fixed;
       bottom: 0;
@@ -300,7 +301,7 @@
     }
     setCanvasSize();
 
-    let mouse = { x: null, y: null, radius: 140 };
+    let mouse = { x: null, y: null, radius: 180 };
 
     window.addEventListener('mousemove', function(event) {
         mouse.x = event.x;
@@ -313,67 +314,66 @@
     });
 
     class Particle {
-        constructor(x, y, dx, dy, size) {
+        constructor(x, y, dx, dy) {
             this.x = x;
             this.y = y;
             this.dx = dx;
             this.dy = dy;
-            this.size = size;
         }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            // Lightened nodes to 0.08 opacity for a cleaner look
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-            ctx.fill();
-        }
+        // No draw() method for particles anymore — making nodes invisible!
         update() {
             if (this.x > canvas.width || this.x < 0) this.dx = -this.dx;
             if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
             this.x += this.dx;
             this.y += this.dy;
-            this.draw();
         }
     }
 
     function init() {
         particlesArray = [];
-        let numberOfParticles = (canvas.height * canvas.width) / 12000;
+        // Increased number of invisible nodes to make the web feel more "fluid"
+        let numberOfParticles = (canvas.height * canvas.width) / 7000;
         for (let i = 0; i < numberOfParticles; i++) {
-            let size = (Math.random() * 1.5) + 0.5;
-            let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-            let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
-            let dx = (Math.random() * 0.3) - 0.15;
-            let dy = (Math.random() * 0.3) - 0.15;
-            particlesArray.push(new Particle(x, y, dx, dy, size));
+            let x = Math.random() * canvas.width;
+            let y = Math.random() * canvas.height;
+            let dx = (Math.random() * 0.2) - 0.1;
+            let dy = (Math.random() * 0.2) - 0.1;
+            particlesArray.push(new Particle(x, y, dx, dy));
         }
     }
 
     function connect() {
         for (let a = 0; a < particlesArray.length; a++) {
-            for (let b = a; b < particlesArray.length; b++) {
-                let distance = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
-                if (distance < (canvas.width / 10) * (canvas.height / 10)) {
-                    let opacity = 1 - (distance / 10000);
-                    // Softened line opacity to 0.05
-                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.05})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.beginPath();
-                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                    ctx.stroke();
-                }
-            }
+            // Check connection to mouse first for more "active" response
             if (mouse.x && mouse.y) {
-                let dx = mouse.x - particlesArray[a].x;
-                let dy = mouse.y - particlesArray[a].y;
-                let mouseDistance = (dx * dx) + (dy * dy);
+                let dxM = mouse.x - particlesArray[a].x;
+                let dyM = mouse.y - particlesArray[a].y;
+                let mouseDistance = (dxM * dxM) + (dyM * dyM);
                 if (mouseDistance < mouse.radius * mouse.radius) {
-                    ctx.strokeStyle = `rgba(0, 0, 0, 0.08)`;
-                    ctx.lineWidth = 0.5;
+                    let mOpacity = 1 - (mouseDistance / (mouse.radius * mouse.radius));
+                    ctx.strokeStyle = `rgba(0, 0, 0, ${mOpacity * 0.12})`;
+                    ctx.lineWidth = 0.8;
                     ctx.beginPath();
                     ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
                     ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+
+            // Check connections between particles
+            for (let b = a; b < particlesArray.length; b++) {
+                let dx = particlesArray[a].x - particlesArray[b].x;
+                let dy = particlesArray[a].y - particlesArray[b].y;
+                let distance = (dx * dx) + (dy * dy);
+                
+                let limit = (canvas.width / 11) * (canvas.height / 11);
+                if (distance < limit) {
+                    let opacity = 1 - (distance / limit);
+                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.06})`;
+                    ctx.lineWidth = 0.4;
+                    ctx.beginPath();
+                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
                     ctx.stroke();
                 }
             }
