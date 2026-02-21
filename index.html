@@ -30,18 +30,6 @@
       font-family:'DM Sans', sans-serif;
       color:var(--text);
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* NEURAL NETWORK CANVAS */
-    #neuralNet {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50vh; 
-      z-index: -1; 
-      pointer-events: none; 
     }
 
     .page-top-border{
@@ -168,19 +156,24 @@
     .social-fixed a:hover{opacity:.6;}
 
     /* ==== POPUP STYLES ==== */
+    
+    /* 1. Base Container */
     .pop-link {
       position: relative;
       display: inline-block;
       cursor: pointer;
     }
 
+    /* 2. Base Popup Image (Default: Top Center) */
     .pop-img {
       position: absolute;
       bottom: 100%;
       left: 50%;
       transform: translate(-50%, 10px);
-      width: 48px; 
+      
+      width: 48px; /* Default small size */
       height: auto;
+      
       opacity: 0;
       visibility: hidden;
       transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -191,31 +184,44 @@
       background: white;
     }
 
+    /* 3. Hover Effect (Default: Slide Up) */
     .pop-link:hover .pop-img {
       opacity: 1;
       visibility: visible;
       transform: translate(-50%, -10px);
     }
 
+    /* ==== SPECIAL MODIFIERS ==== */
+
+    /* Modifier: Large Image (for Avatar) */
     .pop-img.pop-lg {
-      width: 130px; 
-      background: transparent;
-      box-shadow: none;
+      width: 130px; /* Nice and big */
+      background: transparent; /* No white box for cutout images */
+      box-shadow: none; /* No shadow box for cutout images */
       border-radius: 0;
     }
 
+    /* Modifier: Side Position (For Name section) */
+    /* This overrides the default 'Top' position to put it on the Left */
     .pop-link.pop-side .pop-img {
       bottom: auto; 
       left: auto;
+      
+      /* Position to the LEFT of the text */
       right: 100%; 
       top: 50%;
+      
+      /* Start slightly hidden to the right for animation */
       transform: translateY(-50%) translateX(20px); 
-      margin-right: 20px;
+      
+      margin-right: 20px; /* Gap between image and text */
     }
 
+    /* Hover Effect for Side Position */
     .pop-link.pop-side:hover .pop-img {
       opacity: 1;
       visibility: visible;
+      /* Slide into final position */
       transform: translateY(-50%) translateX(0); 
     }
 
@@ -287,113 +293,6 @@
       </svg>
     </a>
   </div>
-
-  <canvas id="neuralNet"></canvas>
-
-  <script>
-    const canvas = document.getElementById('neuralNet');
-    const ctx = canvas.getContext('2d');
-    let particlesArray;
-
-    function setCanvasSize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight / 2;
-    }
-    setCanvasSize();
-
-    let mouse = { x: null, y: null, radius: 180 };
-
-    window.addEventListener('mousemove', function(event) {
-        mouse.x = event.x;
-        // Adjust for canvas being in the bottom 50%
-        mouse.y = event.y - (window.innerHeight / 2);
-    });
-
-    window.addEventListener('mouseout', function() {
-        mouse.x = undefined;
-        mouse.y = undefined;
-    });
-
-    class Particle {
-        constructor(x, y, dx, dy) {
-            this.x = x;
-            this.y = y;
-            this.dx = dx;
-            this.dy = dy;
-        }
-        update() {
-            if (this.x > canvas.width || this.x < 0) this.dx = -this.dx;
-            if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
-            this.x += this.dx;
-            this.y += this.dy;
-        }
-    }
-
-    function init() {
-        particlesArray = [];
-        let numberOfParticles = (canvas.height * canvas.width) / 7500;
-        for (let i = 0; i < numberOfParticles; i++) {
-            let x = Math.random() * canvas.width;
-            let y = Math.random() * canvas.height;
-            let dx = (Math.random() * 0.25) - 0.125;
-            let dy = (Math.random() * 0.25) - 0.125;
-            particlesArray.push(new Particle(x, y, dx, dy));
-        }
-    }
-
-    function connect() {
-        for (let a = 0; a < particlesArray.length; a++) {
-            if (mouse.x && mouse.y) {
-                let dxM = mouse.x - particlesArray[a].x;
-                let dyM = mouse.y - particlesArray[a].y;
-                let mouseDistance = (dxM * dxM) + (dyM * dyM);
-                if (mouseDistance < mouse.radius * mouse.radius) {
-                    let mOpacity = 1 - (mouseDistance / (mouse.radius * mouse.radius));
-                    ctx.strokeStyle = `rgba(0, 0, 0, ${mOpacity * 0.1})`;
-                    ctx.lineWidth = 0.6;
-                    ctx.beginPath();
-                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                    ctx.lineTo(mouse.x, mouse.y);
-                    ctx.stroke();
-                }
-            }
-
-            for (let b = a; b < particlesArray.length; b++) {
-                let dx = particlesArray[a].x - particlesArray[b].x;
-                let dy = particlesArray[a].y - particlesArray[b].y;
-                let distance = (dx * dx) + (dy * dy);
-                let limit = (canvas.width / 11) * (canvas.height / 11);
-
-                if (distance < limit) {
-                    let opacity = 1 - (distance / limit);
-                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.05})`;
-                    ctx.lineWidth = 0.4;
-                    ctx.beginPath();
-                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                    ctx.stroke();
-                }
-            }
-        }
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        ctx.clearRect(0, 0, innerWidth, canvas.height);
-        for (let i = 0; i < particlesArray.length; i++) {
-            particlesArray[i].update();
-        }
-        connect();
-    }
-
-    window.addEventListener('resize', function() {
-        setCanvasSize();
-        init();
-    });
-
-    init();
-    animate();
-  </script>
 
   <script src="/spa-nav.js"></script>
 </body>
