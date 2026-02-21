@@ -38,9 +38,9 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 50vh; /* Covers the bottom half of the viewport */
-      z-index: -1; /* Keeps it behind your text and icons */
-      pointer-events: none; /* Ensures your social links remain clickable */
+      height: 50vh; 
+      z-index: -1; 
+      pointer-events: none; 
     }
 
     .page-top-border{
@@ -167,7 +167,6 @@
     .social-fixed a:hover{opacity:.6;}
 
     /* ==== POPUP STYLES ==== */
-    
     .pop-link {
       position: relative;
       display: inline-block;
@@ -179,7 +178,7 @@
       bottom: 100%;
       left: 50%;
       transform: translate(-50%, 10px);
-      width: 48px;
+      width: 48px; 
       height: auto;
       opacity: 0;
       visibility: hidden;
@@ -198,7 +197,7 @@
     }
 
     .pop-img.pop-lg {
-      width: 130px;
+      width: 130px; 
       background: transparent;
       box-shadow: none;
       border-radius: 0;
@@ -301,11 +300,10 @@
     }
     setCanvasSize();
 
-    let mouse = { x: null, y: null, radius: 120 };
+    let mouse = { x: null, y: null, radius: 140 };
 
     window.addEventListener('mousemove', function(event) {
         mouse.x = event.x;
-        // Adjust Y for bottom-half canvas
         mouse.y = event.y - (window.innerHeight / 2);
     });
 
@@ -325,7 +323,8 @@
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fillStyle = '#000';
+            // Lightened nodes to 0.08 opacity for a cleaner look
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             ctx.fill();
         }
         update() {
@@ -344,8 +343,8 @@
             let size = (Math.random() * 1.5) + 0.5;
             let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
             let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
-            let dx = (Math.random() * 0.4) - 0.2;
-            let dy = (Math.random() * 0.4) - 0.2;
+            let dx = (Math.random() * 0.3) - 0.15;
+            let dy = (Math.random() * 0.3) - 0.15;
             particlesArray.push(new Particle(x, y, dx, dy, size));
         }
     }
@@ -356,7 +355,8 @@
                 let distance = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
                 if (distance < (canvas.width / 10) * (canvas.height / 10)) {
                     let opacity = 1 - (distance / 10000);
-                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.07})`;
+                    // Softened line opacity to 0.05
+                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.05})`;
                     ctx.lineWidth = 0.5;
                     ctx.beginPath();
                     ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
@@ -369,7 +369,7 @@
                 let dy = mouse.y - particlesArray[a].y;
                 let mouseDistance = (dx * dx) + (dy * dy);
                 if (mouseDistance < mouse.radius * mouse.radius) {
-                    ctx.strokeStyle = `rgba(0, 0, 0, 0.1)`;
+                    ctx.strokeStyle = `rgba(0, 0, 0, 0.08)`;
                     ctx.lineWidth = 0.5;
                     ctx.beginPath();
                     ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
