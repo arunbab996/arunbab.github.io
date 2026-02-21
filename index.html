@@ -32,6 +32,17 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* NODE GRAPH CANVAS STYLING */
+    #nodeWeb {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50vh; /* Covers the bottom half of the viewport */
+      z-index: -1; /* Keeps it behind your text and icons */
+      pointer-events: none; /* Ensures your social links remain clickable */
+    }
+
     .page-top-border{
       height:3px;
       background:rgba(0,0,0,0.08);
@@ -157,23 +168,19 @@
 
     /* ==== POPUP STYLES ==== */
     
-    /* 1. Base Container */
     .pop-link {
       position: relative;
       display: inline-block;
       cursor: pointer;
     }
 
-    /* 2. Base Popup Image (Default: Top Center) */
     .pop-img {
       position: absolute;
       bottom: 100%;
       left: 50%;
       transform: translate(-50%, 10px);
-      
-      width: 48px; /* Default small size */
+      width: 48px;
       height: auto;
-      
       opacity: 0;
       visibility: hidden;
       transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -184,44 +191,31 @@
       background: white;
     }
 
-    /* 3. Hover Effect (Default: Slide Up) */
     .pop-link:hover .pop-img {
       opacity: 1;
       visibility: visible;
       transform: translate(-50%, -10px);
     }
 
-    /* ==== SPECIAL MODIFIERS ==== */
-
-    /* Modifier: Large Image (for Avatar) */
     .pop-img.pop-lg {
-      width: 130px; /* Nice and big */
-      background: transparent; /* No white box for cutout images */
-      box-shadow: none; /* No shadow box for cutout images */
+      width: 130px;
+      background: transparent;
+      box-shadow: none;
       border-radius: 0;
     }
 
-    /* Modifier: Side Position (For Name section) */
-    /* This overrides the default 'Top' position to put it on the Left */
     .pop-link.pop-side .pop-img {
       bottom: auto; 
       left: auto;
-      
-      /* Position to the LEFT of the text */
       right: 100%; 
       top: 50%;
-      
-      /* Start slightly hidden to the right for animation */
       transform: translateY(-50%) translateX(20px); 
-      
-      margin-right: 20px; /* Gap between image and text */
+      margin-right: 20px;
     }
 
-    /* Hover Effect for Side Position */
     .pop-link.pop-side:hover .pop-img {
       opacity: 1;
       visibility: visible;
-      /* Slide into final position */
       transform: translateY(-50%) translateX(0); 
     }
 
@@ -293,6 +287,116 @@
       </svg>
     </a>
   </div>
+
+  <canvas id="nodeWeb"></canvas>
+
+  <script>
+    const canvas = document.getElementById('nodeWeb');
+    const ctx = canvas.getContext('2d');
+    let particlesArray;
+
+    function setCanvasSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight / 2;
+    }
+    setCanvasSize();
+
+    let mouse = { x: null, y: null, radius: 120 };
+
+    window.addEventListener('mousemove', function(event) {
+        mouse.x = event.x;
+        // Adjust Y for bottom-half canvas
+        mouse.y = event.y - (window.innerHeight / 2);
+    });
+
+    window.addEventListener('mouseout', function() {
+        mouse.x = undefined;
+        mouse.y = undefined;
+    });
+
+    class Particle {
+        constructor(x, y, dx, dy, size) {
+            this.x = x;
+            this.y = y;
+            this.dx = dx;
+            this.dy = dy;
+            this.size = size;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+        }
+        update() {
+            if (this.x > canvas.width || this.x < 0) this.dx = -this.dx;
+            if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
+            this.x += this.dx;
+            this.y += this.dy;
+            this.draw();
+        }
+    }
+
+    function init() {
+        particlesArray = [];
+        let numberOfParticles = (canvas.height * canvas.width) / 12000;
+        for (let i = 0; i < numberOfParticles; i++) {
+            let size = (Math.random() * 1.5) + 0.5;
+            let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+            let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
+            let dx = (Math.random() * 0.4) - 0.2;
+            let dy = (Math.random() * 0.4) - 0.2;
+            particlesArray.push(new Particle(x, y, dx, dy, size));
+        }
+    }
+
+    function connect() {
+        for (let a = 0; a < particlesArray.length; a++) {
+            for (let b = a; b < particlesArray.length; b++) {
+                let distance = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
+                if (distance < (canvas.width / 10) * (canvas.height / 10)) {
+                    let opacity = 1 - (distance / 10000);
+                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.07})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                    ctx.stroke();
+                }
+            }
+            if (mouse.x && mouse.y) {
+                let dx = mouse.x - particlesArray[a].x;
+                let dy = mouse.y - particlesArray[a].y;
+                let mouseDistance = (dx * dx) + (dy * dy);
+                if (mouseDistance < mouse.radius * mouse.radius) {
+                    ctx.strokeStyle = `rgba(0, 0, 0, 0.1)`;
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, innerWidth, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+        }
+        connect();
+    }
+
+    window.addEventListener('resize', function() {
+        setCanvasSize();
+        init();
+    });
+
+    init();
+    animate();
+  </script>
 
   <script src="/spa-nav.js"></script>
 </body>
