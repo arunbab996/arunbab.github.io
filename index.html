@@ -33,8 +33,8 @@
       overflow-x: hidden;
     }
 
-    /* THE CANVAS */
-    #nodeWeb {
+    /* NEURAL NETWORK CANVAS */
+    #neuralNet {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -288,10 +288,10 @@
     </a>
   </div>
 
-  <canvas id="nodeWeb"></canvas>
+  <canvas id="neuralNet"></canvas>
 
   <script>
-    const canvas = document.getElementById('nodeWeb');
+    const canvas = document.getElementById('neuralNet');
     const ctx = canvas.getContext('2d');
     let particlesArray;
 
@@ -305,6 +305,7 @@
 
     window.addEventListener('mousemove', function(event) {
         mouse.x = event.x;
+        // Adjust for canvas being in the bottom 50%
         mouse.y = event.y - (window.innerHeight / 2);
     });
 
@@ -320,7 +321,6 @@
             this.dx = dx;
             this.dy = dy;
         }
-        // No draw() method for particles anymore — making nodes invisible!
         update() {
             if (this.x > canvas.width || this.x < 0) this.dx = -this.dx;
             if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
@@ -331,28 +331,26 @@
 
     function init() {
         particlesArray = [];
-        // Increased number of invisible nodes to make the web feel more "fluid"
-        let numberOfParticles = (canvas.height * canvas.width) / 7000;
+        let numberOfParticles = (canvas.height * canvas.width) / 7500;
         for (let i = 0; i < numberOfParticles; i++) {
             let x = Math.random() * canvas.width;
             let y = Math.random() * canvas.height;
-            let dx = (Math.random() * 0.2) - 0.1;
-            let dy = (Math.random() * 0.2) - 0.1;
+            let dx = (Math.random() * 0.25) - 0.125;
+            let dy = (Math.random() * 0.25) - 0.125;
             particlesArray.push(new Particle(x, y, dx, dy));
         }
     }
 
     function connect() {
         for (let a = 0; a < particlesArray.length; a++) {
-            // Check connection to mouse first for more "active" response
             if (mouse.x && mouse.y) {
                 let dxM = mouse.x - particlesArray[a].x;
                 let dyM = mouse.y - particlesArray[a].y;
                 let mouseDistance = (dxM * dxM) + (dyM * dyM);
                 if (mouseDistance < mouse.radius * mouse.radius) {
                     let mOpacity = 1 - (mouseDistance / (mouse.radius * mouse.radius));
-                    ctx.strokeStyle = `rgba(0, 0, 0, ${mOpacity * 0.12})`;
-                    ctx.lineWidth = 0.8;
+                    ctx.strokeStyle = `rgba(0, 0, 0, ${mOpacity * 0.1})`;
+                    ctx.lineWidth = 0.6;
                     ctx.beginPath();
                     ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
                     ctx.lineTo(mouse.x, mouse.y);
@@ -360,16 +358,15 @@
                 }
             }
 
-            // Check connections between particles
             for (let b = a; b < particlesArray.length; b++) {
                 let dx = particlesArray[a].x - particlesArray[b].x;
                 let dy = particlesArray[a].y - particlesArray[b].y;
                 let distance = (dx * dx) + (dy * dy);
-                
                 let limit = (canvas.width / 11) * (canvas.height / 11);
+
                 if (distance < limit) {
                     let opacity = 1 - (distance / limit);
-                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.06})`;
+                    ctx.strokeStyle = `rgba(0, 0, 0, ${opacity * 0.05})`;
                     ctx.lineWidth = 0.4;
                     ctx.beginPath();
                     ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
